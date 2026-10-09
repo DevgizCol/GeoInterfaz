@@ -1,70 +1,62 @@
-# GeoInterfaz · Geovisor de la Tesis Doctoral
+# GeoInterfaz · Geovisor de la tesis doctoral
 
-> **"Enfoques y metodologías de planificación territorial local para el desarrollo de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias"**  
-> *Barranquilla, ciudad puerto y ciudad río*
+**Enfoques y metodologías de planificación territorial local para el desarrollo de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias. Barranquilla, ciudad puerto y ciudad río**
 
-Plataforma cartográfica interactiva y catálogo de datos espaciales desarrollada como soporte tecnológico y metodológico de la investigación doctoral.
+- Doctoranda: Aida del Carmen Palmett Padilla
+- Dirección: Dr. Miguel Yury Mayorga Cárdenas · Dr. Julián Galindo
+- Doctorado en Sostenibilidad · Universitat Politècnica de Catalunya (UPC)
+- Sitio: <https://geointerfaz.vercel.app/>
 
-- **Doctoranda:** Aida del Carmen Palmett Padilla
-- **Dirección de tesis:** Dr. Miguel Yury Mayorga Cárdenas · Dr. Julián Galindo
-- **Programa:** Doctorado en Sostenibilidad — Institut de Sostenibilitat
-- **Institución:** Universitat Politècnica de Catalunya (UPC)
-- **Año:** 2026
+## Qué es
 
----
+Un sitio estático que reúne los 164 elementos numerados de la tesis (figuras, tablas, esquemas y láminas del atlas) con su número, título y nota. Los mapas se dibujan con las mismas capas, simbología y encuadre de las composiciones de QGIS y pueden compararse con la lámina impresa.
 
-## 🌐 Características del Geovisor
+El sitio no añade contenido propio: todo lo que muestra sale del manuscrito y de los proyectos QGIS de la investigación.
 
-1. **Mapas Interactivos (MapLibre GL JS):**
-   - 41 vistas cartográficas interactivas con encuadre, simbología y jerarquía visual extraídas directamente de los proyectos oficiales de QGIS.
-   - Soporte para tramas complejas, símbolos puntuales y rotulación con halo.
-   - Conmutador de mapas base: OpenStreetMap, Satélite (Esri World Imagery), Carto Positron y Sin Fondo.
-   - Despliegue de coordenadas en tiempo real tanto en **WGS84** como en el sistema de coordenadas oficial colombiano **MAGNA-SIRGAS 2018 / Origen Nacional (EPSG:9377)**.
+## Qué ofrece
 
-2. **Tabla de Atributos Espaciales:**
-   - Cajón deslizable con visualización alfanumérica completa de cada capa.
-   - Búsqueda y filtrado instantáneo por texto y valores numéricos.
-   - Enfoque espacial dinámico (*zoom to feature*) al hacer clic sobre cualquier registro.
-   - Descarga directa en formato estándar GeoJSON.
+- **Índice por capítulos**, con filtro por tipo y buscador global (`Ctrl+K`).
+- **Mapa interactivo**: leyenda, capas con interruptor y opacidad, tabla de atributos, rótulos, medición, perspectiva, encuadres de la tesis y captura de imagen.
+- **Lámina** del atlas en alta resolución con zoom, y **tablas** del manuscrito.
+- **Ficha** de cada elemento: nota y fuente, ubicación en la tesis, proyecto y composición de QGIS, archivo de la lámina.
+- **Citar**: enlace permanente y código QR de cada vista (`#/fig-3`, `#/atlas-3-8`, `#/tabla-74`…).
+- Navegación con anterior y siguiente (`Mayús+←` y `Mayús+→`).
+- **Comparar**: mapa interactivo y lámina impresa lado a lado.
+- **Presentar** (`P`): pantalla completa sin menús, para exponer pasando con las flechas.
+- Tema claro y oscuro, transparencia general de la cartografía, resaltado del elemento bajo el cursor y filtro dentro de las tablas.
+- Se adapta a teléfono, tableta y pantallas grandes (verificado de 390 a 1920 px de ancho).
 
-3. **Visor de Láminas de Atlas en Alta Resolución (Zoomer):**
-   - 34 láminas finales del atlas cartográfico en formato horizontal 300 DPI.
-   - Control fluido de desplazamiento (*pan*) y ampliación (*zoom*) con rueda del ratón y gestos táctiles.
-
-4. **Visor de Tablas del Manuscrito y Gráficos:**
-   - Tablas de encuestas ($n=707$) estructuradas semánticamente en HTML.
-   - Enlace bidireccional entre tablas de frecuencias y sus correspondientes gráficos de percepción y conectividad.
-
-5. **Permalinks y Códigos QR para Citación en la Tesis:**
-   - Cada figura, mapa, tabla o lámina posee un identificador único (ej: `#/fig-3`, `#/atlas-3-8`, `#/tabla-74`).
-   - Modal interactivo con enlace permanente, código QR y texto sugerido para la nota a pie de página del manuscrito.
-
----
-
-## 📂 Estructura del Proyecto
+## Estructura
 
 ```text
-├── index.html            # Estructura principal de la aplicación web
-├── logo_upc.png          # Escudo oficial de la UPC
-├── css/
-│   └── estilo.css        # Sistema de diseño y hojas de estilo
-├── js/
-│   └── app.js            # Lógica de la aplicación, enrutador y motor MapLibre
-└── data/
-    ├── catalogo.json     # Metadatos de los 164 elementos del manuscrito
-    ├── vistas.json       # Definición de encuadres, capas y estilos de QGIS
-    ├── capas.json        # Metadatos técnicos de las 96 capas SIG
-    ├── capas/            # 96 archivos GeoJSON simplificados en EPSG:4326
-    ├── laminas/          # Láminas del atlas en alta resolución y miniaturas
-    ├── figuras/          # Gráficos de figuras extraídos del manuscrito
-    └── tablas/           # Tablas HTML del manuscrito
+index.html        Estructura de la página
+css/estilo.css    Estilos base
+css/refinado.css  Tipografía, tema oscuro, presentación y adaptación a cada pantalla
+js/app.js         Aplicación (enrutador, mapa, panel, ficha)
+data/
+  catalogo.json   Los 164 elementos del manuscrito
+  vistas.json     Encuadre, capas y estilos de cada composición de QGIS
+  capas.json      Ficha técnica de las 96 capas
+  capas/          Capas en GeoJSON (EPSG:4326)
+  laminas/        Láminas del atlas para web
+  figuras/        Figuras extraídas del manuscrito
+  tablas/         Tablas del manuscrito en HTML
 ```
 
----
+La carpeta `data/` no se edita a mano. Se genera con los programas de `05_GEOVISOR/construir/` del repositorio de la tesis (`01_capas.py`, `02_tesis.py`, `03_catalogo.py`, `04_enlaces.py`).
 
-## 🚀 Despliegue en GitHub Pages
+## Ver en local
 
-Este repositorio está configurado para ejecutarse directamente como sitio estático sin requerir compilación:
-1. Activar GitHub Pages desde **Settings > Pages**.
-2. Seleccionar la rama `main` y la carpeta `/ (root)`.
-3. El sitio quedará disponible públicamente en la URL de GitHub Pages de la organización `DevGizCol`.
+```bash
+python -m http.server 8765
+```
+
+y abrir <http://localhost:8765/>.
+
+## Publicación
+
+El sitio se publica en Vercel desde este repositorio, sin paso de compilación (`vercel.json`). Cada envío a la rama principal actualiza la dirección pública.
+
+## Créditos
+
+MapLibre GL JS · Turf · Proj4js · qrcode-generator. Fondos: Esri (gris claro, gris oscuro, imagen satelital) y OpenStreetMap. Las fuentes de cada capa se indican en la nota de su mapa.

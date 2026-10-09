@@ -1,78 +1,201 @@
 /**
- * GEOVISOR DE LA TESIS DOCTORAL
+ * GeoInterfaz · Geovisor de la tesis doctoral
  * "Enfoques y metodologías de planificación territorial local para el desarrollo
  * de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias"
- * Autora: Aida del Carmen Palmett Padilla
- * Universitat Politècnica de Catalunya (UPC) — 2026
+ * Autora: Aida del Carmen Palmett Padilla · Universitat Politècnica de Catalunya (UPC)
  *
- * Motor: MapLibre GL JS 4.7.1 + Proj4js + QRCode
+ * Todo el contenido que se muestra procede del manuscrito y de los proyectos QGIS de la
+ * tesis (data/catalogo.json, data/vistas.json, data/capas.json). Este archivo solo lo presenta.
+ *
+ * Motor: MapLibre GL JS 4.7.1 + Turf + Proj4js + qrcode-generator
  */
 
 (function () {
   'use strict';
 
-  // --- ESTADO GLOBAL ---
+  // ------------------------------------------------------------------ estado
   let CATALOGO = null;
   let VISTAS = null;
   let CAPAS = null;
   const ITEMS_MAP = new Map();
   const GEOJSON_CACHE = new Map();
+  let ORDEN = [];
 
   let map = null;
   let mapReady = false;
   let currentVista = null;
   let currentItem = null;
-  let currentBase = 'osm';
+  let currentBase = 'claro';
   let activeVectorLayerIds = [];
   let activeVectorSourceIds = [];
+  let rotulosVisibles = true;
+  let baseManual = false;
+  let opGlobal = 1;
+  const OP_ORIG = {};
+  const PROP_OP = { fill: 'fill-opacity', line: 'line-opacity', circle: 'circle-opacity', symbol: 'icon-opacity' };
 
-  // Estado del visor de láminas / imágenes (pan & zoom)
-  const zoomState = {
-    x: 0,
-    y: 0,
-    scale: 1,
-    isDragging: false,
-    startX: 0,
-    startY: 0,
-    imgW: 0,
-    imgH: 0
-  };
+  const zoomState = { x: 0, y: 0, scale: 1, isDragging: false, startX: 0, startY: 0, imgW: 0, imgH: 0 };
 
-  // Fuentes de mapas base soportadas
   const BASES = {
+    claro: {
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256, attribution: 'Esri, HERE, Garmin, &copy; OpenStreetMap contributors', maxzoom: 16
+    },
     osm: {
       tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap contributors',
-      maxzoom: 19
+      tileSize: 256, attribution: '&copy; OpenStreetMap contributors', maxzoom: 19
     },
     sat: {
       tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
-      tileSize: 256,
-      attribution: 'Tiles &copy; Esri, Maxar, Earthstar Geographics',
-      maxzoom: 19
-    },
-    claro: {
-      tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      maxzoom: 20
+      tileSize: 256, attribution: 'Tiles &copy; Esri, Maxar, Earthstar Geographics', maxzoom: 19
     },
     oscuro: {
-      tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      maxzoom: 20
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256, attribution: 'Esri, HERE, Garmin, &copy; OpenStreetMap contributors', maxzoom: 16
     },
     nada: null
   };
 
-  // Inicialización de Proj4 para el sistema oficial colombiano EPSG:9377
   if (window.proj4) {
     proj4.defs(
       'EPSG:9377',
       '+proj=tmerc +lat_0=4.0 +lon_0=-73.0 +k=0.9992 +x_0=5000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
     );
+  }
+
+  // ------------------------------------------------------------ utilidades
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) =>
+    String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  const ICO = {
+    mapa: '<svg viewBox="0 0 24 24"><path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>',
+    imagen: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg>',
+    tabla: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M10 4v16"/></svg>',
+    info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+    compartir: '<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
+    izq: '<svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg>',
+    der: '<svg viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></svg>',
+    cerrar: '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    filas: '<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
+    mas: '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg>',
+    copiar: '<svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+    flecha: '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+  };
+
+  ICO.dual = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg>';
+  ICO.pres = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"/></svg>';
+
+  const TIPOS = {
+    mapa: { uno: 'Mapa', varios: 'Mapas' },
+    grafico: { uno: 'Figura', varios: 'Figuras' },
+    tabla: { uno: 'Tabla', varios: 'Tablas' },
+    esquema: { uno: 'Esquema', varios: 'Esquemas' }
+  };
+
+  // Nombres breves de capítulo para la navegación (el título completo va en el atributo title)
+  const CAP_CORTO = {
+    I: 'Planteamiento del problema',
+    II: 'Marco teórico y conceptual',
+    III: 'Caso Barranquilla · AMB',
+    IV: 'Estudio comparado',
+    V: 'Propuesta IOTF-IUR',
+    VI: 'Conclusiones'
+  };
+
+  // Nombres legibles de las capas. La clave es el nombre técnico de la capa en QGIS.
+  const ALIAS = {
+    APTITUD_SUELO_RURAL_IGAC: 'Aptitud del suelo rural (IGAC)',
+    BARRIOS_LIMITE_ZONA_URBANA: 'Barrios · límite de la zona urbana',
+    CENTROIDE_INTERFACE: 'Centroide de la franja de interfaz',
+    CIUDADES_PUERTO_LATINOAMERICA: 'Ciudades puerto de Latinoamérica',
+    CONECTIVIDADES: 'Conectividades',
+    CONFLICTO_USO_FRANJA_INTERFACE: 'Conflictos de uso en la franja de interfaz',
+    CORREDORES_ECONOMICOS: 'Corredores económicos',
+    CRECIMIENTO_URBANO_AMB: 'Crecimiento urbano del AMB',
+    Cienaga: 'Ciénagas',
+    DENSIDAD_POBLACION_MANZANA: 'Densidad de población por manzana',
+    'DESARROLLOS URBANOS': 'Desarrollos urbanos',
+    DESARROLLOS_URBANOS: 'Desarrollos urbanos',
+    DESARROLLOS_INMOBILIARIOS: 'Desarrollos inmobiliarios',
+    DRENAJES_SENCILLOS_AMB: 'Drenajes del AMB',
+    'Departamentos202305 — Depto': 'Departamentos de Colombia',
+    'Departamentos202305 — Depto Atlantico': 'Departamento del Atlántico',
+    EJES_ESTRUCTURANTES: 'Ejes estructurantes',
+    EJE_AMBIENTAL: 'Eje ambiental',
+    FRANJA_INTERFACE_URBANO_RURAL_AMB: 'Franja de interfaz urbano-rural del AMB',
+    FRANJA_INTERFACE_URBANO_RURAL_AMB_INTEGRADA: 'Franja de interfaz urbano-rural (integrada)',
+    FRANJA_INTERFACE_URBANO_RURAL_AMB_MPIOS: 'Franja de interfaz por municipio',
+    GALAPA_R_TERRENO: 'Predios rurales de Galapa',
+    INFRAESTRUCTURA_OBSTACULO: 'Infraestructura como obstáculo',
+    INUNDACION: 'Inundación',
+    Integracion_Usos_Propuestos_POT_Municipales: 'Usos propuestos en los POT municipales',
+    LOCALIDADES_BARANQUILLA_SEGUN_POT: 'Localidades de Barranquilla según el POT',
+    Municipios: 'Municipios',
+    Municipios_Atlantico: 'Municipios del Atlántico',
+    NODO: 'Nodos',
+    NODOS: 'Nodos',
+    'PLANES_PARCIALES DENSIDAD DE POBLACION': 'Planes parciales · densidad de población',
+    POMCA_MAYORQUIN: 'POMCA Ciénaga de Mallorquín',
+    RIOS: 'Ríos',
+    SECTORES_INFORMALES: 'Sectores informales',
+    SE_Rutas_Transporte_Publico: 'Rutas de transporte público',
+    TOPONIMIA_UFP: 'Toponimia',
+    UFPs: 'Unidades Funcionales de Planificación (UFP)',
+    UFPs_: 'Unidades Funcionales de Planificación (UFP)',
+    'UFPs-USOS_SUELO': 'UFP · usos del suelo',
+    'UPF-USOS_AMB': 'Usos del suelo por UFP',
+    'UPF-USOS_AMB_UFP_1': 'Usos del suelo · UFP 1',
+    'UPF-USOS_AMB_UFP_2': 'Usos del suelo · UFP 2',
+    'UPF-USOS_AMB_UFP_3': 'Usos del suelo · UFP 3',
+    'UPF-USOS_AMB_UFP_4': 'Usos del suelo · UFP 4',
+    USOS_DEL_SUELO_ZONA_INTERFACE_AMB: 'Usos del suelo en la zona de interfaz',
+    VERTIMIENTOS: 'Vertimientos',
+    VIAS_AMB_: 'Vías del AMB',
+    'world_map — countries': 'Países',
+    'world_map — disputed_borders': 'Límites en disputa',
+    'world_map — states_provinces': 'Estados y provincias'
+  };
+  const SIGLAS = /^(amb|pot|pbot|ufp|ufps|igac|cra|pomca|dane|pemot|zmv|rmbs|gamv|osm|dga|mop|ibge|ine|bcn)$/i;
+
+  function nombreCapa(raw) {
+    if (!raw) return 'Capa';
+    if (ALIAS[raw]) return ALIAS[raw];
+    let s = String(raw).replace(/\s*\((Limpio|Fig\.? ?\d+)\)\s*/gi, ' ').trim();
+    if (!/[_]/.test(s) && /[a-záéíóúñ]/.test(s)) return s; // ya es un nombre legible
+    s = s.replace(/_+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+    s = s.split(' ').map((w) => (SIGLAS.test(w) ? w.toUpperCase() : w)).join(' ');
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+  // Las clases de la leyenda vienen de los datos; solo se normalizan mayúsculas y guiones bajos.
+  function etiquetaLeyenda(t) {
+    if (!t) return '';
+    if (/_/.test(t)) return nombreCapa(t);
+    if (t.length > 5 && t === t.toUpperCase() && /[A-ZÁÉÍÓÚÑ]{4}/.test(t)) {
+      const s = t.toLowerCase().split(' ').map((w) => (SIGLAS.test(w) ? w.toUpperCase() : w)).join(' ');
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+    return t;
+  }
+
+  function etiquetaCorta(it) {
+    const e = it.etiqueta || '';
+    return e
+      .replace(/^Figura\s+/i, 'Fig. ')
+      .replace(/^Esquema\s+/i, 'Esq. ')
+      .replace(/^Lámina Atlas\s+/i, 'Atlas ')
+      .replace(/^Lámina complementaria/i, 'Compl.');
+  }
+
+  function capDe(it) {
+    return (CATALOGO.capitulos || []).find((c) => c.id === it.capitulo) || null;
+  }
+  function capNombre(cap) {
+    return CAP_CORTO[cap.num] || cap.nombre;
+  }
+  function geomDe(capaObj) {
+    const c = CAPAS && CAPAS[capaObj.capa];
+    return (c && c.geom) || '';
   }
 
   // --- GENERACIÓN DINÁMICA DE TRAMAS Y MARCADORES PARA MAPLIBRE ---
@@ -232,72 +355,100 @@
     }
   }
 
-  // --- AVISOS Y DIÁLOGOS ---
+  // ------------------------------------------------------ avisos y diálogos
+  let avisoT = null;
   function showToast(txt) {
-    const aviso = document.getElementById('aviso');
+    const aviso = $('aviso');
     if (!aviso) return;
     aviso.textContent = txt;
     aviso.classList.add('ver');
-    setTimeout(() => {
-      aviso.classList.remove('ver');
-    }, 2500);
+    clearTimeout(avisoT);
+    avisoT = setTimeout(() => aviso.classList.remove('ver'), 2600);
+  }
+
+  function copiar(txt, okMsg) {
+    const fin = () => showToast(okMsg);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(fin, () => showToast('No se pudo copiar. Seleccione el texto y cópielo manualmente.'));
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); fin(); } catch (_) { /* sin portapapeles */ }
+      ta.remove();
+    }
+  }
+
+  // Dirección pública del geovisor. En local se usa también, para que los enlaces copiados sirvan en la tesis.
+  const URL_PUBLICA = 'https://geointerfaz.vercel.app/';
+  function enlaceDe(item) {
+    const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname) || window.location.protocol === 'file:';
+    const base = local ? URL_PUBLICA : `${window.location.origin}${window.location.pathname}`;
+    return `${base}#/${item.id}`;
   }
 
   function openShareDialog(item) {
-    const dlg = document.getElementById('dlg');
-    const cuerpo = document.getElementById('dlgCuerpo');
+    const dlg = $('dlg');
+    const cuerpo = $('dlgCuerpo');
     if (!dlg || !cuerpo) return;
 
-    const deepLink = `${window.location.origin}${window.location.pathname}#/${item.id}`;
+    const deepLink = enlaceDe(item);
     let qrHtml = '';
     if (typeof qrcode !== 'undefined') {
       try {
         const qr = qrcode(0, 'M');
         qr.addData(deepLink);
         qr.make();
-        qrHtml = qr.createImgTag(4);
+        qrHtml = qr.createImgTag(4, 8);
       } catch (err) {
-        console.warn('Error generando QR:', err);
+        console.warn('No se pudo generar el código QR:', err);
       }
     }
 
-    const notaSugerida = item.tipo === 'mapa'
-      ? `Nota. Para consultar este mapa de forma interactiva con todas sus capas cartográficas, encuadre original y tablas de atributos espaciales, ver Geovisor oficial: ${deepLink}`
-      : `Nota. Para consultar este elemento en versión digital de alta resolución, ver Geovisor de la tesis: ${deepLink}`;
+    const notaSugerida = item.vista
+      ? `Versión interactiva de este mapa, con sus capas, leyenda y atributos, disponible en: ${deepLink}`
+      : `Versión digital en alta resolución disponible en: ${deepLink}`;
 
     cuerpo.innerHTML = `
-      <h3>Compartir y citar en la tesis</h3>
-      <p style="font-size:12.5px;color:var(--gris);margin-bottom:14px">
-        Utilice este enlace o código QR en el manuscrito para que su director y jurados exploren interactivamente este elemento en el Geovisor oficial.
-      </p>
-      <div class="qr">
-        ${qrHtml || '<div style="width:160px;height:160px;background:#eee;display:flex;align-items:center;justify-content:center">QR</div>'}
-        <div style="flex:1;min-width:0">
-          <label style="font-size:11px;font-weight:600;color:var(--gris);display:block;margin-bottom:3px">ENLACE DIRECTO (PERMALINK)</label>
-          <div class="url">${deepLink}</div>
-          <button class="btn pri chico" id="btnCopiarUrl" style="margin-top:6px">📋 Copiar enlace</button>
+      <div class="dlg-cab">
+        <div>
+          <div class="dlg-sup">${esc(item.etiqueta)}</div>
+          <h3>Enlace para citar en la tesis</h3>
+        </div>
+        <button class="ico-btn" id="dlgCerrar" aria-label="Cerrar">${ICO.cerrar}</button>
+      </div>
+      <div class="dlg-qr">
+        <div class="qr">${qrHtml}</div>
+        <div class="dlg-col">
+          <label>Enlace permanente</label>
+          <div class="url" id="dlgUrl">${esc(deepLink)}</div>
+          <button class="btn pri" id="btnCopiarUrl">${ICO.copiar} Copiar enlace</button>
+          <p class="ayuda">Este enlace abre directamente esta vista. El código QR lleva al mismo lugar desde la versión impresa.</p>
         </div>
       </div>
-      <div style="margin-top:14px">
-        <label style="font-size:11px;font-weight:600;color:var(--gris);display:block;margin-bottom:3px">TEXTO SUGERIDO PARA LA NOTA A PIE DE MAPA</label>
-        <textarea id="txtNota" readonly style="margin-top:4px;height:70px">${notaSugerida}</textarea>
-        <div style="margin-top:6px;text-align:left">
-          <button class="btn chico" id="btnCopiarNota">📋 Copiar texto para la nota</button>
-        </div>
-      </div>
+      <label>Texto sugerido para añadir a la nota</label>
+      <textarea id="txtNota" readonly rows="3">${esc(notaSugerida)}</textarea>
+      <button class="btn" id="btnCopiarNota">${ICO.copiar} Copiar texto</button>
     `;
 
-    document.getElementById('btnCopiarUrl')?.addEventListener('click', () => {
-      navigator.clipboard.writeText(deepLink).then(() => showToast('¡Enlace copiado al portapapeles!'));
-    });
-    document.getElementById('btnCopiarNota')?.addEventListener('click', () => {
-      navigator.clipboard.writeText(notaSugerida).then(() => showToast('¡Texto de la nota copiado!'));
-    });
-
-    dlg.showModal();
+    $('dlgCerrar').addEventListener('click', () => dlg.close());
+    $('btnCopiarUrl').addEventListener('click', () => copiar(deepLink, 'Enlace copiado'));
+    $('btnCopiarNota').addEventListener('click', () => copiar(notaSugerida, 'Texto copiado'));
+    if (!dlg.open) dlg.showModal();
   }
 
-  // --- MOTOR CARTOGRÁFICO (MAPLIBRE GL) ---
+  // ------------------------------------------------- motor cartográfico
+  function capasConsultables() {
+    return activeVectorLayerIds.filter((id) => {
+      const l = map.getLayer(id);
+      return l && map.getLayoutProperty(id, 'visibility') !== 'none' && !id.endsWith('__label');
+    });
+  }
+  function tituloElemento(p) {
+    return p.NOMBRE || p.Nombre || p.nombre || p.Name || p.name || p.NAME || p.MpNombre || p.DeNombre || p.NOMBRE_GEO || p.NOMAH || p.UFP || '';
+  }
+
   function initMap() {
     if (map) return true;
 
@@ -310,168 +461,133 @@
           sources: {
             'base-source': {
               type: 'raster',
-              tiles: BASES.osm.tiles,
+              tiles: BASES.claro.tiles,
               tileSize: 256,
-              attribution: BASES.osm.attribution,
-              maxzoom: BASES.osm.maxzoom
+              attribution: BASES.claro.attribution,
+              maxzoom: BASES.claro.maxzoom
             }
           },
           layers: [
-            {
-              id: 'background',
-              type: 'background',
-              paint: { 'background-color': '#e6edf2' }
-            },
-            {
-              id: 'base-layer',
-              type: 'raster',
-              source: 'base-source',
-              paint: { 'raster-opacity': 1.0 }
-            }
+            { id: 'background', type: 'background', paint: { 'background-color': '#eef1f4' } },
+            { id: 'base-layer', type: 'raster', source: 'base-source', paint: { 'raster-opacity': 1.0 } }
           ]
         },
-        center: [-74.80, 10.98],
+        center: [-74.8, 10.98],
         zoom: 11,
-        attributionControl: true
+        attributionControl: false,
+        preserveDrawingBuffer: true
       });
 
       window._testMap = map;
+      map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
       map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-left');
       map.addControl(new maplibregl.FullscreenControl(), 'top-left');
-      map.addControl(new maplibregl.ScaleControl({ maxWidth: 120, unit: 'metric' }), 'bottom-left');
+      map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }), 'bottom-left');
 
-      const coordEl = document.getElementById('coord');
+      const carga = $('mapCarga');
+      map.on('dataloading', () => { if (carga) carga.hidden = false; });
+      map.on('idle', () => { if (carga) carga.hidden = true; });
+
+      const coordEl = $('coord');
+      const tooltipEl = $('mapTooltip');
+
       map.on('mousemove', (e) => {
-        if (!coordEl) return;
-        const lng = e.lngLat.lng;
-        const lat = e.lngLat.lat;
-        let extra = '';
-        if (window.proj4) {
-          try {
-            const pt9377 = proj4('EPSG:4326', 'EPSG:9377', [lng, lat]);
-            extra = ` | Origen Nal: N ${Math.round(pt9377[1]).toLocaleString('es-CO')} m, E ${Math.round(pt9377[0]).toLocaleString('es-CO')} m`;
-          } catch (_) {}
+        if (coordEl) {
+          const lng = e.lngLat.lng;
+          const lat = e.lngLat.lat;
+          let extra = '';
+          if (window.proj4 && lng > -80 && lng < -66 && lat > -5 && lat < 14) {
+            try {
+              const p = proj4('EPSG:4326', 'EPSG:9377', [lng, lat]);
+              extra = ` · N ${Math.round(p[1]).toLocaleString('es-CO')}  E ${Math.round(p[0]).toLocaleString('es-CO')} (EPSG:9377)`;
+            } catch (_) { /* fuera del ámbito de la proyección */ }
+          }
+          coordEl.textContent = `${lat.toFixed(5)}°, ${lng.toFixed(5)}°${extra}`;
         }
-        coordEl.textContent = `Lat: ${lat.toFixed(5)}°, Lon: ${lng.toFixed(5)}°${extra}`;
+
+        if (modoMedicion) {
+          map.getCanvas().style.cursor = 'crosshair';
+          if (tooltipEl) tooltipEl.hidden = true;
+          return;
+        }
+        const visibles = capasConsultables();
+        const fs = visibles.length ? map.queryRenderedFeatures(e.point, { layers: visibles }) : [];
+        if (fs.length) {
+          map.getCanvas().style.cursor = 'pointer';
+          resaltar(fs[0]);
+          const tit = tituloElemento(fs[0].properties || {});
+          if (tooltipEl && tit) {
+            tooltipEl.textContent = tit;
+            tooltipEl.style.left = `${e.point.x}px`;
+            tooltipEl.style.top = `${e.point.y}px`;
+            tooltipEl.hidden = false;
+          } else if (tooltipEl) {
+            tooltipEl.hidden = true;
+          }
+        } else {
+          map.getCanvas().style.cursor = '';
+          if (tooltipEl) tooltipEl.hidden = true;
+          resaltar(null);
+        }
       });
 
       map.on('mouseout', () => {
         if (coordEl) coordEl.textContent = '';
+        if (tooltipEl) tooltipEl.hidden = true;
       });
 
-      const tooltipEl = document.getElementById('mapTooltip');
       map.on('click', (e) => {
         if (modoMedicion) {
           puntosMedicion.push([e.lngLat.lng, e.lngLat.lat]);
           actualizarMedicionGeoJSON();
           return;
         }
+        const visibles = capasConsultables();
+        if (!visibles.length) return;
+        const fs = map.queryRenderedFeatures(e.point, { layers: visibles });
+        if (!fs.length) return;
 
-        const visibleLayers = activeVectorLayerIds.filter((id) => {
-          const l = map.getLayer(id);
-          return l && map.getLayoutProperty(id, 'visibility') !== 'none' && !id.endsWith('__label');
-        });
-        if (!visibleLayers.length) return;
-
-        const features = map.queryRenderedFeatures(e.point, { layers: visibleLayers });
-        if (!features || !features.length) return;
-
-        const f = features[0];
+        const f = fs[0];
         const props = f.properties || {};
+        let capaObj = null;
+        const m = f.layer.id.match(/^lyr_(\d+)_/);
+        if (m && currentVista) capaObj = currentVista.capas[parseInt(m[1], 10)];
+        const nomCapa = capaObj ? nombreCapa(capaObj.nombre) : 'Capa';
+        const tit = tituloElemento(props);
 
-        let layerObj = null;
-        if (currentVista && currentVista.capas) {
-          const match = f.layer.id.match(/^lyr_(\d+)_/);
-          if (match) {
-            const idx = parseInt(match[1], 10);
-            layerObj = currentVista.capas[idx];
-          } else {
-            layerObj = currentVista.capas.find((c) => f.layer.id.includes(c.capa));
-          }
-        }
-        const layerName = layerObj ? layerObj.nombre : 'Capa';
-        const tit = props.NOMBRE || props.Nombre || props.nombre || props.Name || props.MpNombre || props.DeNombre || props.NOMAH || '';
-
-        let rows = '';
-        let nCampos = 0;
+        let filas = '';
+        let n = 0;
         for (const [k, v] of Object.entries(props)) {
-          if (v === null || v === undefined || v === '') continue;
-          if (k.toLowerCase() === 'id' || k.startsWith('SHAPE_') || k.startsWith('GLOBALID') || k === 'PK_CUE') continue;
-          if (nCampos++ > 8) break;
-          rows += `<tr><td>${k}</td><td><strong>${v}</strong></td></tr>`;
+          if (v === null || v === undefined || v === '' || v === 'null') continue;
+          if (/^(id|fid|objectid|pk_cue|globalid)$/i.test(k) || /^shape_/i.test(k)) continue;
+          if (n++ >= 8) break;
+          const val = typeof v === 'number' ? v.toLocaleString('es-CO', { maximumFractionDigits: 2 }) : v;
+          filas += `<tr><th>${esc(k)}</th><td>${esc(val)}</td></tr>`;
         }
 
-        new maplibregl.Popup({ closeButton: true, offset: 12 })
+        new maplibregl.Popup({ closeButton: true, offset: 10, maxWidth: '300px' })
           .setLngLat(e.lngLat)
-          .setHTML(`
-            <div class="pop">
-              <h4>${tit || layerName}</h4>
-              <div style="font-size:11px;color:var(--gris);margin-bottom:6px">${layerName}</div>
-              <table>${rows}</table>
-            </div>
-          `)
+          .setHTML(`<div class="pop"><div class="pop-capa">${esc(nomCapa)}</div>${tit ? `<h4>${esc(tit)}</h4>` : ''}<table>${filas}</table></div>`)
           .addTo(map);
-      });
-
-      map.on('mousemove', (e) => {
-        if (modoMedicion) {
-          map.getCanvas().style.cursor = 'crosshair';
-          if (tooltipEl) tooltipEl.hidden = true;
-          return;
-        }
-        const visibleLayers = activeVectorLayerIds.filter((id) => {
-          const l = map.getLayer(id);
-          return l && map.getLayoutProperty(id, 'visibility') !== 'none' && !id.endsWith('__label');
-        });
-        if (!visibleLayers.length) {
-          map.getCanvas().style.cursor = '';
-          if (tooltipEl) tooltipEl.hidden = true;
-          return;
-        }
-        const features = map.queryRenderedFeatures(e.point, { layers: visibleLayers });
-        if (features && features.length > 0) {
-          map.getCanvas().style.cursor = 'pointer';
-          if (tooltipEl) {
-            const p = features[0].properties || {};
-            const tit = p.NOMBRE || p.Nombre || p.nombre || p.Name || p.MpNombre || p.DeNombre || p.NOMAH || p.UFP || '';
-            if (tit) {
-              tooltipEl.textContent = tit;
-              tooltipEl.style.left = `${e.point.x}px`;
-              tooltipEl.style.top = `${e.point.y}px`;
-              tooltipEl.hidden = false;
-            } else {
-              tooltipEl.hidden = true;
-            }
-          }
-        } else {
-          map.getCanvas().style.cursor = '';
-          if (tooltipEl) tooltipEl.hidden = true;
-        }
-      });
-
-      map.on('mouseout', () => {
-        if (tooltipEl) tooltipEl.hidden = true;
       });
 
       mapReady = true;
       return true;
     } catch (err) {
-      console.warn('MapLibre WebGL context notice:', err);
-      const mapaEl = document.getElementById('mapa');
+      console.warn('MapLibre no pudo iniciar WebGL:', err);
+      const mapaEl = $('mapa');
       if (mapaEl) {
         mapaEl.innerHTML = `
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center;color:#5b6875">
-            <p style="font-size:16px;font-weight:600;margin-bottom:8px">Visualización WebGL</p>
-            <p style="font-size:13px;max-width:500px">El mapa interactivo se activa en navegadores con aceleración WebGL estándar. Puede también consultar la lámina cartográfica de alta resolución.</p>
-          </div>
-        `;
+          <div class="sin-webgl">
+            <strong>El mapa interactivo necesita aceleración gráfica (WebGL)</strong>
+            <span>Mientras tanto puede consultar la lámina en alta resolución desde la pestaña «Lámina».</span>
+          </div>`;
       }
       mapReady = false;
       return false;
     }
   }
 
-  // Cambio de mapa base raster
   function setBaseMap(type) {
     currentBase = type;
     document.querySelectorAll('#bases .base-card').forEach((card) => {
@@ -482,47 +598,25 @@
     if (!map || !mapReady) return;
 
     if (type === 'nada') {
-      if (map.getLayer('base-layer')) {
-        map.setLayoutProperty('base-layer', 'visibility', 'none');
-      }
+      if (map.getLayer('base-layer')) map.setLayoutProperty('base-layer', 'visibility', 'none');
       return;
     }
-
     const conf = BASES[type];
     if (!conf) return;
 
     if (map.getLayer('base-layer')) map.removeLayer('base-layer');
     if (map.getSource('base-source')) map.removeSource('base-source');
-
     map.addSource('base-source', {
-      type: 'raster',
-      tiles: conf.tiles,
-      tileSize: conf.tileSize,
-      attribution: conf.attribution,
-      maxzoom: conf.maxzoom
+      type: 'raster', tiles: conf.tiles, tileSize: conf.tileSize, attribution: conf.attribution, maxzoom: conf.maxzoom
     });
-
     const layers = map.getStyle().layers || [];
-    let beforeId = null;
+    let beforeId;
     for (const l of layers) {
-      if (l.id !== 'background' && l.id !== 'base-layer') {
-        beforeId = l.id;
-        break;
-      }
+      if (l.id !== 'background' && l.id !== 'base-layer') { beforeId = l.id; break; }
     }
-
-    map.addLayer(
-      {
-        id: 'base-layer',
-        type: 'raster',
-        source: 'base-source',
-        paint: { 'raster-opacity': 1.0 }
-      },
-      beforeId
-    );
+    map.addLayer({ id: 'base-layer', type: 'raster', source: 'base-source', paint: { 'raster-opacity': 1.0 } }, beforeId);
   }
 
-  // Carga de una vista cartográfica específica
   function loadVista(vistaId) {
     if (!VISTAS || !VISTAS[vistaId]) {
       console.warn('Vista no encontrada:', vistaId);
@@ -530,242 +624,346 @@
     }
     const vista = VISTAS[vistaId];
     currentVista = vista;
+    renderPanel(vista);
 
-    // Renderizar panel de capas independientemente del estado de WebGL
-    renderListaCapas(vista);
-
-    // Omitidas
-    const omitEl = document.getElementById('omitidas');
-    if (omitEl) {
-      if (vista.omitidas && vista.omitidas.length > 0) {
-        omitEl.innerHTML = `
-          <details class="omit">
-            <summary>⚠️ ${vista.omitidas.length} capa(s) no cargadas</summary>
-            <ul>
-              ${vista.omitidas.map((o) => `<li><strong>${o.nombre}:</strong> ${o.motivo}</li>`).join('')}
-            </ul>
-          </details>
-        `;
-      } else {
-        omitEl.innerHTML = '';
-      }
-    }
-
-    if (!initMap() || !map) {
-      return;
-    }
-
-    if (map.isStyleLoaded()) {
-      applyVistaLayers(vista);
-    } else {
-      map.once('load', () => applyVistaLayers(vista));
-    }
+    if (!initMap() || !map) return;
+    if (map.isStyleLoaded()) applyVistaLayers(vista);
+    else map.once('load', () => { if (currentVista === vista) applyVistaLayers(vista); });
   }
 
-  function ajustarEncuadreVista(vista, instant = false) {
-    if (!map || !mapReady || !vista || !vista.bbox || vista.bbox.length !== 4) return;
+  function ajustarEncuadre(bbox, instant) {
+    if (!map || !mapReady || !bbox || bbox.length !== 4) return;
     map.resize();
-    const isPanelOpen = !document.getElementById('panel')?.classList.contains('cerrado');
-    const isMobile = window.innerWidth <= 900;
-    const containerW = map.getContainer()?.clientWidth || window.innerWidth;
-    const rightPad = isMobile || !isPanelOpen ? 30 : Math.min(320, Math.floor(containerW * 0.30));
-
-    const bounds = [
-      [vista.bbox[0], vista.bbox[1]],
-      [vista.bbox[2], vista.bbox[3]]
-    ];
-    map.fitBounds(bounds, {
-      padding: { top: 40, bottom: 40, left: 40, right: rightPad },
+    const panel = $('panel');
+    const panelAbierto = panel && !panel.hidden;
+    const movil = window.innerWidth <= 900;
+    const w = map.getContainer().clientWidth || window.innerWidth;
+    const der = movil || !panelAbierto ? 36 : Math.min(330, Math.floor(w * 0.32));
+    map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], {
+      padding: { top: 36, bottom: 40, left: 64, right: der },
       maxZoom: 16,
-      duration: instant ? 0 : 550
+      duration: instant ? 0 : 600
     });
+  }
+  function ajustarEncuadreVista(vista, instant) {
+    if (vista) ajustarEncuadre(vista.bbox, instant);
+  }
+
+  // Rótulos cartográficos: un mismo criterio tipográfico para todas las vistas.
+  function capaDeRotulos(capaObj, lblId, srcId) {
+    const etq = capaObj.estilo.etiqueta;
+    const geom = geomDe(capaObj);
+    const nom = capaObj.nombre || '';
+    const base = Math.min(Math.max(etq.tam || 11, 10), 14);
+    const tam = (k) => ['interpolate', ['linear'], ['zoom'], 7, base * 0.74 * k, 11, base * 0.92 * k, 14, base * 1.08 * k, 17, base * 1.3 * k];
+
+    const layout = {
+      'text-field': etq.texto,
+      'text-font': ['Noto Sans Regular'],
+      'text-size': tam(1),
+      'text-max-width': 8,
+      'text-line-height': 1.15,
+      'text-padding': 5,
+      'text-allow-overlap': false,
+      'text-optional': true,
+      visibility: capaObj.apagada || !rotulosVisibles ? 'none' : 'visible'
+    };
+    const paint = {
+      'text-color': '#1f2937',
+      'text-halo-color': 'rgba(255,255,255,0.94)',
+      'text-halo-width': 1.7,
+      'text-halo-blur': 0.4
+    };
+
+    const esHidro = /rio|rios|cienaga|drenaje|hidro|quebrada|canal|arroyo|agua/i.test(nom);
+    const esLimite = /municip|departament|countries|states|provinc|comunal|limite|límite|localidad|barrio/i.test(nom);
+
+    if (geom === 'Line') {
+      layout['symbol-placement'] = 'line';
+      layout['symbol-spacing'] = 380;
+      layout['text-max-angle'] = 32;
+      layout['text-size'] = tam(0.86);
+      layout['text-letter-spacing'] = 0.03;
+      if (esHidro) {
+        layout['text-font'] = ['Noto Sans Italic'];
+        paint['text-color'] = '#1c6e9c';
+      } else {
+        paint['text-color'] = '#4b5563';
+      }
+    } else if (geom === 'Point') {
+      layout['text-font'] = [etq.negrita ? 'Noto Sans Bold' : 'Noto Sans Regular'];
+      layout['text-variable-anchor'] = ['top', 'bottom', 'left', 'right', 'top-left', 'top-right'];
+      layout['text-radial-offset'] = 0.75;
+      layout['text-justify'] = 'auto';
+      layout['text-optional'] = false;
+      paint['text-color'] = '#111827';
+      paint['text-halo-width'] = 2;
+    } else if (esLimite) {
+      layout['text-font'] = ['Noto Sans Bold'];
+      layout['text-transform'] = 'uppercase';
+      layout['text-letter-spacing'] = 0.11;
+      layout['text-size'] = tam(0.8);
+      layout['text-max-width'] = 7;
+      paint['text-color'] = '#475569';
+      paint['text-halo-width'] = 2;
+    } else {
+      if (esHidro) {
+        layout['text-font'] = ['Noto Sans Italic'];
+        paint['text-color'] = '#1c6e9c';
+      } else if (etq.negrita) {
+        layout['text-font'] = ['Noto Sans Bold'];
+      }
+      layout['text-size'] = tam(0.9);
+    }
+    return { id: lblId, type: 'symbol', source: srcId, layout, paint };
   }
 
   function applyVistaLayers(vista) {
     if (!map || !mapReady) return;
 
-    // Limpiar rigurosamente todas las capas vectoriales y fuentes anteriores
     const style = map.getStyle();
     if (style && style.layers) {
       style.layers.forEach((l) => {
-        if (l.id.startsWith('lyr_')) {
-          if (map.getLayer(l.id)) map.removeLayer(l.id);
-        }
+        if (l.id.startsWith('lyr_') && map.getLayer(l.id)) map.removeLayer(l.id);
       });
     }
     if (style && style.sources) {
       Object.keys(style.sources).forEach((srcId) => {
-        if (srcId.startsWith('src_')) {
-          if (map.getSource(srcId)) map.removeSource(srcId);
-        }
+        if (srcId.startsWith('src_') && map.getSource(srcId)) map.removeSource(srcId);
       });
     }
     activeVectorLayerIds = [];
     activeVectorSourceIds = [];
 
-    // Auto-zoom con encuadre inteligente y sincronizado
-    ajustarEncuadreVista(vista);
-    setTimeout(() => { if (map && mapReady) ajustarEncuadreVista(vista); }, 150);
-
-    // Configurar mapa base predeterminado de la vista sólo si difiere del actual
-    const baseOpt = vista.fondo || 'osm';
-    const radio = document.querySelector(`input[name="base"][value="${baseOpt}"]`);
-    if (radio) {
-      radio.checked = true;
-      if (currentBase !== baseOpt) {
-        setBaseMap(baseOpt);
-      }
+    if (modo3D) {
+      modo3D = false;
+      $('btn3D')?.classList.remove('on');
+      map.jumpTo({ pitch: 0, bearing: 0 });
     }
+    ajustarEncuadreVista(vista, true);
 
-    // Registrar imágenes de patrones y marcadores requeridos
+    // Fondo: se respeta el satélite cuando la composición de QGIS lo usa; en los demás casos
+    // se parte de un fondo claro para que la cartografía de la tesis sea la protagonista.
+    const fondo = vista.fondo === 'sat' || vista.fondo === 'nada' ? vista.fondo : temaOscuro() ? 'oscuro' : 'claro';
+    if (!baseManual && currentBase !== fondo) setBaseMap(fondo);
+
     vista.capas.forEach((c) => {
-      if (c.estilo && c.estilo.ml) {
-        c.estilo.ml.forEach((ml) => {
-          if (ml.paint && ml.paint['fill-pattern']) {
-            const patId = ml.paint['fill-pattern'];
-            if (!map.hasImage(patId)) {
-              map.addImage(patId, createPatternImage(patId));
-            }
-          }
-          if (ml.layout && ml.layout['icon-image']) {
-            const iconId = ml.layout['icon-image'];
-            if (!map.hasImage(iconId)) {
-              map.addImage(iconId, createMarkerImage(iconId));
-            }
-          }
-        });
-      }
+      ((c.estilo && c.estilo.ml) || []).forEach((ml) => {
+        const pat = ml.paint && ml.paint['fill-pattern'];
+        if (pat && !map.hasImage(pat)) map.addImage(pat, createPatternImage(pat));
+        const ico = ml.layout && ml.layout['icon-image'];
+        if (ico && !map.hasImage(ico)) map.addImage(ico, createMarkerImage(ico));
+      });
     });
 
-    // Agregar capas a MapLibre (de abajo hacia arriba para respetar el orden visual de QGIS)
+    // 1) geometrías, de abajo hacia arriba como en la composición de QGIS
     for (let i = vista.capas.length - 1; i >= 0; i--) {
       const capaObj = vista.capas[i];
-      const layerIdx = i;
       capaObj._layerIds = [];
-      const srcId = `src_${layerIdx}_${capaObj.capa}`;
-
+      capaObj._f = 1;
+      const srcId = `src_${i}_${capaObj.capa}`;
       if (!map.getSource(srcId)) {
-        map.addSource(srcId, {
-          type: 'geojson',
-          data: `data/capas/${capaObj.capa}.geojson`
-        });
+        map.addSource(srcId, { type: 'geojson', data: `data/capas/${capaObj.capa}.geojson` });
         activeVectorSourceIds.push(srcId);
       }
-
-      if (capaObj.estilo && capaObj.estilo.ml) {
-        capaObj.estilo.ml.forEach((ml, subIdx) => {
-          const lyrId = `lyr_${layerIdx}_${capaObj.capa}_${subIdx}`;
-          const lyrDef = {
-            id: lyrId,
-            type: ml.type,
-            source: srcId,
-            layout: Object.assign({}, ml.layout || {}),
-            paint: Object.assign({}, ml.paint || {})
-          };
-          if (ml.filter) lyrDef.filter = ml.filter;
-          if (capaObj.apagada) {
-            lyrDef.layout.visibility = 'none';
-          }
-          if (map.getLayer(lyrId)) map.removeLayer(lyrId);
-          map.addLayer(lyrDef);
-          activeVectorLayerIds.push(lyrId);
-          capaObj._layerIds.push(lyrId);
-        });
-      }
-
-      if (capaObj.estilo && capaObj.estilo.etiqueta) {
-        const etq = capaObj.estilo.etiqueta;
-        const lblId = `lyr_${layerIdx}_${capaObj.capa}__label`;
-        const lblDef = {
-          id: lblId,
-          type: 'symbol',
-          source: srcId,
-          layout: {
-            'text-field': etq.texto,
-            'text-size': etq.tam || 11,
-            'text-offset': [0, 0.7],
-            'text-anchor': 'top',
-            'text-allow-overlap': false,
-            'visibility': capaObj.apagada ? 'none' : 'visible'
-          },
-          paint: {
-            'text-color': etq.color || '#2b2b2b',
-            'text-halo-color': etq.halo || '#ffffff',
-            'text-halo-width': 1.6
-          }
-        };
-        if (map.getLayer(lblId)) map.removeLayer(lblId);
-        map.addLayer(lblDef);
-        activeVectorLayerIds.push(lblId);
-        capaObj._layerIds.push(lblId);
-      }
+      ((capaObj.estilo && capaObj.estilo.ml) || []).forEach((ml, subIdx) => {
+        const lyrId = `lyr_${i}_${capaObj.capa}_${subIdx}`;
+        const def = { id: lyrId, type: ml.type, source: srcId, layout: Object.assign({}, ml.layout || {}), paint: Object.assign({}, ml.paint || {}) };
+        if (ml.filter) def.filter = ml.filter;
+        if (capaObj.apagada) def.layout.visibility = 'none';
+        if (PROP_OP[ml.type]) OP_ORIG[lyrId] = def.paint[PROP_OP[ml.type]] === undefined ? 1 : def.paint[PROP_OP[ml.type]];
+        map.addLayer(def);
+        activeVectorLayerIds.push(lyrId);
+        capaObj._layerIds.push(lyrId);
+      });
     }
+    // 2) rótulos, siempre por encima de todas las geometrías
+    for (let i = vista.capas.length - 1; i >= 0; i--) {
+      const capaObj = vista.capas[i];
+      if (!(capaObj.estilo && capaObj.estilo.etiqueta)) continue;
+      const lblId = `lyr_${i}_${capaObj.capa}__label`;
+      map.addLayer(capaDeRotulos(capaObj, lblId, `src_${i}_${capaObj.capa}`));
+      activeVectorLayerIds.push(lblId);
+      capaObj._layerIds.push(lblId);
+    }
+
+    agregarResaltado();
+    if (opGlobal < 1) vista.capas.forEach(aplicarOpacidad);
+
+    setTimeout(() => { if (currentVista === vista) ajustarEncuadreVista(vista, true); }, 160);
   }
 
-  function renderListaCapas(vista) {
-    const cont = document.getElementById('listaCapas');
+  // Opacidad: la de cada capa (panel) por la general (pestaña Fondo), sobre la opacidad original de QGIS.
+  function aplicarOpacidad(capaObj) {
+    if (!map || !mapReady) return;
+    const f = (capaObj._f === undefined ? 1 : capaObj._f) * opGlobal;
+    (capaObj._layerIds || []).forEach((id) => {
+      const l = map.getLayer(id);
+      if (!l) return;
+      try {
+        if (id.endsWith('__label')) { map.setPaintProperty(id, 'text-opacity', f); return; }
+        const pr = PROP_OP[l.type];
+        if (!pr) return;
+        const o = OP_ORIG[id];
+        map.setPaintProperty(id, pr, typeof o === 'number' ? o * f : f >= 0.999 ? o : ['*', f, o]);
+        if (l.type === 'symbol') map.setPaintProperty(id, 'text-opacity', f);
+      } catch (_) { /* expresiones que no admiten el producto: se deja la opacidad original */ }
+    });
+  }
+
+  // Resaltado del elemento bajo el cursor
+  let claveResaltado = null;
+  function agregarResaltado() {
+    claveResaltado = null;
+    map.addSource('src_zz_hover', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+    const noPunto = ['!=', ['geometry-type'], 'Point'];
+    map.addLayer({ id: 'lyr_zz_hover_a', type: 'line', source: 'src_zz_hover', filter: noPunto, paint: { 'line-color': '#ffffff', 'line-width': 5.5, 'line-opacity': 0.75 } });
+    map.addLayer({ id: 'lyr_zz_hover_b', type: 'line', source: 'src_zz_hover', filter: noPunto, paint: { 'line-color': '#0f2a43', 'line-width': 2.4 } });
+    map.addLayer({ id: 'lyr_zz_hover_c', type: 'circle', source: 'src_zz_hover', filter: ['==', ['geometry-type'], 'Point'],
+      paint: { 'circle-radius': 11, 'circle-opacity': 0, 'circle-stroke-color': '#0f2a43', 'circle-stroke-width': 2.4 } });
+  }
+  function resaltar(f) {
+    if (!map || !map.getSource('src_zz_hover')) return;
+    const k = f ? `${f.layer.id}|${f.id !== undefined ? f.id : JSON.stringify(f.properties).slice(0, 160)}` : null;
+    if (k === claveResaltado) return;
+    claveResaltado = k;
+    map.getSource('src_zz_hover').setData({ type: 'FeatureCollection', features: f ? [{ type: 'Feature', geometry: f.geometry, properties: {} }] : [] });
+  }
+
+  function setCapaVisible(capaObj, visible) {
+    capaObj.apagada = !visible;
+    if (!map || !mapReady || !capaObj._layerIds) return;
+    capaObj._layerIds.forEach((id) => {
+      if (!map.getLayer(id)) return;
+      const v = visible && (rotulosVisibles || !id.endsWith('__label'));
+      map.setLayoutProperty(id, 'visibility', v ? 'visible' : 'none');
+    });
+  }
+
+  function setRotulos(ver) {
+    rotulosVisibles = ver;
+    $('btnRotulos')?.classList.toggle('off', !ver);
+    if (!map || !mapReady || !currentVista) return;
+    currentVista.capas.forEach((c) => {
+      (c._layerIds || []).forEach((id) => {
+        if (id.endsWith('__label') && map.getLayer(id)) {
+          map.setLayoutProperty(id, 'visibility', ver && !c.apagada ? 'visible' : 'none');
+        }
+      });
+    });
+  }
+
+  // ------------------------------------------------ panel: leyenda y capas
+  function renderLeyenda(vista) {
+    const cont = $('ptLeyenda');
     if (!cont) return;
+    const bloques = vista.capas
+      .filter((c) => !c.apagada && c.estilo && c.estilo.leyenda && c.estilo.leyenda.length)
+      .map((c) => {
+        const nom = nombreCapa(c.nombre);
+        const ley = c.estilo.leyenda;
+        if (ley.length === 1) {
+          return `<div class="ley-fila">${createLegendSvg(ley[0].m)}<span>${esc(nom)}</span></div>`;
+        }
+        const filas = ley
+          .map((it) => `<div class="ley-fila">${createLegendSvg(it.m)}<span>${esc(etiquetaLeyenda(it.etq))}</span></div>`)
+          .join('');
+        return `<div class="ley-grupo"><div class="ley-tit">${esc(nom)}</div>${filas}</div>`;
+      })
+      .join('');
+    cont.innerHTML = bloques || '<p class="ayuda">No hay capas visibles. Actívelas en la pestaña «Capas».</p>';
+  }
+
+  function renderPanel(vista) {
+    renderLeyenda(vista);
+
+    const cont = $('listaCapas');
     cont.innerHTML = '';
+    const n = $('nCapasPanel');
+    if (n) n.textContent = vista.capas.length;
 
     vista.capas.forEach((capaObj, idx) => {
-      const capaEl = document.createElement('div');
-      capaEl.className = `capa${capaObj.apagada ? ' off' : ''}`;
-      capaEl.id = `ui_capa_${idx}_${capaObj.capa}`;
-
-      const leyHtml = capaObj.estilo && capaObj.estilo.leyenda
-        ? capaObj.estilo.leyenda
-            .map((item) => `<div>${createLegendSvg(item.m)}<span title="${item.etq}">${item.etq}</span></div>`)
-            .join('')
-        : '';
-
-      capaEl.innerHTML = `
-        <div class="capa-tit">
-          <input type="checkbox" id="chk_${idx}_${capaObj.capa}" ${capaObj.apagada ? '' : 'checked'}>
-          <label for="chk_${idx}_${capaObj.capa}">${capaObj.nombre}</label>
-          <button class="mini" title="Abrir tabla de atributos" data-tabla="${capaObj.capa}">☷</button>
+      const el = document.createElement('div');
+      el.className = `capa${capaObj.apagada ? ' off' : ''}`;
+      const nom = nombreCapa(capaObj.nombre);
+      const info = CAPAS && CAPAS[capaObj.capa];
+      const sub = info ? `${info.n ? info.n.toLocaleString('es-CO') + ' elementos' : ''}` : '';
+      el.innerHTML = `
+        <div class="capa-fila">
+          <label class="sw" title="Mostrar u ocultar la capa">
+            <input type="checkbox" ${capaObj.apagada ? '' : 'checked'}>
+            <i></i>
+          </label>
+          <div class="capa-nom" title="Nombre en QGIS: ${esc(capaObj.nombre)}">
+            <span>${esc(nom)}</span>
+            ${sub ? `<small>${esc(sub)}</small>` : ''}
+          </div>
+          <button class="ico-btn chico" data-a="tabla" title="Ver tabla de atributos">${ICO.filas}</button>
+          <button class="ico-btn chico" data-a="mas" title="Opacidad">${ICO.mas}</button>
         </div>
-        <div class="ley">${leyHtml}</div>
-        <div class="capa-ops">
+        <div class="capa-ops" hidden>
           <span>Opacidad</span>
-          <input type="range" min="0" max="100" value="100" data-op="${capaObj.capa}">
+          <input type="range" min="0" max="100" value="100" aria-label="Opacidad de ${esc(nom)}">
         </div>
       `;
 
-      const chk = capaEl.querySelector(`input[type="checkbox"]`);
+      const chk = el.querySelector('input[type="checkbox"]');
       chk.addEventListener('change', () => {
-        const encendida = chk.checked;
-        capaEl.classList.toggle('off', !encendida);
-        if (map && mapReady && capaObj._layerIds) {
-          capaObj._layerIds.forEach((id) => {
-            if (map.getLayer(id)) {
-              map.setLayoutProperty(id, 'visibility', encendida ? 'visible' : 'none');
-            }
-          });
-        }
+        el.classList.toggle('off', !chk.checked);
+        setCapaVisible(capaObj, chk.checked);
+        renderLeyenda(vista);
       });
 
-      const opInput = capaEl.querySelector(`input[data-op]`);
-      opInput.addEventListener('input', () => {
-        const val = parseFloat(opInput.value) / 100;
-        if (map && mapReady && capaObj._layerIds) {
-          capaObj._layerIds.forEach((id) => {
-            const l = map.getLayer(id);
-            if (!l) return;
-            if (l.type === 'fill') map.setPaintProperty(id, 'fill-opacity', val);
-            else if (l.type === 'line') map.setPaintProperty(id, 'line-opacity', val);
-            else if (l.type === 'circle') map.setPaintProperty(id, 'circle-opacity', val);
-            else if (l.type === 'symbol') map.setPaintProperty(id, 'icon-opacity', val);
-          });
-        }
+      const ops = el.querySelector('.capa-ops');
+      el.querySelector('[data-a="mas"]').addEventListener('click', () => { ops.hidden = !ops.hidden; });
+      el.querySelector('[data-a="tabla"]').addEventListener('click', () => abrirCajonAtributos(capaObj));
+
+      ops.querySelector('input').addEventListener('input', (ev) => {
+        capaObj._f = parseFloat(ev.target.value) / 100;
+        aplicarOpacidad(capaObj);
       });
 
-      const btnTabla = capaEl.querySelector(`button[data-tabla]`);
-      btnTabla.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        abrirCajonAtributos(capaObj);
-      });
+      cont.appendChild(el);
+    });
 
-      cont.appendChild(capaEl);
+    const omitEl = $('omitidas');
+    if (omitEl) {
+      omitEl.innerHTML = vista.omitidas && vista.omitidas.length
+        ? `<details class="omit">
+             <summary>${vista.omitidas.length} capa(s) de la composición no se publican</summary>
+             <ul>${vista.omitidas.map((o) => `<li><strong>${esc(nombreCapa(o.nombre))}:</strong> ${esc(o.motivo)}</li>`).join('')}</ul>
+           </details>`
+        : '';
+    }
+  }
+
+  function initPanel() {
+    const panel = $('panel');
+    const abrir = $('btnPanelAbrir');
+    const setAbierto = (v) => {
+      panel.hidden = !v;
+      abrir.hidden = v;
+    };
+    $('btnPlegar').addEventListener('click', () => setAbierto(false));
+    abrir.addEventListener('click', () => setAbierto(true));
+    if (window.innerWidth <= 900) setAbierto(false);
+
+    panel.querySelectorAll('.pest-mini button').forEach((b) => {
+      b.addEventListener('click', () => {
+        panel.querySelectorAll('.pest-mini button').forEach((x) => x.classList.toggle('on', x === b));
+        const t = b.getAttribute('data-pt');
+        $('ptLeyenda').hidden = t !== 'leyenda';
+        $('ptCapas').hidden = t !== 'capas';
+        $('ptFondo').hidden = t !== 'fondo';
+      });
+    });
+
+    document.querySelectorAll('#bases .base-card').forEach((card) => {
+      card.addEventListener('click', (ev) => {
+        if (ev.target.tagName === 'INPUT') return; // el clic en la etiqueta ya se atendió
+        baseManual = true; // desde aquí se respeta el fondo que eligió la persona
+        setBaseMap(card.getAttribute('data-base'));
+      });
     });
   }
 
@@ -779,7 +977,7 @@
 
     if (!cajon || !tablaCont) return;
 
-    tit.textContent = capaObj.nombre;
+    tit.textContent = nombreCapa(capaObj.nombre);
     cajon.hidden = false;
     tablaCont.innerHTML = '<div style="padding:16px;color:var(--gris)">Cargando datos espaciales…</div>';
     filtro.value = '';
@@ -990,1072 +1188,323 @@
     window.fitImageZoomer = fitToScreen;
   }
 
-  // --- MOTOR DE ESQUEMAS CONCEPTUALES INTERACTIVOS (DOCTORADO UPC) ---
-  const ESQUEMAS_DATA = {
-    'esq-1': {
-      insignia: 'MARCO TEÓRICO · CAPÍTULO II',
-      titulo: 'Genealogía paradigmática de la interfaz urbano-rural',
-      subtitulo: 'Evolución histórica y epistemológica del concepto de interfaz: desde la visión dicotómica clásica hasta el enfoque hidro-logístico portuario contemporáneo.',
-      nodos: [
-        {
-          id: 'p1',
-          fase: '1900 – 1950',
-          nombre: 'Enfoque Dicótomo / Dualista',
-          desc: 'Frontera rígida y separación absoluta entre ciudad y campo.',
-          color: '#64748b',
-          icono: '🧱',
-          autores: 'Von Thünen (1826), Park & Burgess (1925), Christaller (1933)',
-          concepto: 'La ciudad y el campo se conciben como dos entidades cerradas, opuestas y mutuamente excluyentes. El borde es una línea divisoria física y administrativa sin espesor funcional ni gradación.',
-          indicadores: [
-            'Límites político-administrativos perimetrales cerrados',
-            'Renta de la tierra con gradiente concéntrico decreciente clásico',
-            'Inexistencia de dinámicas híbridas reconocidas normativamente'
-          ],
-          impacto: 'En Barranquilla histórica, este modelo se reflejó en la separación neta entre el casco fundacional y el suelo rústico de haciendas ganaderas antes del inicio del proceso de metropolización.',
-          mapasRel: ['fig-2']
-        },
-        {
-          id: 'p2',
-          fase: '1950 – 1980',
-          nombre: 'Enfoque Periurbano y Fringe Clásico',
-          desc: 'Zona de transición, dispersión suburbana y especulación de rentas.',
-          color: '#0284c7',
-          icono: '🏘️',
-          autores: 'Wehrwein (1942), Pryor (1968), Conzen (1960), Carter (1972)',
-          concepto: 'Aparición del concepto de "Urban Fringe". Se reconoce la franja como una corona de fricción donde compiten el uso agrícola residual y la invasión de usos urbanos, caracterizada por discontinuidad morfológica y parcelaciones.',
-          indicadores: [
-            'Tasas aceleradas de cambio de cobertura vegetal a suelo sellado',
-            'Aparición de parcelaciones residenciales y canteras periféricas',
-            'Invasión progresiva a lo largo de vías radiales e infraestructura'
-          ],
-          impacto: 'Explicó el crecimiento desbordado hacia el suroccidente y sur del AMB (Soledad y Malambo) durante las décadas de industrialización y migración regional.',
-          mapasRel: ['fig-3', 'atlas-3-5']
-        },
-        {
-          id: 'p3',
-          fase: '1980 – 2010',
-          nombre: 'Enfoque Sistémico y Ecología del Paisaje',
-          desc: 'Territorio híbrido, mosaico ecológico y flujos metabólicos.',
-          color: '#059669',
-          icono: '🌿',
-          autores: 'Forman & Godron (1986), Allen (2003), Tacoli (1998), Sieverts (1997)',
-          concepto: 'La interfaz deja de verse como borde residual para entenderse como un ecosistema híbrido dinámico ("Zwischenstadt" o ciudad intermedia) con intercambios bidireccionales de materia, energía, recursos hídricos y mano de obra.',
-          indicadores: [
-            'Fragmentación de hábitats y pérdida de corredores biológicos',
-            'Servicios ecosistémicos de aprovisionamiento y regulación hídrica',
-            'Movilidad pendular y mercados laborales periurbanos'
-          ],
-          impacto: 'Fundamental para comprender la extrema fragilidad de la Ciénaga de Mallorquín frente al avance constructivo del norte de Barranquilla y Puerto Colombia.',
-          mapasRel: ['fig-4', 'atlas-3-9']
-        },
-        {
-          id: 'p4',
-          fase: '2010 – 2026',
-          nombre: 'Interfaz Portuaria y Territorios Hidro-Logísticos',
-          desc: 'Articulación global-local, nodos portuarios y gradientes del Sur Global.',
-          color: '#d49a37',
-          icono: '🚢',
-          autores: 'Palmett (2026), Hoyle (1989), Ducruet (2006), Monios & Wilmsmeier (2012)',
-          concepto: 'Aporte central de la tesis doctoral: en ciudades portuarias, la interfaz urbano-rural está tensionada por cadenas globales de suministro, frentes de agua fluvio-marítimos y plataformas logísticas supramunicipales que exigen ordenamiento funcional.',
-          indicadores: [
-            'Presión de bodegas, patios de contenedores y zonas francas sobre suelo rural',
-            'Canal navegable del Río Magdalena y accesos marítimos',
-            'Conflictos de zonificación entre autoridades portuarias (DIMAR) y ambientales (CRA)'
-          ],
-          impacto: 'Base del Modelo IOTF-IUR implementado para el Corredor Portuario, Vía 40 y la Circunvalar de la Prosperidad en el Área Metropolitana de Barranquilla.',
-          mapasRel: ['fig-52', 'fig-56', 'fig-63']
-        }
-      ]
-    },
-    'esq-2': {
-      insignia: 'DIMENSIONES ANALÍTICAS · CAPÍTULO II',
-      titulo: 'Cuatro dimensiones constitutivas de la interfaz urbano-rural',
-      subtitulo: 'Estructura analítica tetradimensional para diagnosticar, delimitar y ordenar operativamente las franjas de borde en ciudades portuarias.',
-      nodos: [
-        {
-          id: 'd1',
-          fase: 'Dimensión 1',
-          nombre: 'Dimensión Biofísica y Ecosistémica',
-          desc: 'Estructura ecológica principal, cuencas hídricas y vulnerabilidad ambiental.',
-          color: '#059669',
-          icono: '🌊',
-          autores: 'Forman (1995), McHarg (1969), CRA Atlántico (2020)',
-          concepto: 'Soporte natural del territorio que condiciona y debe orientar la ocupación humana. Integra cuerpos de agua lénticos y lóticos, coberturas vegetales nativas, geología, pendientes y áreas de amortiguamiento ambiental estuarino.',
-          indicadores: [
-            'Cuenca Ciénaga de Mallorquín y dinámica mareal estuarina',
-            'Relictos de Bosque Seco Tropical (BST) y rondas hídricas de arroyos',
-            'Conflictos de uso por sobreutilización y pérdida de permeabilidad del suelo'
-          ],
-          impacto: 'Permite delimitar las áreas no urbanizables de protección estricta en el borde norte costero y la ribera del Río Magdalena.',
-          mapasRel: ['fig-4', 'atlas-3-9']
-        },
-        {
-          id: 'd2',
-          fase: 'Dimensión 2',
-          nombre: 'Dimensión Morfológica y Espacial',
-          desc: 'Forma urbana, gradientes de densidad, fragmentación y frentes de agua.',
-          color: '#0284c7',
-          icono: '📐',
-          autores: 'Pryor (1968), Conzen (1960), Indovina (1990)',
-          concepto: 'Patrones geométricos y físicos de ocupación del suelo. Mide la compacidad vs. dispersión (sprawl), la continuidad del parcelario y la conformación de frentes fluviales y marítimos bajo presión inmobiliaria.',
-          indicadores: [
-            'Huella urbana y evolución temporal de áreas selladas',
-            'Tamaño medio y geometría de predios en suelo de expansión',
-            'Efecto barrera de grandes infraestructuras viales metropolitanas'
-          ],
-          impacto: 'Revela la discontinuidad del borde entre Barranquilla y Puerto Colombia a lo largo del corredor universitario y la Vía al Mar.',
-          mapasRel: ['fig-3', 'atlas-3-4', 'atlas-3-8']
-        },
-        {
-          id: 'd3',
-          fase: 'Dimensión 3',
-          nombre: 'Dimensión Funcional, Productiva y Logística',
-          desc: 'Actividades económicas, corredores intermodales y suelo logístico-industrial.',
-          color: '#d49a37',
-          icono: '🏭',
-          autores: 'Hoyle (1989), Hesse (2008), Ducruet (2007)',
-          concepto: 'Flujos de personas, mercancías y energía que articulan el borde metropolitano con el puerto y el hinterland regional. Capacidad de soporte para operaciones logísticas e intermodales de gran escala.',
-          indicadores: [
-            'Localización de zonas francas, bodegas y terminales de carga',
-            'Capacidad y aforos vehiculares sobre la Circunvalar de la Prosperidad',
-            'Aptitud agrológica del suelo según estudios del IGAC'
-          ],
-          impacto: 'Determina la delimitación de las UFP 1 (Unidades Logístico-Portuarias) en proximidad al canal navegable y autopistas troncales.',
-          mapasRel: ['atlas-3-10', 'fig-52', 'comp-articulador']
-        },
-        {
-          id: 'd4',
-          fase: 'Dimensión 4',
-          nombre: 'Dimensión Socio-Institucional y de Gobernanza',
-          desc: 'Competencias jurisdiccionales, vacíos normativos y gobernanza metropolitana.',
-          color: '#7c3aed',
-          icono: '⚖️',
-          autores: 'Allen (2003), Brenner (2004), AMB (2020)',
-          concepto: 'Marco normativo, instrumentos de planificación (POT/PMOT) y capacidad institucional de coordinación supramunicipal frente a presiones inmobiliarias y descoordinación entre los municipios.',
-          indicadores: [
-            'Desfase normativo entre los POT de los 5 municipios metropolitanos',
-            'Superposición de autoridades: AMB, CRA, DIMAR y Gobernación',
-            'Vulnerabilidad social y acceso a equipamientos básicos en la periferia'
-          ],
-          impacto: 'Demuestra la urgencia de adoptar el Modelo IOTF-IUR como norma vinculante de superior jerarquía en el AMB.',
-          mapasRel: ['fig-2', 'tabla-74', 'comp-normativo']
-        }
-      ]
-    },
-    'esq-3': {
-      insignia: 'MODELO MORFOLÓGICO · CAPÍTULO II',
-      titulo: 'Modelo estructural-funcional de Pryor adaptado al Sur Global',
-      subtitulo: 'Reconfiguración del gradiente de borde periurbano para metrópolis portuarias latinoamericanas con alta polarización socio-espacial.',
-      nodos: [
-        {
-          id: 'z1',
-          fase: 'Zona 1',
-          nombre: 'Núcleo Metropolitano Consolidado (Urban Core)',
-          desc: 'Máxima densidad, servicios completos y actividades financieras.',
-          color: '#0f172a',
-          icono: '🏙️',
-          autores: 'Pryor (1968), Adaptación Palmett (2026)',
-          concepto: 'Centro de gravedad económico y residencial de la metrópoli. Presenta consolidación constructiva total, concentración de empleo terciario y acceso directo al puerto histórico.',
-          indicadores: [
-            'Densidades superiores a 120 hab/ha',
-            'Cobertura de servicios públicos domiciliarios > 98%',
-            'Suelo urbano consolidado sin vacíos de gran escala'
-          ],
-          impacto: 'Corresponde a las localidades Norte-Centro Histórico y Riomar de Barranquilla.',
-          mapasRel: ['fig-2', 'atlas-3-4']
-        },
-        {
-          id: 'z2',
-          fase: 'Zona 2',
-          nombre: 'Franja Urbana Interna (Inner Urban Fringe)',
-          desc: 'Transición inmediata, renovación urbana y choque de densidades.',
-          color: '#0284c7',
-          icono: '🏗️',
-          autores: 'Pryor (1968), Wehrwein (1942)',
-          concepto: 'Espacio de contacto directo entre la ciudad consolidada y las zonas de crecimiento reciente. Coexisten procesos de densificación vertical con asentamientos populares consolidados.',
-          indicadores: [
-            'Suelo urbano no consolidado y áreas de cesión',
-            'Cambios de uso de vivienda a comercio y talleres industriales',
-            'Presión sobre corredores viales primarios'
-          ],
-          impacto: 'Franja de contacto en Soledad norte y borde de la Vía 40.',
-          mapasRel: ['fig-3', 'atlas-3-8']
-        },
-        {
-          id: 'z3',
-          fase: 'Zona 3',
-          nombre: 'Franja Urbana Externa (Outer Urban Fringe)',
-          desc: 'Expansión formal, condominios campestres y plataformas de carga.',
-          color: '#d49a37',
-          icono: '🚛',
-          autores: 'Pryor (1968), Follmann (2015)',
-          concepto: 'Zona de mayor intensidad de transformación territorial. En ciudades portuarias, este sector aloja centros de distribución logística, zonas francas y urbanizaciones cerradas de estrato alto.',
-          indicadores: [
-            'Predios de gran extensión con licencias de parcelación',
-            'Alta dependencia del vehículo particular y transporte pesado',
-            'Transformación acelerada de fincas rústicas'
-          ],
-          impacto: 'Corredor Puerto Colombia - Galapa y eje de la Circunvalar de la Prosperidad.',
-          mapasRel: ['fig-52', 'fig-62']
-        },
-        {
-          id: 'z4',
-          fase: 'Zona 4',
-          nombre: 'Franja Rural Interna (Inner Rural Fringe)',
-          desc: 'Agricultura residual, minería de materiales y asentamientos dispersos.',
-          color: '#16a34a',
-          icono: '🚜',
-          autores: 'Pryor (1968), Bryant et al. (1982)',
-          concepto: 'Predominio de usos agrícolas y pecuarios tradicionales, pero sometidos a alta incertidumbre por expectativas de especulación inmobiliaria y concesiones viales.',
-          indicadores: [
-            'Capacidad agrológica agredida por canteras de calizas y agregados',
-            'Dispersión habitacional y déficit de saneamiento básico',
-            'Supervivencia de economías campesinas locales'
-          ],
-          impacto: 'Sector rural de Galapa y Malambo interior.',
-          mapasRel: ['atlas-3-10', 'fig-55']
-        },
-        {
-          id: 'z5',
-          fase: 'Zona 5',
-          nombre: 'Matriz Rural Profunda (Hinterland Ecológico-Regional)',
-          desc: 'Conservación ambiental, humedales y conectividad regional.',
-          color: '#15803d',
-          icono: '🌳',
-          autores: 'Forman (1995), Palmett (2026)',
-          concepto: 'Matriz biofísica que suministra servicios ecosistémicos de escala regional. Actúa como reservorio de biodiversidad y amortiguador climático ante eventos extremos.',
-          indicadores: [
-            'Complejo cenagoso y llanuras de inundación del Magdalena',
-            'Suelo rural de protección forestal y recarga de acuíferos',
-            'Mínima presión de impermeabilización'
-          ],
-          impacto: 'Ciénagas de Mallorquín, Bahía y zona sur del departamento del Atlántico.',
-          mapasRel: ['fig-4', 'atlas-3-9']
-        }
-      ]
-    },
-    'esq-4': {
-      insignia: 'DINÁMICAS DE TRANSFORMACIÓN · CAPÍTULO II',
-      titulo: 'Tres vectores de periurbanización contemporánea (Follmann)',
-      subtitulo: 'Fuerzas conductoras que moldean el territorio periférico en metrópolis del Sur Global según Alexander Follmann (2015).',
-      nodos: [
-        {
-          id: 'v1',
-          fase: 'Vector 1',
-          nombre: 'Expansión Residencial Dual (Formal e Informal)',
-          desc: 'Gated communities de élite frente a hábitats autoconstruidos populares.',
-          color: '#0284c7',
-          icono: '🏘️',
-          autores: 'Follmann (2015), Borsdorf (2003), Sabatini (2001)',
-          concepto: 'Polarización socioespacial aguda en el borde: condominios cerrados con áreas recreativas privadas y colegios coexisten contiguos a asentamientos sin títulos ni redes hidrosanitarias completas.',
-          indicadores: [
-            'Segregación espacial y barreras de control de acceso físico',
-            'Precios del m² de suelo con brechas superiores al 800%',
-            'Asentamientos en zonas de alto riesgo de inundación o remoción en masa'
-          ],
-          impacto: 'Contraste visible en Puerto Colombia (Altos de Pradomar / Sabanilla) frente a sectores vulnerables de Soledad y Malambo.',
-          mapasRel: ['atlas-3-4', 'fig-53']
-        },
-        {
-          id: 'v2',
-          fase: 'Vector 2',
-          nombre: 'Implantación Logística, Portuaria e Industrial',
-          desc: 'Plataformas intermodales, bodegaje masivo y zonas francas.',
-          color: '#d49a37',
-          icono: '📦',
-          autores: 'Follmann (2015), Hesse (2008), Cidell (2010)',
-          concepto: 'Colonización del suelo rural plano y económico por infraestructuras de apoyo a la globalización. El borde periurbano se transforma en el corazón logístico de la región metropolitana.',
-          indicadores: [
-            'Hectáreas de suelo rústico convertidas a polígonos industriales',
-            'Flujos continuos de transporte de carga pesada',
-            'Dependencia directa de la conectividad fluvio-marítima y accesos portuarios'
-          ],
-          impacto: 'Concentración de parques empresariales sobre la Circunvalar de la Prosperidad y el Corredor Portuario de Barranquilla.',
-          mapasRel: ['fig-52', 'fig-60', 'comp-articulador']
-        },
-        {
-          id: 'v3',
-          fase: 'Vector 3',
-          nombre: 'Degradación Agraria y Presión Ecosistémica',
-          desc: 'Pérdida de soberanía alimentaria, parcelaciones rústicas y erosión.',
-          color: '#dc2626',
-          icono: '📉',
-          autores: 'Follmann (2015), Allen (2003), CRA (2020)',
-          concepto: 'Asfixia progresiva de la producción campesina debido a la subida de avalúos, contaminación hídrica, venta de parcelas para ocio de fin de semana y extracción minera no regulada.',
-          indicadores: [
-            'Disminución del área cultivada en cultivos tradicionales de pancoger',
-            'Sobreexplotación de canteras para materiales de construcción urbana',
-            'Disrupción hidrológica de caños y ciénagas por rellenos ilegales'
-          ],
-          impacto: 'Deterioro de la capacidad agrológica documentado por el IGAC en los municipios metropolitanos.',
-          mapasRel: ['atlas-3-9', 'atlas-3-10']
-        }
-      ]
-    },
-    'esq-5': {
-      insignia: 'ARQUITECTURA DE LA INVESTIGACIÓN · CAPÍTULO I',
-      titulo: 'Trazabilidad epistemológica y articulación metodológica',
-      subtitulo: 'Ruta metodológica en cinco fases sucesivas desde la fundamentación teórica hasta la propuesta operativa de planificación territorial.',
-      nodos: [
-        {
-          id: 'f1',
-          fase: 'Fase I',
-          nombre: 'Fundamentación Teórico-Epistemológica',
-          desc: 'Revisión crítica de la literatura de franjas de interfaz en ciudades portuarias.',
-          color: '#3b82f6',
-          icono: '📚',
-          autores: 'Capítulo I y II de la Tesis',
-          concepto: 'Construcción del marco teórico interdisciplinario articulando el urbanismo, la ecología del paisaje, la geografía portuaria y el derecho territorial latinoamericano.',
-          indicadores: [
-            'Revisión sistemática de más de 200 fuentes bibliográficas internacionales',
-            'Formulación de hipótesis y preguntas de investigación doctoral',
-            'Definición del marco conceptual de 4 dimensiones constitutivas'
-          ],
-          impacto: 'Estableció las bases conceptuales para diferenciar la interfaz portuaria de un periurbano mediterráneo o interior tradicional.',
-          mapasRel: ['esq-1', 'esq-2', 'esq-3']
-        },
-        {
-          id: 'f2',
-          fase: 'Fase II',
-          nombre: 'Benchmarking y Análisis Comparado Internacional',
-          desc: 'Estudio de 4 metrópolis portuarias: Barranquilla, Veracruz, Santos y Valparaíso.',
-          color: '#0284c7',
-          icono: '🌎',
-          autores: 'Capítulo IV de la Tesis',
-          concepto: 'Evaluación comparativa multivariable entre ciudades portuarias que combinan dinámicas fluviales y marítimas para identificar patrones comunes de tensión urbano-rural.',
-          indicadores: [
-            'Matriz comparativa de gobernanza portuaria y escala metropolitana',
-            'Tráfico TEUs y longitud de interfaces logísticas',
-            'Vulnerabilidad ambiental y modelos de expansión periurbana'
-          ],
-          impacto: 'Permitió validar que las patologías de borde observadas en Barranquilla responden a dinámicas estructurales de las ciudades puerto del continente.',
-          mapasRel: ['fig-1', 'fig-40', 'fig-43', 'fig-46']
-        },
-        {
-          id: 'f3',
-          fase: 'Fase III',
-          nombre: 'Diagnóstico Territorial Multidimensional del AMB',
-          desc: 'Geoprocesamiento en QGIS, armonización de planes POT/PMOT y cruce agrológico IGAC/CRA.',
-          color: '#10b981',
-          icono: '🔬',
-          autores: 'Capítulo III de la Tesis',
-          concepto: 'Procesamiento espacial de más de 43 capas vectoriales del AMB para caracterizar la realidad empírica del borde a escala 1:10.000 y 1:25.000.',
-          indicadores: [
-            'Armonización de capas de uso del suelo de 5 municipios metropolitanos',
-            'Evaluación agrológica semidetallada IGAC (Clases agrológicas IV a VII)',
-            'Mapa de conflictos de uso del suelo CRA'
-          ],
-          impacto: 'Producción del Atlas Cartográfico de la Interfaz con 13 láminas de alta precisión espacial.',
-          mapasRel: ['fig-3', 'fig-4', 'atlas-3-8', 'atlas-3-9', 'atlas-3-10']
-        },
-        {
-          id: 'f4',
-          fase: 'Fase IV',
-          nombre: 'Modelo IOTF-IUR y Delimitación Funcional',
-          desc: 'Formulación del Instrumento de Ordenamiento y delimitación de las UFP.',
-          color: '#f59e0b',
-          icono: '🧭',
-          autores: 'Capítulo V de la Tesis',
-          concepto: 'Superación del límite rígido mediante una delimitación funcional basada en variables continuas y zonificación operativa en Unidades Funcionales de Planificación (UFP 1 a 4).',
-          indicadores: [
-            'Algoritmo de delimitación funcional por gradientes territoriales',
-            'Fichas técnicas normativas para UFP logísticas y residenciales',
-            'Límites de amortiguamiento y protección ecosistémica'
-          ],
-          impacto: 'Entrega una cartografía propositiva lista para ser incorporada en la revisión del PMOT del AMB.',
-          mapasRel: ['fig-52', 'fig-56', 'tabla-74']
-        },
-        {
-          id: 'f5',
-          fase: 'Fase V',
-          nombre: 'Propuesta de Gobernanza e Instrumentos de Gestión',
-          desc: 'Sistema multinodal, lineamientos de política pública y transferencia metodológica.',
-          color: '#8b5cf6',
-          icono: '🏛️',
-          autores: 'Capítulo V y Conclusiones',
-          concepto: 'Diseño institucional de una mesa permanente de gobernanza territorial y un modelo de articulación intermodal centrado en 4 nodos y un nuevo puerto interior.',
-          indicadores: [
-            'Matriz de competencias institucionales cruzadas',
-            'Esquema multinodal sobre la Circunvalar de la Prosperidad',
-            'Directrices para instrumentos de captura de plusvalías y compensación'
-          ],
-          impacto: 'Hoja de ruta concreta para que los tomadores de decisiones armonicen la expansión económica portuaria con la preservación ambiental.',
-          mapasRel: ['fig-57', 'fig-61', 'fig-63']
-        }
-      ]
-    },
-    'esq-6-1': {
-      insignia: 'SÍNTESIS DOCTORAL · CAPÍTULO V',
-      titulo: 'Modelo Metodológico Integral IOTF-IUR',
-      subtitulo: 'Instrumento de Ordenamiento Territorial Funcional para la Interfaz Urbano-Rural: el aporte troncal de la investigación doctoral.',
-      nodos: [
-        {
-          id: 'c1',
-          fase: 'Pilar A',
-          nombre: 'Delimitación Funcional y Criterios Multiescalares',
-          desc: 'Definición operativa de la franja superando límites político-administrativos.',
-          color: '#0284c7',
-          icono: '📐',
-          autores: 'Aida Palmett (2026), Tesis Doctoral UPC',
-          concepto: 'Reemplaza el perímetro urbano estático por una franja de espesor variable definida mediante la superposición multicriterio de discontinuidades morfológicas, cuencas hídricas y áreas de influencia vial.',
-          indicadores: [
-            'Polígono funcional de la interfaz metropolitana del AMB',
-            'Buffer de conectividad multimodal sobre vías 4G',
-            'Envolvente de amortiguamiento del ecosistema de Mallorquín'
-          ],
-          impacto: 'Establece con precisión milimétrica la geografía de intervención del instrumento.',
-          mapasRel: ['fig-3', 'fig-65', 'tabla-74']
-        },
-        {
-          id: 'c2',
-          fase: 'Pilar B',
-          nombre: 'Zonificación en Unidades Funcionales (UFPs 1 al 4)',
-          desc: 'Régimen de usos compatibles, condicionados y prohibidos.',
-          color: '#d49a37',
-          icono: '📑',
-          autores: 'Aida Palmett (2026)',
-          concepto: 'Cuatro categorías operativas que traducen el diagnóstico en reglas claras de aprovechamiento: UFP 1 (Logístico-Portuaria), UFP 2 (Residencial de Expansión), UFP 3 (Transición Ambiental) y UFP 4 (Protección Ecosistémica).',
-          indicadores: [
-            'Índices de ocupación y construcción diferenciados',
-            'Compatibilidad con la capacidad agrológica del suelo (IGAC)',
-            'Obligación de cesiones para corredores de conectividad verde'
-          ],
-          impacto: 'Resuelve el caos de incompatibilidad entre industrias pesadas y viviendas periurbanas.',
-          mapasRel: ['fig-52', 'fig-56', 'comp-normativo']
-        },
-        {
-          id: 'c3',
-          fase: 'Pilar C',
-          nombre: 'Sistema Multinodal y Corredores de Integración',
-          desc: '4 Nodos estratégicos integrados por la Circunvalar y el Nuevo Puerto Interior.',
-          color: '#059669',
-          icono: '⚡',
-          autores: 'Aida Palmett (2026)',
-          concepto: 'Estructura reticular que descentraliza las actividades del núcleo metropolitano conectando nodos especializados: Nodo 1 (Ecoturístico), Nodo 2 (Agroindustrial), Nodo 3 (Cultural) y Nodo 4 (Industrial-Aeronáutico).',
-          indicadores: [
-            'Localización del Nuevo Puerto Interior sobre el eje platanal',
-            'Capacidad de intercambio modal de carga y pasajeros',
-            'Reducción de congestión vehicular en el casco central de Barranquilla'
-          ],
-          impacto: 'Convierte la Circunvalar de la Prosperidad en el eje vertebrador del futuro metropolitano.',
-          mapasRel: ['fig-57', 'fig-58', 'fig-59', 'fig-60', 'fig-61', 'fig-62', 'fig-63']
-        },
-        {
-          id: 'c4',
-          fase: 'Pilar D',
-          nombre: 'Gobernanza Supramunicipal y Monitoreo Territorial',
-          desc: 'Mecanismo institucional vinculante para los 5 municipios y entes de control.',
-          color: '#7c3aed',
-          icono: '🏛️',
-          autores: 'Aida Palmett (2026)',
-          concepto: 'Estructura de gestión participativa y técnica liderada por el AMB, con participación de la CRA, DIMAR y secretarías de planeación para asegurar la aplicación estricta del modelo.',
-          indicadores: [
-            'Mesa Técnica Permanente de la Interfaz Portuaria',
-            'Geovisor GeoInterfaz como Observatorio Territorial Abierto',
-            'Banco metropolitano de suelo e instrumentos de captura de plusvalías'
-          ],
-          impacto: 'Garantiza la sostenibilidad y permanencia de las directrices de la tesis a largo plazo.',
-          mapasRel: ['tabla-74', 'comp-normativo']
-        }
-      ]
-    }
-  };
-
-  function renderEsquemaInteractivo(item) {
-    const visEsquema = document.getElementById('visEsquema');
-    if (!visEsquema) return;
-
-    const data = ESQUEMAS_DATA[item.id] || {
-      insignia: 'ESQUEMA CONCEPTUAL · TESIS DOCTORAL',
-      titulo: item.titulo,
-      subtitulo: item.nota || 'Esquema metodológico de la investigación doctoral.',
-      nodos: []
-    };
-
-    let nodosHtml = '';
-    (data.nodos || []).forEach((nodo, idx) => {
-      nodosHtml += `
-        <div class="esq-nodo-card ${idx === 0 ? 'activo' : ''}" data-idx="${idx}" style="--c-nodo:${nodo.color}">
-          <div class="esq-nodo-icono">${nodo.icono || '📌'}</div>
-          <div class="esq-nodo-info">
-            <span class="esq-nodo-fase">${nodo.fase || 'FASE'}</span>
-            <h4>${nodo.nombre}</h4>
-            <p>${nodo.desc || ''}</p>
-          </div>
-          <div class="esq-nodo-flecha">→</div>
-        </div>
-      `;
-    });
-
-    visEsquema.innerHTML = `
-      <div class="esq-contenedor">
-        <div class="esq-cabecera">
-          <div class="esq-insignia">✨ ${data.insignia}</div>
-          <h2>${item.etiqueta}: ${data.titulo}</h2>
-          <p>${data.subtitulo}</p>
-        </div>
-        <div class="esq-layout">
-          <div class="esq-nodos-col">
-            <div class="esq-instruccion">🔍 Seleccione o pase el mouse sobre un componente para explorar su fundamentación:</div>
-            <div class="esq-nodos-lista" id="esqNodosLista">
-              ${nodosHtml}
-            </div>
-          </div>
-          <div class="esq-detalle-col" id="esqDetalleCol"></div>
-        </div>
-      </div>
-    `;
-
-    function actualizarDetalle(idx) {
-      const nodo = (data.nodos || [])[idx];
-      if (!nodo) return;
-
-      const detCol = document.getElementById('esqDetalleCol');
-      if (!detCol) return;
-
-      const indHtml = (nodo.indicadores || [])
-        .map((ind) => `<li><strong>•</strong> ${ind}</li>`)
-        .join('');
-
-      let ctaHtml = '';
-      if (nodo.mapasRel && nodo.mapasRel.length) {
-        ctaHtml = nodo.mapasRel
-          .map((mid) => {
-            const m = ITEMS_MAP.get(mid);
-            if (!m) return '';
-            return `<a href="#/${m.id}" class="btn chico" style="text-decoration:none">🗺️ Ver ${m.etiqueta}: ${m.titulo.substring(0, 30)}…</a>`;
-          })
-          .filter(Boolean)
-          .join('');
-      }
-
-      const hasImagen = Boolean((item.lamina && item.lamina.src) || (item.imagenes && item.imagenes.length));
-      if (hasImagen) {
-        ctaHtml += `<button class="btn chico" id="btnEsqVerImagen" title="Ver lámina/gráfico original de alta definición">🖼️ Gráfico original</button>`;
-      }
-
-      detCol.innerHTML = `
-        <div class="esq-det-cab">
-          <div class="esq-det-ico" style="background:${nodo.color}18;color:${nodo.color}">${nodo.icono || '📌'}</div>
-          <div class="esq-det-tit-wrap">
-            <span style="font-size:11px;font-weight:700;color:${nodo.color};letter-spacing:.05em">${nodo.fase}</span>
-            <h3>${nodo.nombre}</h3>
-            ${nodo.autores ? `<div class="esq-det-autores"><strong>Referencia:</strong> ${nodo.autores}</div>` : ''}
-          </div>
-        </div>
-
-        <div class="esq-det-sec-tit">Definición conceptual y marco doctoral</div>
-        <div class="esq-det-concepto">${nodo.concepto}</div>
-
-        ${nodo.indicadores && nodo.indicadores.length ? `
-          <div class="esq-det-sec-tit">Variables e indicadores analizados</div>
-          <ul class="esq-det-ind-lista">${indHtml}</ul>
-        ` : ''}
-
-        ${nodo.impacto ? `
-          <div class="esq-det-impacto">
-            <strong>Impacto en el AMB / Ciudades Portuarias:</strong><br>
-            ${nodo.impacto}
-          </div>
-        ` : ''}
-
-        ${ctaHtml ? `<div class="esq-det-cta">${ctaHtml}</div>` : ''}
-      `;
-
-      document.getElementById('btnEsqVerImagen')?.addEventListener('click', () => {
-        switchLienzoView('imagen');
-      });
-    }
-
-    // Inicializar primer nodo
-    actualizarDetalle(0);
-
-    const cards = visEsquema.querySelectorAll('.esq-nodo-card');
-    cards.forEach((card) => {
-      const idx = parseInt(card.getAttribute('data-idx'), 10);
-      const activar = () => {
-        cards.forEach((c) => c.classList.remove('activo'));
-        card.classList.add('activo');
-        actualizarDetalle(idx);
-      };
-      card.addEventListener('mouseenter', activar);
-      card.addEventListener('click', activar);
-    });
-  }
-
-  // --- CAMBIO DE VISTA DEL LIENZO (MAPA / LÁMINA / DOCUMENTO / ESQUEMA) ---
+  // ------------------------------------------ cambio de vista del lienzo
   function switchLienzoView(mode) {
-    const visMapa = document.getElementById('visMapa');
-    const visImagen = document.getElementById('visImagen');
-    const visDoc = document.getElementById('visDoc');
-    const visEsquema = document.getElementById('visEsquema');
-    const segButtons = document.querySelectorAll('#cabecera .seg button');
-
-    visMapa.hidden = mode !== 'mapa';
-    visImagen.hidden = mode !== 'imagen';
-    visDoc.hidden = mode !== 'doc';
-    if (visEsquema) visEsquema.hidden = mode !== 'esquema';
-
-    segButtons.forEach((b) => {
+    const dual = mode === 'dual';
+    document.querySelector('#pgElemento .lienzo').classList.toggle('dual', dual);
+    $('visMapa').hidden = !(mode === 'mapa' || dual);
+    $('visImagen').hidden = !(mode === 'imagen' || dual);
+    $('visDoc').hidden = mode !== 'doc';
+    document.querySelectorAll('#cabecera .seg button').forEach((b) => {
       b.classList.toggle('on', b.getAttribute('data-v') === mode);
     });
-
-    if (mode === 'mapa' && map && mapReady) {
-      setTimeout(() => {
-        map.resize();
-        if (currentVista) ajustarEncuadreVista(currentVista);
-      }, 60);
-      setTimeout(() => {
-        map.resize();
-        if (currentVista) ajustarEncuadreVista(currentVista);
-      }, 200);
-    } else if (mode === 'imagen' && window.fitImageZoomer) {
-      setTimeout(() => window.fitImageZoomer(), 60);
+    if (dual) { $('panel').hidden = true; $('btnPanelAbrir').hidden = false; }
+    if (!$('visMapa').hidden && map && mapReady) {
+      setTimeout(() => { map.resize(); if (currentVista) ajustarEncuadreVista(currentVista, true); }, 80);
     }
+    if (!$('visImagen').hidden && window.fitImageZoomer) setTimeout(() => window.fitImageZoomer(), 80);
   }
 
-  // --- RENDERIZADO DEL DETALLE DE UN ELEMENTO (#pgElemento) ---
+  // ------------------------------------------------------ ficha del elemento
+  function renderFicha(item) {
+    const f = $('ficha');
+    if (!f) return;
+    const vista = item.vista && VISTAS[item.vista];
+    const ruta = (item.ruta || []).map((r) => `<li>${esc(r)}</li>`).join('');
+
+    const rel = [];
+    if (item.rel && ITEMS_MAP.get(item.rel)) rel.push(ITEMS_MAP.get(item.rel));
+    (CATALOGO.items || []).forEach((o) => {
+      if (o.id !== item.id && o.seccion === item.seccion && !rel.includes(o) && rel.length < 8) rel.push(o);
+    });
+    const relHtml = rel
+      .map((o) => `<a class="rel" href="#/${o.id}"><i class="pt t-${o.tipo}"></i><b>${esc(etiquetaCorta(o))}</b><span>${esc(o.titulo)}</span></a>`)
+      .join('');
+
+    let tecnico = '';
+    if (vista) {
+      tecnico += `
+        <h4>Datos del mapa</h4>
+        <dl>
+          <dt>Proyecto QGIS</dt><dd><code>${esc(vista.proyecto || '')}</code></dd>
+          ${vista.layout ? `<dt>Composición</dt><dd>${esc(vista.layout)}</dd>` : ''}
+          <dt>Sistema de referencia</dt><dd>${esc(vista.crs_mapa || '')}</dd>
+          <dt>Capas publicadas</dt><dd>${vista.capas.length}</dd>
+        </dl>`;
+    }
+    if (item.lamina) {
+      tecnico += `
+        <h4>Lámina del atlas</h4>
+        <dl>
+          <dt>Archivo de origen</dt><dd><code>${esc(item.lamina.origen || '')}</code></dd>
+          ${item.lamina.pdf ? `<dt>Versión PDF</dt><dd><code>${esc(item.lamina.pdf)}</code></dd>` : ''}
+        </dl>`;
+    }
+
+    f.innerHTML = `
+      <div class="ficha-cab">
+        <strong>Ficha</strong>
+        <button class="ico-btn" id="fichaCerrar" aria-label="Cerrar ficha">${ICO.cerrar}</button>
+      </div>
+      <div class="ficha-cuerpo">
+        <div class="ficha-eti"><i class="pt t-${item.tipo}"></i>${esc(item.etiqueta)}</div>
+        <h3>${esc(item.titulo)}</h3>
+        ${item.nota ? `<h4>Nota y fuente</h4><p class="ficha-nota">${esc(item.nota)}</p>` : '<p class="ayuda">Este elemento no tiene nota en el manuscrito.</p>'}
+        <h4>Ubicación en la tesis</h4>
+        <ol class="ficha-ruta">${ruta}</ol>
+        ${tecnico}
+        ${relHtml ? `<h4>En el mismo apartado</h4><div class="rels">${relHtml}</div>` : ''}
+        <h4>Enlace permanente</h4>
+        <div class="url">${esc(enlaceDe(item))}</div>
+        <button class="btn" id="fichaCopiar">${ICO.copiar} Copiar enlace</button>
+      </div>
+    `;
+    $('fichaCerrar').addEventListener('click', () => { f.hidden = true; });
+    $('fichaCopiar').addEventListener('click', () => copiar(enlaceDe(item), 'Enlace copiado'));
+  }
+
+  // -------------------------------------------- detalle de un elemento
   async function showElement(id) {
     const item = ITEMS_MAP.get(id);
     if (!item) {
-      console.warn('Elemento no encontrado en catálogo:', id);
+      console.warn('Elemento no encontrado en el catálogo:', id);
       navigate('#/');
       return;
     }
     currentItem = item;
-
-    // Activar inmediatamente la página del elemento
     showPage('pgElemento');
-    document.title = `${item.etiqueta}: ${item.titulo} · Geovisor Tesis`;
+    document.title = `${item.etiqueta}: ${item.titulo} · GeoInterfaz`;
+    marcarEnIndice(id);
 
-    // Resaltar en el árbol
-    document.querySelectorAll('#arbol .it').forEach((el) => {
-      el.classList.toggle('on', el.getAttribute('data-id') === id);
-    });
-
-    // Desplegar el <details> del capítulo correspondiente
-    const activeLink = document.querySelector(`#arbol .it[data-id="${id}"]`);
-    if (activeLink) {
-      const cap = activeLink.closest('details.cap');
-      if (cap) cap.open = true;
-      activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
-
-    // Cabecera del elemento
-    const cab = document.getElementById('cabecera');
-    const migaTxt = item.ruta && item.ruta.length ? item.ruta.join(' › ') : 'Tesis doctoral';
-
-    // Determinar vistas disponibles para el conmutador segmentado (.seg)
-    const isEsquema = item.clase === 'esquema' || item.tipo === 'esquema' || Boolean(ESQUEMAS_DATA[item.id]);
-    const hasMapa = Boolean(item.vista);
+    const hasMapa = Boolean(item.vista && VISTAS[item.vista]);
     const hasLamina = Boolean(item.lamina && item.lamina.src);
     const hasFiguraImg = Boolean(item.imagenes && item.imagenes.length);
     const hasImagen = hasLamina || hasFiguraImg;
-    const hasDoc = Boolean(item.tabla || hasFiguraImg);
+    const hasTabla = Boolean(item.tabla);
 
-    let segHtml = '';
-    if (isEsquema) {
-      segHtml = `
-        <div class="seg" role="group" aria-label="Cambiar vista">
-          <button data-v="esquema" class="on">🧠 Esquema conceptual interactivo</button>
-          ${hasImagen ? `<button data-v="imagen">🖼️ Gráfico original (Alta resolución)</button>` : ''}
-        </div>
-      `;
-    } else if (hasMapa && hasImagen) {
-      segHtml = `
-        <div class="seg" role="group" aria-label="Cambiar vista">
-          <button data-v="mapa" class="on">🗺️ Mapa interactivo</button>
-          <button data-v="imagen">${hasLamina ? '🖼️ Lámina de atlas' : '🖼️ Gráfico de figura'}</button>
-        </div>
-      `;
-    } else if (hasMapa && item.clase === 'tabla') {
-      segHtml = `
-        <div class="seg" role="group" aria-label="Cambiar vista">
-          <button data-v="mapa" class="on">🗺️ Mapa asociado</button>
-          <button data-v="doc">📊 Tabla de tesis</button>
-        </div>
-      `;
-    } else if (hasDoc && hasLamina) {
-      segHtml = `
-        <div class="seg" role="group" aria-label="Cambiar vista">
-          <button data-v="imagen" class="on">🖼️ Lámina alta resolución</button>
-          <button data-v="doc">📄 Documento</button>
-        </div>
-      `;
-    }
+    const modos = [];
+    if (hasMapa) modos.push(['mapa', ICO.mapa, 'Mapa interactivo']);
+    if (hasImagen) modos.push(['imagen', ICO.imagen, hasLamina ? 'Lámina' : 'Figura']);
+    if (hasMapa && hasImagen) modos.push(['dual', ICO.dual, 'Comparar']);
+    if (hasTabla) modos.push(['doc', ICO.tabla, 'Tabla']);
+    const segHtml = modos.length > 1
+      ? `<div class="seg" role="group" aria-label="Cambiar vista">${modos.map((m) => `<button data-v="${m[0]}">${m[1]}<span>${m[2]}</span></button>`).join('')}</div>`
+      : '';
 
-    let relBtn = '';
-    if (item.rel) {
-      const relItem = ITEMS_MAP.get(item.rel);
-      if (relItem) {
-        relBtn = `<a href="#/${relItem.id}" class="btn chico" title="Ver elemento complementario">🔗 Ver ${relItem.etiqueta}</a>`;
-      }
-    }
+    const cap = capDe(item);
+    const miga = [cap ? `Cap. ${cap.num} · ${capNombre(cap)}` : 'Tesis doctoral'];
+    if (item.ruta && item.ruta.length > 1) miga.push(item.ruta[item.ruta.length - 1]);
 
-    let notaHtml = '';
-    if (item.nota) {
-      const esLarga = item.nota.length > 220;
-      notaHtml = `
-        <div class="nota${esLarga ? ' corta' : ''}" id="notaTxt">
-          ${item.nota}
-        </div>
-        ${esLarga ? '<button class="mas" id="btnMasNota">Ver nota completa ▾</button>' : ''}
-      `;
-    }
+    const pos = ORDEN.indexOf(id);
+    const ant = pos > 0 ? ITEMS_MAP.get(ORDEN[pos - 1]) : null;
+    const sig = pos >= 0 && pos < ORDEN.length - 1 ? ITEMS_MAP.get(ORDEN[pos + 1]) : null;
 
-    cab.innerHTML = `
-      <div class="miga">${migaTxt}</div>
-      <div class="fila">
-        <h1><span class="eti">${item.etiqueta}:</span> ${item.titulo}</h1>
-        <div class="acciones">
-          ${segHtml}
-          ${hasMapa ? '<button class="btn chico" id="btnAjustarEncuadre" title="Restablecer encuadre y zoom original de la investigación">🎯 Encuadre original</button>' : ''}
-          ${relBtn}
-          <button class="btn pri" id="btnCompartir">📤 Compartir / Citar</button>
+    const relItem = item.rel ? ITEMS_MAP.get(item.rel) : null;
+
+    $('cabecera').innerHTML = `
+      <div class="cab-sup">
+        <div class="miga" title="${esc((item.ruta || []).join(' › '))}">${miga.map(esc).join('<i>›</i>')}</div>
+        <div class="paso">
+          ${ant ? `<a href="#/${ant.id}" title="${esc(ant.etiqueta + ': ' + ant.titulo)}">${ICO.izq}<span>${esc(etiquetaCorta(ant))}</span></a>` : ''}
+          <span class="paso-n">${pos + 1} / ${ORDEN.length}</span>
+          ${sig ? `<a href="#/${sig.id}" title="${esc(sig.etiqueta + ': ' + sig.titulo)}"><span>${esc(etiquetaCorta(sig))}</span>${ICO.der}</a>` : ''}
         </div>
       </div>
-      ${notaHtml}
+      <h1><span class="eti t-${item.tipo}">${esc(item.etiqueta)}</span>${esc(item.titulo)}</h1>
+      ${item.nota ? `<p class="nota-linea" id="notaLinea" title="Ver la nota completa">${esc(item.nota)}</p>` : ''}
+      <div class="cab-inf">
+        ${segHtml}
+        <div class="acciones">
+          ${relItem ? `<a class="btn" href="#/${relItem.id}" title="${esc(relItem.titulo)}"><i class="pt t-${relItem.tipo}"></i>${esc(relItem.etiqueta)}</a>` : ''}
+          <button class="btn" id="btnPresentar" title="Modo presentación (P)">${ICO.pres}<span>Presentar</span></button>
+          <button class="btn" id="btnFicha">${ICO.info}<span>Ficha</span></button>
+          <button class="btn pri" id="btnCompartir">${ICO.compartir}<span>Citar</span></button>
+        </div>
+      </div>
     `;
 
-    document.getElementById('btnAjustarEncuadre')?.addEventListener('click', () => {
-      if (currentVista) ajustarEncuadreVista(currentVista);
+    renderFicha(item);
+    const ficha = $('ficha');
+    ficha.hidden = true;
+    const toggleFicha = () => { ficha.hidden = !ficha.hidden; };
+    $('btnFicha').addEventListener('click', toggleFicha);
+    $('btnPresentar').addEventListener('click', () => togglePresentacion());
+    actualizarPresBarra(item, pos);
+    guardarReciente(id);
+    $('notaLinea')?.addEventListener('click', () => { ficha.hidden = false; });
+    $('btnCompartir').addEventListener('click', () => openShareDialog(item));
+    document.querySelectorAll('#cabecera .seg button').forEach((btn) => {
+      btn.addEventListener('click', () => switchLienzoView(btn.getAttribute('data-v')));
     });
-    document.getElementById('btnCompartir')?.addEventListener('click', () => openShareDialog(item));
 
-    const btnMasNota = document.getElementById('btnMasNota');
-    if (btnMasNota) {
-      btnMasNota.addEventListener('click', () => {
-        const notaBox = document.getElementById('notaTxt');
-        if (notaBox.classList.contains('corta')) {
-          notaBox.classList.remove('corta');
-          btnMasNota.textContent = 'Ver menos ▴';
-        } else {
-          notaBox.classList.add('corta');
-          btnMasNota.textContent = 'Ver nota completa ▾';
-        }
-      });
+    const zoomImg = $('zoomImg');
+    if (hasImagen) {
+      zoomImg.src = `data/${hasLamina ? item.lamina.src : item.imagenes[0].src}`;
+      zoomImg.alt = `${item.etiqueta}. ${item.titulo}`;
+    } else {
+      zoomImg.removeAttribute('src');
     }
 
-    cab.querySelectorAll('.seg button').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        switchLienzoView(btn.getAttribute('data-v'));
-      });
-    });
+    const visDoc = $('visDoc');
+    visDoc.innerHTML = '';
+    $('cajon').hidden = true;
 
-    // Activar lienzo inicial según el tipo de elemento
-    const zoomImg = document.getElementById('zoomImg');
-    const visDoc = document.getElementById('visDoc');
-
-    if (isEsquema) {
-      switchLienzoView('esquema');
-      renderEsquemaInteractivo(item);
-      if (zoomImg && (hasLamina || hasFiguraImg)) {
-        zoomImg.src = `data/${hasLamina ? item.lamina.src : item.imagenes[0].src}`;
-        zoomImg.alt = item.titulo;
-      }
-    } else if (hasMapa) {
+    if (hasMapa) {
       switchLienzoView('mapa');
       loadVista(item.vista);
-      if (zoomImg) {
-        if (hasLamina) {
-          zoomImg.src = `data/${item.lamina.src}`;
-          zoomImg.alt = item.titulo;
-        } else if (hasFiguraImg) {
-          zoomImg.src = `data/${item.imagenes[0].src}`;
-          zoomImg.alt = item.titulo;
-        }
-      }
     } else if (hasImagen) {
       switchLienzoView('imagen');
-      if (hasLamina) {
-        zoomImg.src = `data/${item.lamina.src}`;
-        zoomImg.alt = item.titulo;
-      } else if (hasFiguraImg) {
-        zoomImg.src = `data/${item.imagenes[0].src}`;
-        zoomImg.alt = item.titulo;
-      }
     } else {
       switchLienzoView('doc');
     }
 
-    // Contenido del visor de documentos (#visDoc) para tablas o figuras
-    if (item.clase === 'tabla' && item.tabla) {
+    if (hasTabla) {
+      visDoc.innerHTML = '<div class="hoja"><p class="ayuda">Cargando tabla…</p></div>';
       try {
         const resp = await fetch(`data/${item.tabla}`);
         const tblHtml = await resp.text();
+        if (currentItem !== item) return;
         visDoc.innerHTML = `
           <div class="hoja tesis-tabla">
-            <h2>${item.etiqueta} · Manuscrito de tesis</h2>
+            <div class="hoja-cab">
+              <span>${esc(item.etiqueta)}</span>
+              ${item.filas ? `<small>${item.filas} filas · ${item.cols} columnas</small>` : ''}
+              ${item.filas > 6 ? '<input type="search" class="hoja-filtro" id="hojaFiltro" placeholder="Filtrar filas…" aria-label="Filtrar filas de la tabla">' : ''}
+            </div>
             <div class="envoltura">${tblHtml}</div>
-          </div>
-        `;
+            ${item.nota ? `<p class="hoja-nota">${esc(item.nota)}</p>` : ''}
+          </div>`;
+        $('hojaFiltro')?.addEventListener('input', (ev) => {
+          const q = ev.target.value.trim().toLowerCase();
+          visDoc.querySelectorAll('.envoltura tr').forEach((tr, i) => {
+            tr.hidden = Boolean(q) && i > 0 && !tr.textContent.toLowerCase().includes(q);
+          });
+        });
       } catch (_) {
-        visDoc.innerHTML = `<div class="hoja"><p>No se pudo cargar la tabla ${item.tabla}</p></div>`;
+        visDoc.innerHTML = '<div class="hoja"><p>No se pudo cargar la tabla.</p></div>';
       }
-    } else if (hasFiguraImg && !isEsquema) {
-      visDoc.innerHTML = `
-        <div class="hoja" style="text-align:center">
-          <h2>${item.etiqueta} · Gráfico extraído del manuscrito</h2>
-          <img class="fig-img" src="data/${item.imagenes[0].src}" alt="${item.titulo}">
-        </div>
-      `;
+    } else if (!hasMapa && !hasImagen) {
+      visDoc.innerHTML = `<div class="hoja"><p class="ayuda">Este elemento figura en el manuscrito sin imagen ni tabla asociada.</p>${item.nota ? `<p class="hoja-nota">${esc(item.nota)}</p>` : ''}</div>`;
     }
   }
 
-  // Diccionario de temas para clasificación de las salidas cartográficas
-  const MAPAS_TEMAS = {
-    'fig-1': ['borde', 'comparativo'],
-    'fig-2': ['borde'],
-    'fig-3': ['borde'],
-    'esq-2': ['teorico', 'borde'],
-    'esq-3': ['teorico', 'borde'],
-    'fig-3b': ['borde'],
-    'fig-4': ['ecologico', 'borde'],
-    'fig-6': ['borde', 'nodos'],
-    'atlas-3-4': ['usos', 'borde'],
-    'atlas-3-5': ['borde', 'usos'],
-    'atlas-3-6': ['nodos', 'usos'],
-    'atlas-3-7': ['nodos'],
-    'atlas-3-8': ['usos'],
-    'atlas-3-9': ['usos', 'ecologico'],
-    'atlas-3-10': ['usos', 'ufp'],
-    'atlas-3-11': ['nodos'],
-    'atlas-3-12': ['borde'],
-    'atlas-3-13': ['borde', 'ufp'],
-    'fig-40': ['comparativo', 'borde'],
-    'fig-41': ['comparativo', 'nodos'],
-    'fig-42': ['comparativo', 'ecologico'],
-    'fig-43': ['comparativo', 'borde'],
-    'fig-44': ['comparativo', 'ecologico'],
-    'fig-45': ['comparativo', 'borde'],
-    'fig-46': ['comparativo', 'borde'],
-    'fig-47': ['comparativo', 'ecologico'],
-    'fig-48': ['comparativo', 'ecologico'],
-    'fig-52': ['ufp', 'nodos'],
-    'fig-53': ['ufp'],
-    'fig-54': ['ufp'],
-    'fig-55': ['ufp'],
-    'fig-56': ['ufp', 'usos'],
-    'fig-57': ['nodos', 'ecologico'],
-    'fig-58': ['nodos', 'usos'],
-    'fig-59': ['nodos'],
-    'fig-60': ['nodos', 'usos'],
-    'fig-61': ['nodos'],
-    'fig-62': ['nodos'],
-    'fig-63': ['nodos', 'ufp'],
-    'fig-65': ['borde', 'ufp'],
-    'tabla-74': ['ufp', 'borde', 'usos'],
-    'comp-articulador': ['nodos', 'ufp'],
-    'comp-normativo': ['usos', 'ufp']
-  };
+  // ---------------------------------------------------------- inicio
+  const IMPRESCINDIBLES = ['fig-2', 'fig-3b', 'fig-4', 'atlas-3-8', 'atlas-3-13', 'fig-40', 'fig-56', 'fig-63'];
 
-  // --- PÁGINA: INICIO (#pgInicio) ---
+  function tarjeta(it) {
+    const img = it.mini ? `data/${it.mini}` : it.lamina ? `data/${it.lamina.mini || it.lamina.src}` : it.imagenes && it.imagenes.length ? `data/${it.imagenes[0].src}` : 'logo_aida.svg';
+    const v = it.vista && VISTAS[it.vista];
+    const meta = v ? `Mapa interactivo · ${v.capas.length} capas` : it.lamina ? 'Lámina en alta resolución' : TIPOS[it.tipo] ? TIPOS[it.tipo].uno : '';
+    return `
+      <a class="tarjeta" href="#/${it.id}">
+        <div class="tarjeta-img"><img loading="lazy" src="${esc(img)}" alt=""></div>
+        <div class="tarjeta-txt">
+          <span class="tarjeta-eti"><i class="pt t-${it.tipo}"></i>${esc(it.etiqueta)}</span>
+          <strong>${esc(it.titulo)}</strong>
+          <small>${esc(meta)}</small>
+        </div>
+      </a>`;
+  }
+
   function renderInicio() {
-    const pg = document.getElementById('pgInicio');
+    const pg = $('pgInicio');
     if (!pg || pg.children.length > 0) return;
 
     const meta = CATALOGO.meta || {};
-    const nMapas = CATALOGO.items.filter((i) => i.tipo === 'mapa').length;
-    const nLaminas = CATALOGO.items.filter((i) => i.lamina).length;
-    const nFiguras = CATALOGO.items.filter((i) => i.clase === 'figura' && i.tipo !== 'mapa').length;
-    const nTablas = CATALOGO.items.filter((i) => i.clase === 'tabla').length;
-    const nEsquemas = CATALOGO.items.filter((i) => i.clase === 'esquema').length;
+    const items = CATALOGO.items || [];
+    const n = (f) => items.filter(f).length;
+    const nMapas = n((i) => i.vista && VISTAS[i.vista]);
+    const nLaminas = n((i) => i.lamina);
+    const nFig = n((i) => i.tipo === 'grafico' || i.tipo === 'esquema');
+    const nTablas = n((i) => i.clase === 'tabla');
     const nCapas = Object.keys(CAPAS || {}).length;
 
-    // Catálogo completo de salidas cartográficas y mapas interactivos (43 mapas)
-    const todosMapas = (CATALOGO.items || []).filter((i) => i.tipo === 'mapa' || i.vista);
-
-    const cardsHtml = todosMapas
-      .map((it) => {
-        const imgUrl = it.mini
-          ? `data/${it.mini}`
-          : it.lamina
-          ? `data/${it.lamina.src}`
-          : it.imagenes && it.imagenes.length
-          ? `data/${it.imagenes[0].src}`
-          : 'logo_aida.svg';
-        const nCapasVista = VISTAS && VISTAS[it.vista] && VISTAS[it.vista].capas ? VISTAS[it.vista].capas.length : 0;
-        const temasArr = MAPAS_TEMAS[it.id] || ['borde'];
-        const capNum =
-          it.capitulo === 's1'
-            ? 'Cap. I'
-            : it.capitulo === 's22'
-            ? 'Cap. II'
-            : it.capitulo === 's48'
-            ? 'Cap. III'
-            : it.capitulo === 's130'
-            ? 'Cap. IV'
-            : it.capitulo === 's177'
-            ? 'Cap. V'
-            : 'Tesis';
-
-        const temasEtiquetas = temasArr
-          .map((t) => {
-            if (t === 'borde') return 'Borde';
-            if (t === 'usos') return 'Usos';
-            if (t === 'ecologico') return 'Ecosistémico';
-            if (t === 'nodos') return 'Nodos';
-            if (t === 'ufp') return 'UFP';
-            if (t === 'comparativo') return 'Internacional';
-            return 'Teórico';
-          })
-          .join(' · ');
-
-        return `
-        <article class="g-card" data-cap="${it.capitulo}" data-temas="${temasArr.join(',')}" data-id="${it.id}">
-          <a class="g-card-link" href="#/${it.id}">
-            <div class="g-card-img" style="background-image:url('${imgUrl}')">
-              <span class="g-card-badge">${capNum}</span>
-              ${
-                nCapasVista > 0
-                  ? `<span class="g-card-layers">🗺️ ${nCapasVista} capas SIG</span>`
-                  : it.lamina
-                  ? `<span class="g-card-layers">🖼️ Atlas HD</span>`
-                  : `<span class="g-card-layers">📐 Gráfico</span>`
-              }
-            </div>
-            <div class="g-card-cuerpo">
-              <span class="g-card-eti">${it.etiqueta}</span>
-              <h4 class="g-card-tit" title="${it.titulo}">${it.titulo}</h4>
-              <div class="g-card-meta">
-                <span>${temasEtiquetas}</span>
-                <span class="g-card-btn">Ver interactivo →</span>
-              </div>
-            </div>
-          </a>
-        </article>
-      `;
-      })
+    const caps = (CATALOGO.capitulos || []).filter((c) => items.some((i) => i.capitulo === c.id));
+    const visuales = (c) => items.filter((i) => i.capitulo === c.id && (i.tipo === 'mapa' || i.tipo === 'esquema'));
+    const tabs = [`<button class="on" data-cap="clave">Imprescindibles</button>`]
+      .concat(caps.map((c) => `<button data-cap="${c.id}" title="${esc(c.titulo)}">Cap. ${c.num}<span>${esc(capNombre(c))}</span></button>`))
       .join('');
+
+    const primero = ITEMS_MAP.get('fig-3b') || ITEMS_MAP.get('fig-3') || items.find((i) => i.vista);
 
     pg.innerHTML = `
       <div class="hero">
-        <div class="sup">${meta.universidad} · ${meta.programa}</div>
-        <h1>${meta.titulo}</h1>
-        <div class="sub">${meta.subtitulo}</div>
-        <div class="quien">
-          <strong>Doctoranda:</strong> ${meta.autora}<br>
-          <strong>Dirección de tesis:</strong> ${meta.directores}<br>
-          <strong>Año académico:</strong> ${meta.anio}
+        <div class="hero-txt">
+          <div class="sup">${esc(meta.universidad || '')} · ${esc(meta.programa || '')}</div>
+          <h1>${esc(meta.titulo || '')}</h1>
+          <p class="sub">${esc(meta.subtitulo || '')}</p>
+          <p class="quien"><strong>${esc(meta.autora || '')}</strong><span>Dirección: ${esc(meta.directores || '')}</span></p>
+          <div class="hero-acc">
+            ${primero ? `<a class="btn pri grande" href="#/${primero.id}">Explorar el área de estudio ${ICO.flecha}</a>` : ''}
+            <button class="btn grande claro" id="btnHeroBuscar">Buscar en la tesis</button>
+          </div>
         </div>
         <div class="cifras">
-          <a class="cifra" href="#/" data-filtro="mapa"><b>${nMapas}</b><span>Mapas interactivos</span></a>
-          <a class="cifra" href="#/" data-filtro="mapa"><b>${nLaminas}</b><span>Láminas de Atlas</span></a>
-          <a class="cifra" href="#/" data-filtro="grafico"><b>${nFiguras}</b><span>Figuras</span></a>
-          <a class="cifra" href="#/" data-filtro="tabla"><b>${nTablas}</b><span>Tablas</span></a>
-          <a class="cifra" href="#/" data-filtro="esquema"><b>${nEsquemas}</b><span>Esquemas</span></a>
-          <a class="cifra" href="#/datos"><b>${nCapas}</b><span>Capas SIG</span></a>
+          <button data-filtro="mapa"><b>${nMapas}</b><span>mapas interactivos</span></button>
+          <button data-filtro="mapa"><b>${nLaminas}</b><span>láminas del atlas</span></button>
+          <button data-filtro="grafico"><b>${nFig}</b><span>figuras y esquemas</span></button>
+          <button data-filtro="tabla"><b>${nTablas}</b><span>tablas</span></button>
+          <a href="#/datos"><b>${nCapas}</b><span>capas geográficas</span></a>
         </div>
-      </div>
-
-      <div class="instituciones-franja">
-        <div class="inst-franja-texto">
-          <strong>🏛️ Marco Institucional y Avales de Investigación Doctoral</strong>
-          <span>Doctorado en Sostenibilidad UPC (Barcelona) · Cooperación académica con Universidad del Atlántico, AMB, IGAC, CRA y DIMAR.</span>
-        </div>
-        <button class="btn chico" id="btnVerInstitucionesHero">Ver entidades y avales ▾</button>
       </div>
 
       <div class="inicio-cuerpo">
-        <div class="como">
-          <strong>💡 Plataforma cartográfica para la evaluación doctoral:</strong>
-          Cada mapa, lámina del atlas, tabla y esquema conceptual cuenta con un identificador único y permalink propio (ej: <code>#/fig-3</code>, <code>#/atlas-3-8</code>, <code>#/fig-52</code>).
-          En el botón <em>Compartir / Citar</em> de cada vista obtendrá el enlace directo y el código QR oficial para anexar en la nota de cada mapa de su manuscrito, permitiendo a los directores y jurados evaluar las capas, simbología de QGIS y atributos espaciales en vivo.
-        </div>
+        <section class="recientes" id="recientes" hidden></section>
 
-        <section class="galeria-seccion">
-          <div class="galeria-cab">
-            <div>
-              <h2>Cartografía y salidas destacadas de la investigación</h2>
-              <p>Selección sistemática clasificada de los Capítulos I al V (${todosMapas.length} mapas interactivos)</p>
-            </div>
-            <div class="galeria-stats">
-              <div class="g-stat" id="galeriaContador">Mostrando <strong>${todosMapas.length}</strong> de ${todosMapas.length} mapas</div>
-            </div>
-          </div>
+        <section class="pasos">
+          <div><b>1</b><div><strong>Elija qué ver</strong><span>Recorra la tesis por capítulos en el índice de la izquierda, o busque una figura o tabla por su número.</span></div></div>
+          <div><b>2</b><div><strong>Explore el mapa</strong><span>Active capas, consulte la leyenda, haga clic sobre un elemento para ver sus datos y compare con la lámina impresa.</span></div></div>
+          <div><b>3</b><div><strong>Cítelo</strong><span>Cada vista tiene un enlace permanente y un código QR para añadir a la nota del mapa en el manuscrito.</span></div></div>
+        </section>
 
-          <!-- Filtro por Capítulo -->
-          <div class="galeria-pills-cap" id="filtroCaps">
-            <span class="g-cap-lbl">Capítulo:</span>
-            <button class="g-cap-btn on" data-cap="todos">Todos (${todosMapas.length})</button>
-            <button class="g-cap-btn" data-cap="s1">Cap. I: Problema (3)</button>
-            <button class="g-cap-btn" data-cap="s22">Cap. II: Marco Teórico (2)</button>
-            <button class="g-cap-btn" data-cap="s48">Cap. III: Barranquilla - AMB (13)</button>
-            <button class="g-cap-btn" data-cap="s130">Cap. IV: Comparativo Int. (9)</button>
-            <button class="g-cap-btn" data-cap="s177">Cap. V: Modelo IOTF-IUR (16)</button>
+        <section class="recorrido">
+          <div class="rec-cab">
+            <h2>Cartografía de la tesis</h2>
+            <div class="rec-tabs" id="recTabs">${tabs}</div>
           </div>
-
-          <!-- Filtro por Eje Temático -->
-          <div class="galeria-pills-tema" id="filtroTemas">
-            <span class="g-tema-lbl">Eje temático:</span>
-            <button class="g-tema-btn on" data-tema="todos">Todos los temas</button>
-            <button class="g-tema-btn" data-tema="borde">🌐 Borde y Delimitación</button>
-            <button class="g-tema-btn" data-tema="usos">📐 Usos del Suelo y Normativa</button>
-            <button class="g-tema-btn" data-tema="ecologico">🌿 Estructura Ecosistémica</button>
-            <button class="g-tema-btn" data-tema="nodos">⚡ Nodos y Corredores</button>
-            <button class="g-tema-btn" data-tema="ufp">🏛️ Unidades UFP</button>
-            <button class="g-tema-btn" data-tema="comparativo">🚢 Comparativo Internacional</button>
-          </div>
-
-          <!-- Grilla de mapas -->
-          <div class="galeria-grid" id="galeriaGrid">
-            ${cardsHtml}
-          </div>
+          <p class="rec-desc" id="recDesc"></p>
+          <div class="rejilla" id="recGrid"></div>
+          <div class="rec-pie" id="recPie"></div>
         </section>
       </div>
     `;
 
-    // Filtros interactivos de la galería
-    let capFiltro = 'todos';
-    let temaFiltro = 'todos';
-
-    function actualizarFiltros() {
-      const cards = pg.querySelectorAll('.g-card');
-      let visibles = 0;
-      cards.forEach((c) => {
-        const cCap = c.getAttribute('data-cap');
-        const cTemas = (c.getAttribute('data-temas') || '').split(',');
-        const matchCap = capFiltro === 'todos' || cCap === capFiltro;
-        const matchTema = temaFiltro === 'todos' || cTemas.includes(temaFiltro);
-        if (matchCap && matchTema) {
-          c.hidden = false;
-          visibles++;
-        } else {
-          c.hidden = true;
-        }
-      });
-      const cnt = document.getElementById('galeriaContador');
-      if (cnt) cnt.innerHTML = `Mostrando <strong>${visibles}</strong> de ${todosMapas.length} mapas`;
+    function pintar(capId) {
+      let lista;
+      let desc;
+      let pie = '';
+      if (capId === 'clave') {
+        lista = IMPRESCINDIBLES.map((i) => ITEMS_MAP.get(i)).filter(Boolean);
+        desc = 'Ocho vistas para entender la investigación de principio a fin: del área de estudio a la propuesta.';
+      } else {
+        const c = caps.find((x) => x.id === capId);
+        lista = visuales(c);
+        const resto = items.filter((i) => i.capitulo === capId).length - lista.length;
+        desc = c.titulo.replace(/^CAPÍTULO\s+[IVX]+:\s*/i, '');
+        desc = desc.charAt(0) + desc.slice(1).toLowerCase();
+        desc = desc.replace(/(barranquilla|veracruz|santos|valparaíso)/g, (m) => m.charAt(0).toUpperCase() + m.slice(1));
+        if (resto > 0) pie = `<button class="btn" data-abrir-cap="${capId}">Ver también las ${resto} tablas y figuras de este capítulo en el índice</button>`;
+        if (!lista.length) desc += '. Este capítulo no tiene cartografía; sus tablas y figuras están en el índice.';
+      }
+      $('recDesc').textContent = desc;
+      $('recGrid').innerHTML = lista.map(tarjeta).join('');
+      $('recPie').innerHTML = pie;
+      $('recPie').querySelector('[data-abrir-cap]')?.addEventListener('click', () => abrirCapituloEnIndice(capId));
     }
 
-    pg.querySelectorAll('#filtroCaps .g-cap-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        pg.querySelectorAll('#filtroCaps .g-cap-btn').forEach((b) => b.classList.remove('on'));
-        btn.classList.add('on');
-        capFiltro = btn.getAttribute('data-cap');
-        actualizarFiltros();
+    pg.querySelectorAll('#recTabs button').forEach((b) => {
+      b.addEventListener('click', () => {
+        pg.querySelectorAll('#recTabs button').forEach((x) => x.classList.toggle('on', x === b));
+        pintar(b.getAttribute('data-cap'));
       });
     });
+    pintar('clave');
 
-    pg.querySelectorAll('#filtroTemas .g-tema-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        pg.querySelectorAll('#filtroTemas .g-tema-btn').forEach((b) => b.classList.remove('on'));
-        btn.classList.add('on');
-        temaFiltro = btn.getAttribute('data-tema');
-        actualizarFiltros();
-      });
-    });
-
-    document.getElementById('btnVerInstitucionesHero')?.addEventListener('click', () => {
-      document.getElementById('dlgInstituciones')?.showModal();
-    });
-
-    pg.querySelectorAll('a.cifra[data-filtro]').forEach((a) => {
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        const f = a.getAttribute('data-filtro');
-        const chip = document.querySelector(`#chips button[data-f="${f}"]`);
-        if (chip) chip.click();
+    $('btnHeroBuscar')?.addEventListener('click', () => $('btnCmdOpen').click());
+    pg.querySelectorAll('.cifras [data-filtro]').forEach((a) => {
+      a.addEventListener('click', () => {
+        document.querySelector(`#chips button[data-f="${a.getAttribute('data-filtro')}"]`)?.click();
+        mostrarIndice(true);
       });
     });
   }
@@ -2071,7 +1520,7 @@
     let filasHtml = capasArray
       .map((c) => {
         const vistasTags = (c.vistas || [])
-          .map((v) => `<a class="tag" href="#/datos" data-vid="${v}">${v}</a>`)
+          .map((v) => ((VISTAS[v] && VISTAS[v].items) || []).map((iid) => (ITEMS_MAP.get(iid) ? `<a class="tag" href="#/${iid}">${esc(ITEMS_MAP.get(iid).etiqueta)}</a>` : '')).join(''))
           .join('');
 
         const camposHtml = (c.campos || [])
@@ -2079,19 +1528,18 @@
           .join('');
 
         return `
-          <tr data-c="${c.id}" data-txt="${(c.nombre + ' ' + c.geom + ' ' + (c.fuente || '')).toLowerCase()}">
-            <td><strong>${c.nombre}</strong><br><small class="ruta">${c.archivo}</small></td>
+          <tr data-c="${c.id}" data-txt="${esc((nombreCapa(c.nombre) + ' ' + c.nombre + ' ' + c.geom + ' ' + (c.fuente || '')).toLowerCase())}">
+            <td><strong>${esc(nombreCapa(c.nombre))}</strong><br><small class="ruta">${esc(c.nombre)}</small></td>
             <td><span class="tag">${c.geom}</span></td>
             <td class="num">${c.n ? c.n.toLocaleString('es-CO') : '—'}</td>
             <td>${c.crs || '—'}</td>
             <td><small>${c.fuente || 'SIG Tesis'}</small></td>
-            <td><span class="tag" style="background:#eef2f6;color:var(--gris)">🔒 Solo lectura</span></td>
           </tr>
           <tr class="det" id="det_${c.id}" hidden>
-            <td colspan="6">
+            <td colspan="5">
               <div style="font-size:11.5px;color:var(--gris);margin-bottom:6px"><strong>Campos de la capa (${c.campos ? c.campos.length : 0}):</strong></div>
               <div class="campos">${camposHtml || '<i>Sin campos definidos</i>'}</div>
-              <div style="margin-top:8px"><strong>Vistas que la utilizan:</strong> ${vistasTags || '<i>Ninguna asignada</i>'}</div>
+              <div style="margin-top:8px"><strong>Se usa en:</strong> ${vistasTags || '<i>Ninguna asignada</i>'}</div>
             </td>
           </tr>
         `;
@@ -2103,7 +1551,7 @@
       .map(
         (r) => `
         <details>
-          <summary>📁 <strong>${r.n}</strong> — <i>${r.desc}</i> <span>(${r.archivos} archivos · ${r.mb} MB)</span></summary>
+          <summary><strong>${r.n}</strong> — <i>${r.desc}</i> <span>(${r.archivos} archivos · ${r.mb} MB)</span></summary>
           <ul>
             ${(r.hijos || [])
               .map(
@@ -2122,27 +1570,26 @@
 
     pg.innerHTML = `
       <div class="ancho">
-        <h1>Catálogo de capas espaciales y datos de la investigación</h1>
+        <h1>Capas y datos</h1>
         <p class="lead">
-          Inventario técnico de las ${nCapas} capas vectoriales extraídas directamente desde los proyectos QGIS del Sistema de Información Geográfica (SIG). Todas las geometrías fueron estandarizadas a EPSG:4326 (WGS84) para despliegue web, preservando su proyección cartográfica de origen (MAGNA-SIRGAS 2018 / Origen Nacional EPSG:9377 y zonas Gauss-Krüger).
+          Las ${nCapas} capas geográficas que alimentan los mapas, tal como están en los proyectos QGIS de la tesis. Haga clic en una capa para ver sus campos y en qué figuras se usa. Para publicarlas en la web se convirtieron a WGS 84 (EPSG:4326); el sistema de referencia de origen se indica en cada fila.
         </p>
 
         <div class="pest" role="tablist">
           <button class="on" data-tab="tabCapas">Capas vectoriales (${nCapas})</button>
-          <button data-tab="tabRep">Estructura del repositorio de la tesis</button>
+          <button data-tab="tabRep">Estructura de carpetas de la investigación</button>
         </div>
 
         <div id="tabCapas">
-          <input type="search" class="filtro-cat" id="filtroCapas" placeholder="🔍 Filtrar capas por nombre, geometría o fuente SIG…">
+          <input type="search" class="filtro-cat" id="filtroCapas" placeholder="Filtrar capas por nombre, tipo o fuente…">
           <table class="cat" id="tablaCat">
             <thead>
               <tr>
                 <th>Capa / Archivo</th>
                 <th>Tipo</th>
                 <th class="num">Elementos</th>
-                <th>CRS Origen</th>
-                <th>Fuente original en SIG</th>
-                <th>Acceso</th>
+                <th>Sistema de referencia</th>
+                <th>Archivo de origen</th>
               </tr>
             </thead>
             <tbody>${filasHtml}</tbody>
@@ -2187,193 +1634,250 @@
     });
   }
 
-  // --- PÁGINA: ACERCA DE (#pgAcerca) ---
-  function renderAcerca() {
-    const pg = document.getElementById('pgAcerca');
-    if (!pg || pg.children.length > 0) return;
+  // ------------------------------------------------------------ acerca de
+  const FUENTES = [
+    ['Colombia · Área Metropolitana de Barranquilla', 'Instituto Geográfico Agustín Codazzi (IGAC) · Departamento Administrativo Nacional de Estadística (DANE) · Área Metropolitana de Barranquilla (AMB, PEMOT) · Corporación Autónoma Regional del Atlántico (C.R.A., POMCA Ciénaga de Mallorquín) · Planes de Ordenamiento Territorial de Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia'],
+    ['México · Veracruz', 'INEGI · ASIPONA Veracruz · CONANP'],
+    ['Chile · Valparaíso', 'Biblioteca del Congreso Nacional (BCN) · IDE Chile · DGA · MOP · CONAF · SENAPRED · ODEPA/CIREN · INE'],
+    ['Brasil · Santos', 'IBGE · CETESB · IPT · Autoridade Portuária de Santos'],
+    ['Cartografía de referencia', 'OpenStreetMap y colaboradores · Esri (fondos gris claro, gris oscuro e imagen satelital)']
+  ];
 
+  function renderAcerca() {
+    const pg = $('pgAcerca');
+    if (!pg || pg.children.length > 0) return;
     const meta = CATALOGO.meta || {};
+    const nItems = (CATALOGO.items || []).length;
 
     pg.innerHTML = `
-      <div class="ancho">
-        <h1>Acerca del Geovisor y la Investigación Doctoral</h1>
-        <p class="lead">
-          Este geovisor es el instrumento cartográfico y metodológico interactivo desarrollado como componente integral de la tesis doctoral en Sostenibilidad de la Universitat Politècnica de Catalunya (UPC).
-        </p>
+      <div class="ancho angosto">
+        <h1>Acerca de este geovisor</h1>
+        <p class="lead">GeoInterfaz reúne en un solo lugar la cartografía, las figuras y las tablas de la tesis para que puedan consultarse con más detalle del que permite la página impresa.</p>
 
-        <h2>Ficha técnica doctoral</h2>
-        <table class="cat" style="max-width:760px;margin-bottom:24px">
+        <h2>La tesis</h2>
+        <table class="cat ficha-t">
           <tbody>
-            <tr><td style="width:220px"><strong>Título de la tesis</strong></td><td>${meta.titulo}</td></tr>
-            <tr><td><strong>Subtítulo</strong></td><td>${meta.subtitulo}</td></tr>
-            <tr><td><strong>Doctoranda</strong></td><td>${meta.autora}</td></tr>
-            <tr><td><strong>Dirección de tesis</strong></td><td>${meta.directores}</td></tr>
-            <tr><td><strong>Institución</strong></td><td>${meta.universidad} · ${meta.programa}</td></tr>
-            <tr><td><strong>Año de sustentación</strong></td><td>${meta.anio}</td></tr>
-            <tr><td><strong>Manuscrito de referencia</strong></td><td><code>${meta.manuscrito}</code></td></tr>
+            <tr><th>Título</th><td>${esc(meta.titulo || '')}. ${esc(meta.subtitulo || '')}</td></tr>
+            <tr><th>Doctoranda</th><td>${esc(meta.autora || '')}</td></tr>
+            <tr><th>Dirección</th><td>${esc(meta.directores || '')}</td></tr>
+            <tr><th>Programa</th><td>${esc(meta.programa || '')} · ${esc(meta.universidad || '')}</td></tr>
+            <tr><th>Manuscrito de referencia</th><td><code>${esc(meta.manuscrito || '')}</code></td></tr>
+            <tr><th>Actualización del geovisor</th><td>${esc(meta.generado || '')}</td></tr>
           </tbody>
         </table>
 
-        <h2>Objetivo y alcance de la plataforma</h2>
-        <p>
-          La investigación aborda la complejidad de las franjas de interfaz urbano-rural en ciudades portuarias de América Latina, con énfasis focalizado en el Área Metropolitana de Barranquilla (AMB) como caso de estudio central (ciudad puerto y ciudad río), en comparación sistemática con Veracruz (México), Santos (Brasil) y Valparaíso (Chile).
-        </p>
-        <p>
-          Para superar las limitaciones de la visualización estática en papel y PDF, este geovisor permite examinar cada una de las salidas cartográficas generadas en QGIS con fidelidad total a su simbología, encuadre original, jerarquía de capas, etiquetas y base de datos alfanumérica.
-        </p>
+        <h2>Qué contiene</h2>
+        <p>Los ${nItems} elementos numerados del manuscrito (figuras, tablas, esquemas y láminas del atlas) conservan aquí su número, su título y su nota. Los mapas se reconstruyen a partir de los proyectos QGIS de la investigación, con la misma simbología y el mismo encuadre de la lámina impresa, y pueden compararse con ella en la pestaña «Lámina».</p>
+        <p>El geovisor no añade interpretaciones ni datos que no estén en la tesis: todo lo que muestra procede del manuscrito y de las capas del sistema de información geográfico.</p>
 
-        <h2>Arquitectura y tecnologías abiertas</h2>
-        <p>
-          Desarrollado sobre estándares abiertos y software libre:
-        </p>
+        <h2>Cómo citar una vista</h2>
+        <p>Cada elemento tiene una dirección propia, por ejemplo <code>#/fig-3</code>, <code>#/atlas-3-8</code> o <code>#/tabla-74</code>. El botón <strong>Citar</strong> entrega el enlace permanente, un código QR y un texto breve para añadir a la nota del mapa.</p>
+
+        <h2>Fuentes de la información geográfica</h2>
+        <p>Las entidades siguientes son la fuente de las capas, tal como se indica en la nota de cada mapa. Su mención no implica aval institucional del geovisor.</p>
+        <table class="cat ficha-t">
+          <tbody>${FUENTES.map((f) => `<tr><th>${esc(f[0])}</th><td>${esc(f[1])}</td></tr>`).join('')}</tbody>
+        </table>
+
+        <h2>Cómo está hecho</h2>
         <ul>
-          <li><strong>QGIS 3.x:</strong> Procesamiento territorial, diseño cartográfico, layouts y modelos de clasificación.</li>
-          <li><strong>MapLibre GL JS:</strong> Motor de renderizado vectorial WebGL de alto desempeño para mapas interactivos.</li>
-          <li><strong>GeoPandas & Python:</strong> Extracción de metadatos, optimización de topologías y generación del catálogo de capas.</li>
-          <li><strong>Proj4js:</strong> Transformación de coordenadas en tiempo real al Sistema MAGNA-SIRGAS 2018 / Origen Nacional (EPSG:9377).</li>
+          <li><strong>QGIS</strong> para el análisis territorial y el diseño de las láminas (MAGNA-SIRGAS 2018 / Origen Nacional, EPSG:9377, para Colombia).</li>
+          <li><strong>Python y GeoPandas</strong> para convertir las capas y la simbología de QGIS a formatos web.</li>
+          <li><strong>MapLibre GL JS</strong> para dibujar los mapas en el navegador. Las coordenadas se muestran también en EPSG:9377.</li>
         </ul>
+        <p>La estructura completa de carpetas y capas de la investigación está en <a href="#/datos">Capas y datos</a>.</p>
       </div>
     `;
   }
 
-  // --- CONTROLADOR DE PÁGINAS PRINCIPALES ---
+  // ------------------------------------------------- páginas e índice
   function showPage(pageId) {
     ['pgInicio', 'pgElemento', 'pgDatos', 'pgAcerca'].forEach((id) => {
-      const el = document.getElementById(id);
+      const el = $(id);
       if (el) el.hidden = id !== pageId;
     });
-
-    document.querySelectorAll('.nav a').forEach((a) => {
-      const target = a.getAttribute('data-nav');
-      if (pageId === 'pgInicio' && target === 'inicio') a.classList.add('on');
-      else if (pageId === 'pgDatos' && target === 'datos') a.classList.add('on');
-      else if (pageId === 'pgAcerca' && target === 'acerca') a.classList.add('on');
-      else a.classList.remove('on');
-    });
-
-    document.getElementById('indice')?.classList.remove('abierto');
+    const mapaNav = { pgInicio: 'inicio', pgDatos: 'datos', pgAcerca: 'acerca' };
+    document.querySelectorAll('.nav a').forEach((a) => a.classList.toggle('on', a.getAttribute('data-nav') === mapaNav[pageId]));
+    if (window.innerWidth <= 900) $('indice')?.classList.remove('abierto');
+    $('principal').scrollTop = 0;
   }
 
-  // --- ÁRBOL DE CONTENIDO E ÍNDICE LATERAL (#arbol) ---
+  function mostrarIndice(ver) {
+    if (window.innerWidth <= 900) {
+      $('indice').classList.toggle('abierto', ver === undefined ? undefined : ver);
+    } else {
+      const c = $('cuerpo');
+      const oculto = ver === undefined ? !c.classList.contains('sin-indice') : !ver;
+      c.classList.toggle('sin-indice', oculto);
+      setTimeout(() => { if (map && mapReady) map.resize(); }, 240);
+    }
+  }
+
   function renderArbol() {
-    const arbol = document.getElementById('arbol');
+    const arbol = $('arbol');
     if (!arbol || !CATALOGO) return;
     arbol.innerHTML = '';
-
-    const caps = CATALOGO.capitulos || [];
     const items = CATALOGO.items || [];
+    ORDEN = [];
 
-    caps.forEach((cap) => {
+    (CATALOGO.capitulos || []).forEach((cap) => {
       const capItems = items.filter((it) => it.capitulo === cap.id);
       if (!capItems.length) return;
 
       const det = document.createElement('details');
       det.className = 'cap';
-      det.open = true;
       det.setAttribute('data-cap', cap.id);
-
       det.innerHTML = `
-        <summary>
-          <span class="rom">Cap. ${cap.num}</span>
-          <span class="tit">${cap.nombre}</span>
+        <summary title="${esc(cap.titulo)}">
+          <span class="rom">${esc(cap.num)}</span>
+          <span class="tit">${esc(capNombre(cap))}</span>
           <span class="n">${capItems.length}</span>
         </summary>
-        <div class="cap-items"></div>
-      `;
+        <div class="cap-items"></div>`;
+      const cont = det.querySelector('.cap-items');
 
-      const contItems = det.querySelector('.cap-items');
+      let secActual = null;
       capItems.forEach((it) => {
+        ORDEN.push(it.id);
+        const sec = it.ruta && it.ruta.length > 1 ? it.ruta[1] : '';
+        if (sec !== secActual) {
+          secActual = sec;
+          if (sec) {
+            const h = document.createElement('div');
+            h.className = 'sec';
+            h.textContent = sec;
+            cont.appendChild(h);
+          }
+        }
         const a = document.createElement('a');
-        a.className = `it t-${it.tipo}`;
+        a.className = 'it';
         a.href = `#/${it.id}`;
         a.setAttribute('data-id', it.id);
         a.setAttribute('data-tipo', it.tipo);
         a.setAttribute('data-txt', `${it.etiqueta} ${it.titulo} ${(it.ruta || []).join(' ')}`.toLowerCase());
-
-        a.innerHTML = `
-          <span class="eti">${it.etiqueta}</span>
-          <span class="txt">${it.titulo}</span>
-        `;
-        contItems.appendChild(a);
+        a.title = `${it.etiqueta}. ${it.titulo}`;
+        a.innerHTML = `<i class="pt t-${it.tipo}"></i><span class="eti">${esc(etiquetaCorta(it))}</span><span class="txt">${esc(it.titulo)}</span>`;
+        cont.appendChild(a);
       });
 
+      // acordeón: un solo capítulo abierto a la vez mientras no se esté filtrando
+      det.addEventListener('toggle', () => {
+        if (det.open && !arbol.classList.contains('filtrando')) {
+          arbol.querySelectorAll('details.cap[open]').forEach((o) => { if (o !== det) o.open = false; });
+        }
+      });
       arbol.appendChild(det);
     });
+
+    const vacio = document.createElement('p');
+    vacio.className = 'ayuda vacio';
+    vacio.id = 'arbolVacio';
+    vacio.hidden = true;
+    vacio.textContent = 'Nada coincide con el filtro.';
+    arbol.appendChild(vacio);
 
     initFiltroIndice();
   }
 
+  function marcarEnIndice(id) {
+    document.querySelectorAll('#arbol .it').forEach((el) => el.classList.toggle('on', el.getAttribute('data-id') === id));
+    const link = document.querySelector(`#arbol .it[data-id="${id}"]`);
+    if (!link) return;
+    const cap = link.closest('details.cap');
+    if (cap && !cap.open) cap.open = true;
+    setTimeout(() => link.scrollIntoView({ block: 'nearest' }), 30);
+  }
+
+  function abrirCapituloEnIndice(capId) {
+    mostrarIndice(true);
+    document.querySelector('#chips button[data-f="todos"]')?.click();
+    const det = document.querySelector(`#arbol details.cap[data-cap="${capId}"]`);
+    if (det) {
+      det.open = true;
+      det.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+  }
+
   function initFiltroIndice() {
-    const buscar = document.getElementById('buscar');
-    const chips = document.getElementById('chips');
+    const buscar = $('buscar');
+    const chips = $('chips');
+    const arbol = $('arbol');
     let filtroTipo = 'todos';
 
     function filtrar() {
-      const q = (buscar?.value || '').trim().toLowerCase();
-      const allItems = document.querySelectorAll('#arbol .it');
-      const allCaps = document.querySelectorAll('#arbol details.cap');
+      const q = (buscar.value || '').trim().toLowerCase();
+      const activo = Boolean(q) || filtroTipo !== 'todos';
+      arbol.classList.toggle('filtrando', activo);
+      let total = 0;
 
-      allItems.forEach((it) => {
-        const tipo = it.getAttribute('data-tipo');
-        const txt = it.getAttribute('data-txt') || '';
-
-        const matchTipo = filtroTipo === 'todos' || tipo === filtroTipo;
-        const matchTxt = !q || txt.includes(q);
-
-        const visible = matchTipo && matchTxt;
-        it.hidden = !visible;
+      arbol.querySelectorAll('details.cap').forEach((cap) => {
+        let nCap = 0;
+        let secEl = null;
+        let nSec = 0;
+        const cerrarSec = () => { if (secEl) secEl.hidden = nSec === 0; };
+        cap.querySelectorAll('.cap-items > *').forEach((el) => {
+          if (el.classList.contains('sec')) {
+            cerrarSec();
+            secEl = el;
+            nSec = 0;
+            return;
+          }
+          const ok = (filtroTipo === 'todos' || el.getAttribute('data-tipo') === filtroTipo) && (!q || (el.getAttribute('data-txt') || '').includes(q));
+          el.hidden = !ok;
+          if (ok) { nCap++; nSec++; }
+        });
+        cerrarSec();
+        cap.hidden = nCap === 0;
+        cap.querySelector('.n').textContent = nCap;
+        if (activo) cap.open = nCap > 0 && (Boolean(q) || nCap <= 30);
+        total += nCap;
       });
-
-      allCaps.forEach((cap) => {
-        const visiblesEnCap = cap.querySelectorAll('.it:not([hidden])').length;
-        cap.hidden = visiblesEnCap === 0;
-        if (q && visiblesEnCap > 0) cap.open = true;
-      });
+      $('arbolVacio').hidden = total > 0;
+      if (!activo && currentItem && !$('pgElemento').hidden) marcarEnIndice(currentItem.id);
     }
 
-    buscar?.addEventListener('input', filtrar);
-
-    chips?.querySelectorAll('button').forEach((btn) => {
+    buscar.addEventListener('input', filtrar);
+    chips.querySelectorAll('button').forEach((btn) => {
       btn.addEventListener('click', () => {
-        chips.querySelectorAll('button').forEach((b) => b.classList.remove('on'));
-        btn.classList.add('on');
+        chips.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b === btn));
         filtroTipo = btn.getAttribute('data-f') || 'todos';
         filtrar();
       });
     });
   }
 
-  // --- ENRUTADOR PRINCIPAL (HASH ROUTING) ---
+  // ----------------------------------------------------------- enrutador
   function router() {
     const hash = window.location.hash || '#/';
+    const limpiar = () => document.querySelectorAll('#arbol .it').forEach((el) => el.classList.remove('on'));
 
     if (hash === '#/' || hash === '#' || hash === '') {
       renderInicio();
       showPage('pgInicio');
-      document.title = 'Geovisor · Tesis Doctoral UPC — Aida Palmett';
-      document.querySelectorAll('#arbol .it').forEach((el) => el.classList.remove('on'));
+      document.title = 'GeoInterfaz · Geovisor de la tesis doctoral';
+      currentItem = null;
+      pintarRecientes();
+      limpiar();
     } else if (hash === '#/datos') {
       renderDatos();
       showPage('pgDatos');
-      document.title = 'Capas y Datos SIG · Geovisor Tesis Doctoral';
-      document.querySelectorAll('#arbol .it').forEach((el) => el.classList.remove('on'));
+      document.title = 'Capas y datos · GeoInterfaz';
+      currentItem = null;
+      limpiar();
     } else if (hash === '#/acerca') {
       renderAcerca();
       showPage('pgAcerca');
-      document.title = 'Acerca de · Geovisor Tesis Doctoral';
-      document.querySelectorAll('#arbol .it').forEach((el) => el.classList.remove('on'));
+      document.title = 'Acerca de · GeoInterfaz';
+      currentItem = null;
+      limpiar();
     } else {
-      const id = hash.replace(/^#\//, '');
-      showElement(id);
+      showElement(decodeURIComponent(hash.replace(/^#\//, '')));
     }
   }
 
   function navigate(hash) {
-    if (window.location.hash === hash) {
-      router();
-    } else {
-      window.location.hash = hash;
-    }
+    if (window.location.hash === hash) router();
+    else window.location.hash = hash;
   }
 
   // --- HERRAMIENTA DE MEDICIÓN ESPACIAL INTERACTIVA (TURF.JS) ---
@@ -2536,130 +2040,90 @@
     }
   }
 
-  // --- MODO 3D / PERSPECTIVA DE PAISAJE ---
+  // ---------------------------------------------------- vista en perspectiva
   let modo3D = false;
   function init3DToggle() {
-    const btn3D = document.getElementById('btn3D');
-    const lbl3D = document.getElementById('lbl3D');
+    const btn3D = $('btn3D');
     if (!btn3D) return;
-
     btn3D.addEventListener('click', () => {
       if (!map || !mapReady) return;
       modo3D = !modo3D;
       btn3D.classList.toggle('on', modo3D);
-      if (lbl3D) lbl3D.textContent = modo3D ? '2D' : '3D';
-
-      if (modo3D) {
-        map.easeTo({
-          pitch: 55,
-          bearing: -15,
-          duration: 900
-        });
-        showToast('Perspectiva 3D activada (inclinación 55°)');
-      } else {
-        map.easeTo({
-          pitch: 0,
-          bearing: 0,
-          duration: 900
-        });
-        showToast('Vista plana 2D restablecida');
-      }
+      map.easeTo(modo3D ? { pitch: 55, bearing: -15, duration: 900 } : { pitch: 0, bearing: 0, duration: 900 });
     });
   }
 
-  // --- SALTOS ESPACIALES RÁPIDOS A NODOS Y ESTRUCTURA TERRITORIAL ---
-  const SALTOS_COORDS = {
-    amb: { center: [-74.83, 10.95], zoom: 10.3, pitch: 0, bearing: 0 },
-    franja: { center: [-74.845, 10.94], zoom: 11.2, pitch: 25, bearing: -5 },
-    nodo1: { center: [-74.881, 11.041], zoom: 13.8, pitch: 45, bearing: 10 },
-    nodo2: { center: [-74.883, 10.895], zoom: 13.8, pitch: 45, bearing: -10 },
-    nodo3: { center: [-74.836, 10.942], zoom: 13.8, pitch: 45, bearing: 0 },
-    nodo4: { center: [-74.762, 10.846], zoom: 13.8, pitch: 45, bearing: 15 },
-    puerto: { center: [-74.740, 10.893], zoom: 14.0, pitch: 50, bearing: -20 },
-    mallorquin: { center: [-74.848, 11.055], zoom: 13.0, pitch: 35, bearing: 5 }
-  };
+  // ---------------------------------- ir a un lugar (encuadres de la propia tesis)
+  const LUGARES = [
+    ['Área de estudio', [['Área Metropolitana de Barranquilla', 'fig-2'], ['Franja de interfaz urbano-rural', 'fig-3b'], ['Ciénaga de Mallorquín', 'fig-4']]],
+    ['Propuesta', [['Nodo 1 · Puerto Colombia', 'fig-57'], ['Nodo 2 · Galapa', 'fig-58'], ['Nodo 3 · Barranquilla - Galapa', 'fig-59'], ['Nodo 4 · Malambo', 'fig-60'], ['Nuevo puerto interior', 'fig-61']]],
+    ['Casos comparados', [['Veracruz', 'fig-40'], ['Valparaíso', 'fig-43'], ['Santos', 'fig-46']]]
+  ];
 
   function initSaltosRapidos() {
-    const btn = document.getElementById('btnSaltos');
-    const menu = document.getElementById('menuSaltos');
+    const btn = $('btnSaltos');
+    const menu = $('menuSaltos');
     if (!btn || !menu) return;
+
+    let html = '';
+    LUGARES.forEach(([grupo, lugares]) => {
+      const ok = lugares.filter(([, id]) => {
+        const it = ITEMS_MAP.get(id);
+        return it && it.vista && VISTAS[it.vista] && VISTAS[it.vista].bbox;
+      });
+      if (!ok.length) return;
+      html += `<div class="h-menu-tit">${esc(grupo)}</div>` + ok.map(([n, id]) => `<button data-salto="${id}">${esc(n)}</button>`).join('');
+    });
+    menu.innerHTML = html;
 
     btn.addEventListener('click', (ev) => {
       ev.stopPropagation();
       menu.hidden = !menu.hidden;
     });
-
-    document.addEventListener('click', () => {
-      menu.hidden = true;
-    });
-
+    document.addEventListener('click', () => { menu.hidden = true; });
     menu.querySelectorAll('button[data-salto]').forEach((b) => {
-      b.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        menu.hidden = true;
-        const key = b.getAttribute('data-salto');
-        const conf = SALTOS_COORDS[key];
-        if (conf && map && mapReady) {
-          map.flyTo({
-            center: conf.center,
-            zoom: conf.zoom,
-            pitch: conf.pitch,
-            bearing: conf.bearing,
-            duration: 1600,
-            essential: true
-          });
-        }
+      b.addEventListener('click', () => {
+        const it = ITEMS_MAP.get(b.getAttribute('data-salto'));
+        if (it && map && mapReady) ajustarEncuadre(VISTAS[it.vista].bbox);
       });
     });
   }
 
-  // --- CAPTURA DE ALTA RESOLUCIÓN DEL LIENZO CARTOGRÁFICO ---
+  // ---------------------------------------------------- imagen del mapa
   function initCapturaMapa() {
-    const btn = document.getElementById('btnCapturaMapa');
+    const btn = $('btnCapturaMapa');
     if (!btn) return;
-
     btn.addEventListener('click', () => {
       if (!map || !mapReady) return;
       try {
-        const mapCanvas = map.getCanvas();
-        const exportCanvas = document.createElement('canvas');
-        const ctx = exportCanvas.getContext('2d');
-
-        const padTop = 64;
-        const padBottom = 38;
-        exportCanvas.width = mapCanvas.width;
-        exportCanvas.height = mapCanvas.height + padTop + padBottom;
-
-        ctx.fillStyle = '#071527';
-        ctx.fillRect(0, 0, exportCanvas.width, padTop);
+        const mc = map.getCanvas();
+        const k = mc.width / mc.clientWidth;
+        const sup = Math.round(52 * k);
+        const inf = Math.round(30 * k);
+        const out = document.createElement('canvas');
+        out.width = mc.width;
+        out.height = mc.height + sup + inf;
+        const ctx = out.getContext('2d');
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, padTop, exportCanvas.width, mapCanvas.height);
-        ctx.fillStyle = '#071527';
-        ctx.fillRect(0, padTop + mapCanvas.height, exportCanvas.width, padBottom);
-
-        ctx.drawImage(mapCanvas, 0, padTop);
-
-        ctx.fillStyle = '#d49a37';
-        ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
-        ctx.fillText('GeoInterfaz UPC · Plataforma Cartográfica Doctoral', 24, 26);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '13.5px "Plus Jakarta Sans", sans-serif';
-        const tit = currentItem ? `${currentItem.etiqueta}: ${currentItem.titulo}` : 'Cartografía de Franjas de Interfaz';
-        ctx.fillText(tit.slice(0, 95), 24, 48);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '11.5px "Plus Jakarta Sans", sans-serif';
-        ctx.fillText('Aida del Carmen Palmett Padilla (2026) · Universitat Politècnica de Catalunya', 24, exportCanvas.height - 15);
+        ctx.fillRect(0, 0, out.width, out.height);
+        ctx.drawImage(mc, 0, sup);
+        ctx.fillStyle = '#0f2a43';
+        ctx.font = `600 ${Math.round(15 * k)}px "Plus Jakarta Sans", sans-serif`;
+        const tit = currentItem ? `${currentItem.etiqueta}. ${currentItem.titulo}` : 'GeoInterfaz';
+        ctx.fillText(tit.length > 110 ? tit.slice(0, 108) + '…' : tit, Math.round(18 * k), Math.round(32 * k));
+        ctx.fillStyle = '#64748b';
+        ctx.font = `${Math.round(11 * k)}px "Plus Jakarta Sans", sans-serif`;
+        const pie = `${(CATALOGO.meta || {}).autora || ''} · Tesis doctoral, UPC · ${currentItem ? enlaceDe(currentItem) : ''}`;
+        ctx.fillText(pie, Math.round(18 * k), out.height - Math.round(11 * k));
 
         const link = document.createElement('a');
-        link.download = `GeoInterfaz_${currentItem?.id || 'mapa'}_lamina.png`;
-        link.href = exportCanvas.toDataURL('image/png');
+        link.download = `GeoInterfaz_${currentItem ? currentItem.id : 'mapa'}.png`;
+        link.href = out.toDataURL('image/png');
         link.click();
-        showToast('📸 Lámina cartográfica capturada con éxito en alta resolución');
+        showToast('Imagen del mapa guardada');
       } catch (err) {
-        console.warn('Error capturando mapa:', err);
-        showToast('Nota: La captura requiere aceleración gráfica compatible');
+        console.warn('No se pudo capturar el mapa:', err);
+        showToast('No se pudo generar la imagen en este navegador');
       }
     });
   }
@@ -2722,7 +2186,7 @@
         <div class="cmd-item${idx === 0 ? ' activo' : ''}" data-idx="${idx}" data-id="${it.id}">
           <span class="cmd-item-eti">${it.etiqueta}</span>
           <span class="cmd-item-tit">${it.titulo}</span>
-          <span class="cmd-item-cap">${it.tipo === 'mapa' ? '🗺️ Mapa' : it.clase}</span>
+          <span class="cmd-item-cap">${it.tipo === 'mapa' ? 'mapa' : it.clase}</span>
         </div>
       `).join('');
 
@@ -2756,7 +2220,118 @@
     });
   }
 
-  // --- INICIALIZACIÓN GLOBAL DE LA APLICACIÓN ---
+  // ------------------------------------------------- tema, presentación y ayudas
+  function temaOscuro() {
+    return document.documentElement.getAttribute('data-tema') === 'oscuro';
+  }
+  function setTema(oscuro) {
+    document.documentElement.setAttribute('data-tema', oscuro ? 'oscuro' : 'claro');
+    try { localStorage.setItem('gi-tema', oscuro ? 'oscuro' : 'claro'); } catch (_) { /* sin almacenamiento */ }
+    if (map && mapReady && !baseManual && (currentBase === 'claro' || currentBase === 'oscuro')) setBaseMap(oscuro ? 'oscuro' : 'claro');
+  }
+
+  function enPresentacion() {
+    return document.body.classList.contains('presenta');
+  }
+  function reajustarLienzo() {
+    setTimeout(() => {
+      if (map && mapReady && !$('visMapa').hidden) { map.resize(); if (currentVista) ajustarEncuadreVista(currentVista, true); }
+      if (window.fitImageZoomer && !$('visImagen').hidden) window.fitImageZoomer();
+    }, 320);
+  }
+  // Presentación: solo el contenido, a pantalla completa, para exponer la tesis pasando con las flechas.
+  function togglePresentacion(on) {
+    const v = on === undefined ? !enPresentacion() : on;
+    if (v && !currentItem) return;
+    document.body.classList.toggle('presenta', v);
+    $('presBarra').hidden = !v;
+    if (v) {
+      $('ficha').hidden = true;
+      const el = document.documentElement;
+      if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    } else if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+    reajustarLienzo();
+  }
+  function actualizarPresBarra(item, pos) {
+    $('presEti').textContent = item.etiqueta;
+    $('presTit').textContent = item.titulo;
+    $('presN').textContent = `${pos + 1} / ${ORDEN.length}`;
+    $('presAnt').disabled = pos <= 0;
+    $('presSig').disabled = pos >= ORDEN.length - 1;
+  }
+
+  function guardarReciente(id) {
+    try {
+      const r = JSON.parse(localStorage.getItem('gi-recientes') || '[]').filter((x) => x !== id);
+      r.unshift(id);
+      localStorage.setItem('gi-recientes', JSON.stringify(r.slice(0, 6)));
+    } catch (_) { /* sin almacenamiento */ }
+  }
+  function pintarRecientes() {
+    const c = $('recientes');
+    if (!c) return;
+    let r = [];
+    try { r = JSON.parse(localStorage.getItem('gi-recientes') || '[]'); } catch (_) { /* sin almacenamiento */ }
+    const its = r.map((i) => ITEMS_MAP.get(i)).filter(Boolean);
+    c.hidden = !its.length;
+    c.innerHTML = its.length
+      ? '<span class="rec-lbl">Continuar donde lo dejó</span>' +
+        its.map((o) => `<a class="chip" href="#/${o.id}" title="${esc(o.titulo)}"><i class="pt t-${o.tipo}"></i><b>${esc(etiquetaCorta(o))}</b><span>${esc(o.titulo)}</span></a>`).join('')
+      : '';
+  }
+
+  function abrirAtajos() {
+    const dlg = $('dlg');
+    const filas = [
+      ['Ctrl K', 'Buscar en toda la tesis'],
+      ['Mayús ← →', 'Elemento anterior o siguiente'],
+      ['P', 'Modo presentación (dentro de él bastan ← →)'],
+      ['M', 'Medir distancia y área en el mapa'],
+      ['3', 'Vista en perspectiva'],
+      ['Esc', 'Cerrar ventanas o salir de la presentación']
+    ];
+    $('dlgCuerpo').innerHTML = `
+      <div class="dlg-cab">
+        <div><div class="dlg-sup">Ayuda</div><h3>Atajos de teclado</h3></div>
+        <button class="ico-btn" id="dlgCerrar" aria-label="Cerrar">${ICO.cerrar}</button>
+      </div>
+      <dl class="atajos">${filas.map((f) => `<dt>${f[0].split(' ').map((k) => `<kbd>${k}</kbd>`).join(' ')}</dt><dd>${f[1]}</dd>`).join('')}</dl>`;
+    $('dlgCerrar').addEventListener('click', () => dlg.close());
+    if (!dlg.open) dlg.showModal();
+  }
+
+  function initExtras() {
+    $('btnTema').addEventListener('click', () => setTema(!temaOscuro()));
+    $('btnAtajos').addEventListener('click', abrirAtajos);
+    $('presSalir').addEventListener('click', () => togglePresentacion(false));
+    const paso = (d) => {
+      if (!currentItem) return;
+      const pos = ORDEN.indexOf(currentItem.id) + d;
+      if (pos >= 0 && pos < ORDEN.length) navigate(`#/${ORDEN[pos]}`);
+    };
+    $('presAnt').addEventListener('click', () => paso(-1));
+    $('presSig').addEventListener('click', () => paso(1));
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && enPresentacion()) togglePresentacion(false);
+    });
+    window.addEventListener('keydown', (e) => {
+      const t = document.activeElement && document.activeElement.tagName;
+      if (t === 'INPUT' || t === 'TEXTAREA') return;
+      if (e.key === '?') abrirAtajos();
+      if (e.key === 'Escape' && enPresentacion() && !document.querySelector('dialog[open]')) togglePresentacion(false);
+    });
+    const op = $('opGlobal');
+    op.addEventListener('input', () => {
+      opGlobal = parseFloat(op.value) / 100;
+      $('opGlobalV').textContent = `${op.value}%`;
+      if (currentVista) currentVista.capas.forEach(aplicarOpacidad);
+    });
+    window.addEventListener('resize', () => { if (currentItem) reajustarLienzo(); });
+  }
+
+  // ------------------------------------------------------------- inicio
   async function initApp() {
     try {
       const [resCat, resVis, resCap] = await Promise.all([
@@ -2764,84 +2339,50 @@
         fetch('data/vistas.json'),
         fetch('data/capas.json')
       ]);
-
       CATALOGO = await resCat.json();
       VISTAS = await resVis.json();
       CAPAS = await resCap.json();
-
-      (CATALOGO.items || []).forEach((it) => {
-        ITEMS_MAP.set(it.id, it);
-      });
+      (CATALOGO.items || []).forEach((it) => ITEMS_MAP.set(it.id, it));
 
       renderArbol();
+      initPanel();
       initZoomer();
       initCommandPalette();
       initHerramientaMedicion();
       init3DToggle();
       initSaltosRapidos();
       initCapturaMapa();
+      initExtras();
 
-      document.getElementById('btnMenu')?.addEventListener('click', () => {
-        document.getElementById('indice')?.classList.toggle('abierto');
+      $('btnIndice').addEventListener('click', () => mostrarIndice());
+      $('btnEncuadre').addEventListener('click', () => {
+        if (modo3D) $('btn3D').click();
+        if (currentVista) ajustarEncuadreVista(currentVista);
       });
+      $('btnRotulos').addEventListener('click', () => setRotulos(!rotulosVisibles));
+      $('cajonCerrar').addEventListener('click', () => { $('cajon').hidden = true; });
+      $('dlg').addEventListener('click', (e) => { if (e.target === $('dlg')) $('dlg').close(); });
 
-      document.getElementById('btnPlegar')?.addEventListener('click', () => {
-        const p = document.getElementById('panel');
-        if (p) {
-          p.classList.toggle('cerrado');
-          setTimeout(() => {
-            if (map && mapReady) {
-              map.resize();
-              if (currentVista) ajustarEncuadreVista(currentVista);
-            }
-          }, 260);
-        }
-      });
-
-      document.getElementById('cajonCerrar')?.addEventListener('click', () => {
-        document.getElementById('cajon').hidden = true;
-      });
-
-      const dlgInst = document.getElementById('dlgInstituciones');
-      document.getElementById('btnInstituciones')?.addEventListener('click', () => {
-        dlgInst?.showModal();
-      });
-      document.getElementById('btnCerrarInst')?.addEventListener('click', () => {
-        dlgInst?.close();
-      });
-      dlgInst?.addEventListener('click', (e) => {
-        if (e.target === dlgInst) dlgInst.close();
-      });
-
-      document.querySelectorAll('#bases .base-card').forEach((card) => {
-        card.addEventListener('click', () => {
-          const val = card.getAttribute('data-base');
-          if (val) setBaseMap(val);
-        });
-      });
-
-      document.querySelectorAll('#bases input[name="base"]').forEach((radio) => {
-        radio.addEventListener('change', () => {
-          if (radio.checked) setBaseMap(radio.value);
-        });
+      // ← → para pasar al elemento anterior o siguiente
+      window.addEventListener('keydown', (e) => {
+        if (!currentItem || e.altKey || e.ctrlKey || e.metaKey) return;
+        const t = document.activeElement && document.activeElement.tagName;
+        if (t === 'INPUT' || t === 'TEXTAREA' || document.querySelector('dialog[open]')) return;
+        const pos = ORDEN.indexOf(currentItem.id);
+        const pres = enPresentacion();
+        if (e.key === 'ArrowLeft' && (e.shiftKey || pres) && pos > 0) navigate(`#/${ORDEN[pos - 1]}`);
+        if (e.key === 'ArrowRight' && (e.shiftKey || pres) && pos < ORDEN.length - 1) navigate(`#/${ORDEN[pos + 1]}`);
+        if (e.key.toLowerCase() === 'p') togglePresentacion();
       });
 
       window.addEventListener('hashchange', router);
       router();
     } catch (err) {
-      console.error('Error inicializando el geovisor:', err);
-      document.getElementById('principal').innerHTML = `
-        <div style="padding:40px;color:#c00">
-          <h2>Error al cargar los datos del geovisor</h2>
-          <p>${err.message}</p>
-        </div>
-      `;
+      console.error('Error al iniciar el geovisor:', err);
+      $('principal').innerHTML = `<div class="error-carga"><h2>No se pudieron cargar los datos del geovisor</h2><p>${esc(err.message)}</p></div>`;
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
-  } else {
-    initApp();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp);
+  else initApp();
 })();
