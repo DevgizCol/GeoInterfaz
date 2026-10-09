@@ -329,7 +329,9 @@
         attributionControl: true
       });
 
+      window._testMap = map;
       map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-left');
+      map.addControl(new maplibregl.FullscreenControl(), 'top-left');
       map.addControl(new maplibregl.ScaleControl({ maxWidth: 120, unit: 'metric' }), 'bottom-left');
 
       const coordEl = document.getElementById('coord');
@@ -366,7 +368,13 @@
 
         let layerObj = null;
         if (currentVista && currentVista.capas) {
-          layerObj = currentVista.capas.find((c) => f.layer.id.startsWith(`lyr_${c.capa}_`));
+          const match = f.layer.id.match(/^lyr_(\d+)_/);
+          if (match) {
+            const idx = parseInt(match[1], 10);
+            layerObj = currentVista.capas[idx];
+          } else {
+            layerObj = currentVista.capas.find((c) => f.layer.id.includes(c.capa));
+          }
         }
         const layerName = layerObj ? layerObj.nombre : 'Capa';
         const tit = props.NOMBRE || props.Nombre || props.nombre || props.Name || props.MpNombre || props.DeNombre || props.NOMAH || '';
@@ -509,38 +517,59 @@
     }
   }
 
+  function ajustarEncuadreVista(vista, instant = false) {
+    if (!map || !mapReady || !vista || !vista.bbox || vista.bbox.length !== 4) return;
+    map.resize();
+    const isPanelOpen = !document.getElementById('panel')?.classList.contains('cerrado');
+    const isMobile = window.innerWidth <= 900;
+    const containerW = map.getContainer()?.clientWidth || window.innerWidth;
+    const rightPad = isMobile || !isPanelOpen ? 30 : Math.min(320, Math.floor(containerW * 0.30));
+
+    const bounds = [
+      [vista.bbox[0], vista.bbox[1]],
+      [vista.bbox[2], vista.bbox[3]]
+    ];
+    map.fitBounds(bounds, {
+      padding: { top: 40, bottom: 40, left: 40, right: rightPad },
+      maxZoom: 16,
+      duration: instant ? 0 : 550
+    });
+  }
+
   function applyVistaLayers(vista) {
     if (!map || !mapReady) return;
 
-    // Limpiar capas vectoriales y fuentes anteriores
-    activeVectorLayerIds.forEach((id) => {
-      if (map.getLayer(id)) map.removeLayer(id);
-    });
-    activeVectorSourceIds.forEach((id) => {
-      if (map.getSource(id)) map.removeSource(id);
-    });
+    // Limpiar rigurosamente todas las capas vectoriales y fuentes anteriores
+    const style = map.getStyle();
+    if (style && style.layers) {
+      style.layers.forEach((l) => {
+        if (l.id.startsWith('lyr_')) {
+          if (map.getLayer(l.id)) map.removeLayer(l.id);
+        }
+      });
+    }
+    if (style && style.sources) {
+      Object.keys(style.sources).forEach((srcId) => {
+        if (srcId.startsWith('src_')) {
+          if (map.getSource(srcId)) map.removeSource(srcId);
+        }
+      });
+    }
     activeVectorLayerIds = [];
     activeVectorSourceIds = [];
 
-    // Ajustar encuadre espacial
-    if (vista.bbox && vista.bbox.length === 4) {
-      const bounds = [
-        [vista.bbox[0], vista.bbox[1]],
-        [vista.bbox[2], vista.bbox[3]]
-      ];
-      map.fitBounds(bounds, {
-        padding: { top: 35, bottom: 35, left: 35, right: 310 },
-        maxZoom: 16.5,
-        duration: 800
-      });
-    }
+    // Auto-zoom con encuadre inteligente y sincronizado
+    ajustarEncuadreVista(vista);
+    setTimeout(() => { if (map && mapReady) ajustarEncuadreVista(vista); }, 150);
 
-    // Configurar mapa base predeterminado de la vista
+    // Configurar mapa base predeterminado de la vista sólo si difiere del actual
     const baseOpt = vista.fondo || 'osm';
     const radio = document.querySelector(`input[name="base"][value="${baseOpt}"]`);
     if (radio) {
       radio.checked = true;
-      setBaseMap(baseOpt);
+      if (currentBase !== baseOpt) {
+        setBaseMap(baseOpt);
+      }
     }
 
     // Registrar imágenes de patrones y marcadores requeridos
@@ -566,7 +595,9 @@
     // Agregar capas a MapLibre (de abajo hacia arriba para respetar el orden visual de QGIS)
     for (let i = vista.capas.length - 1; i >= 0; i--) {
       const capaObj = vista.capas[i];
-      const srcId = `src_${capaObj.capa}`;
+      const layerIdx = i;
+      capaObj._layerIds = [];
+      const srcId = `src_${layerIdx}_${capaObj.capa}`;
 
       if (!map.getSource(srcId)) {
         map.addSource(srcId, {
@@ -578,7 +609,7 @@
 
       if (capaObj.estilo && capaObj.estilo.ml) {
         capaObj.estilo.ml.forEach((ml, subIdx) => {
-          const lyrId = `lyr_${capaObj.capa}_${subIdx}`;
+          const lyrId = `lyr_${layerIdx}_${capaObj.capa}_${subIdx}`;
           const lyrDef = {
             id: lyrId,
             type: ml.type,
@@ -590,14 +621,16 @@
           if (capaObj.apagada) {
             lyrDef.layout.visibility = 'none';
           }
+          if (map.getLayer(lyrId)) map.removeLayer(lyrId);
           map.addLayer(lyrDef);
           activeVectorLayerIds.push(lyrId);
+          capaObj._layerIds.push(lyrId);
         });
       }
 
       if (capaObj.estilo && capaObj.estilo.etiqueta) {
         const etq = capaObj.estilo.etiqueta;
-        const lblId = `lyr_${capaObj.capa}__label`;
+        const lblId = `lyr_${layerIdx}_${capaObj.capa}__label`;
         const lblDef = {
           id: lblId,
           type: 'symbol',
@@ -616,8 +649,10 @@
             'text-halo-width': 1.6
           }
         };
+        if (map.getLayer(lblId)) map.removeLayer(lblId);
         map.addLayer(lblDef);
         activeVectorLayerIds.push(lblId);
+        capaObj._layerIds.push(lblId);
       }
     }
   }
@@ -627,10 +662,10 @@
     if (!cont) return;
     cont.innerHTML = '';
 
-    vista.capas.forEach((capaObj) => {
+    vista.capas.forEach((capaObj, idx) => {
       const capaEl = document.createElement('div');
       capaEl.className = `capa${capaObj.apagada ? ' off' : ''}`;
-      capaEl.id = `ui_capa_${capaObj.capa}`;
+      capaEl.id = `ui_capa_${idx}_${capaObj.capa}`;
 
       const leyHtml = capaObj.estilo && capaObj.estilo.leyenda
         ? capaObj.estilo.leyenda
@@ -640,8 +675,8 @@
 
       capaEl.innerHTML = `
         <div class="capa-tit">
-          <input type="checkbox" id="chk_${capaObj.capa}" ${capaObj.apagada ? '' : 'checked'}>
-          <label for="chk_${capaObj.capa}">${capaObj.nombre}</label>
+          <input type="checkbox" id="chk_${idx}_${capaObj.capa}" ${capaObj.apagada ? '' : 'checked'}>
+          <label for="chk_${idx}_${capaObj.capa}">${capaObj.nombre}</label>
           <button class="mini" title="Abrir tabla de atributos" data-tabla="${capaObj.capa}">☷</button>
         </div>
         <div class="ley">${leyHtml}</div>
@@ -655,12 +690,10 @@
       chk.addEventListener('change', () => {
         const encendida = chk.checked;
         capaEl.classList.toggle('off', !encendida);
-        if (map && mapReady) {
-          activeVectorLayerIds.forEach((id) => {
-            if (id.startsWith(`lyr_${capaObj.capa}_`) || id === `lyr_${capaObj.capa}__label`) {
-              if (map.getLayer(id)) {
-                map.setLayoutProperty(id, 'visibility', encendida ? 'visible' : 'none');
-              }
+        if (map && mapReady && capaObj._layerIds) {
+          capaObj._layerIds.forEach((id) => {
+            if (map.getLayer(id)) {
+              map.setLayoutProperty(id, 'visibility', encendida ? 'visible' : 'none');
             }
           });
         }
@@ -669,16 +702,14 @@
       const opInput = capaEl.querySelector(`input[data-op]`);
       opInput.addEventListener('input', () => {
         const val = parseFloat(opInput.value) / 100;
-        if (map && mapReady) {
-          activeVectorLayerIds.forEach((id) => {
-            if (id.startsWith(`lyr_${capaObj.capa}_`)) {
-              const l = map.getLayer(id);
-              if (!l) return;
-              if (l.type === 'fill') map.setPaintProperty(id, 'fill-opacity', val);
-              else if (l.type === 'line') map.setPaintProperty(id, 'line-opacity', val);
-              else if (l.type === 'circle') map.setPaintProperty(id, 'circle-opacity', val);
-              else if (l.type === 'symbol') map.setPaintProperty(id, 'icon-opacity', val);
-            }
+        if (map && mapReady && capaObj._layerIds) {
+          capaObj._layerIds.forEach((id) => {
+            const l = map.getLayer(id);
+            if (!l) return;
+            if (l.type === 'fill') map.setPaintProperty(id, 'fill-opacity', val);
+            else if (l.type === 'line') map.setPaintProperty(id, 'line-opacity', val);
+            else if (l.type === 'circle') map.setPaintProperty(id, 'circle-opacity', val);
+            else if (l.type === 'symbol') map.setPaintProperty(id, 'icon-opacity', val);
           });
         }
       });
@@ -1023,6 +1054,7 @@
         <h1><span class="eti">${item.etiqueta}:</span> ${item.titulo}</h1>
         <div class="acciones">
           ${segHtml}
+          ${hasMapa ? '<button class="btn chico" id="btnAjustarEncuadre" title="Restablecer encuadre y zoom original de la investigación">🎯 Encuadre original</button>' : ''}
           ${relBtn}
           <button class="btn pri" id="btnCompartir">📤 Compartir / Citar</button>
         </div>
@@ -1030,6 +1062,9 @@
       ${notaHtml}
     `;
 
+    document.getElementById('btnAjustarEncuadre')?.addEventListener('click', () => {
+      if (currentVista) ajustarEncuadreVista(currentVista);
+    });
     document.getElementById('btnCompartir')?.addEventListener('click', () => openShareDialog(item));
 
     const btnMasNota = document.getElementById('btnMasNota');
@@ -1534,7 +1569,16 @@
       });
 
       document.getElementById('btnPlegar')?.addEventListener('click', () => {
-        document.getElementById('panel')?.classList.toggle('cerrado');
+        const p = document.getElementById('panel');
+        if (p) {
+          p.classList.toggle('cerrado');
+          setTimeout(() => {
+            if (map && mapReady) {
+              map.resize();
+              if (currentVista) ajustarEncuadreVista(currentVista);
+            }
+          }, 260);
+        }
       });
 
       document.getElementById('cajonCerrar')?.addEventListener('click', () => {
