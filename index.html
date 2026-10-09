@@ -16,15 +16,18 @@
 <header class="barra">
   <button class="solo-movil icono" id="btnMenu" aria-label="Abrir índice">☰</button>
   <a class="marca" href="#/">
-    <img src="logo_upc.png" alt="UPC" width="34" height="32">
+    <img src="logo_aida.svg" alt="Aida Palmett" width="36" height="36" class="marca-logo">
     <span class="marca-txt">
-      <strong>GeoInterfaz <span class="marca-badge">UPC</span></strong>
-      <small>Franjas de interfaz urbano-rural en ciudades portuarias · Barranquilla</small>
+      <strong>GeoInterfaz <span class="marca-badge">AIDA PALMETT</span></strong>
+      <small>Tesis Doctoral · Franjas de interfaz urbano-rural en ciudades portuarias</small>
     </span>
   </a>
   <div class="barra-acciones">
     <button class="btn-buscar-rapido" id="btnCmdOpen" title="Búsqueda rápida en la tesis (Ctrl+K)">
       <span class="lupa">🔍</span> Buscar <kbd>Ctrl+K</kbd>
+    </button>
+    <button class="btn-instituciones" id="btnInstituciones" title="Marco Institucional y Avales Académicos">
+      <span>🏛️</span> Instituciones
     </button>
   </div>
   <nav class="nav">
@@ -142,6 +145,8 @@
           </div>
         </div>
         <div class="vis vis-doc" id="visDoc" hidden></div>
+        <!-- Visualizador interactivo de esquemas conceptuales -->
+        <div class="vis vis-esquema" id="visEsquema" hidden></div>
       </div>
     </section>
 
@@ -165,6 +170,53 @@
       <span><kbd>↑</kbd> <kbd>↓</kbd> Navegar</span>
       <span><kbd>ENTER</kbd> Abrir</span>
       <span><kbd>ESC</kbd> Cerrar</span>
+    </div>
+  </div>
+</dialog>
+
+<!-- Modal de Marco Institucional y Avales Académicos -->
+<dialog id="dlgInstituciones" class="inst-dialog">
+  <div class="inst-caja">
+    <div class="inst-cab">
+      <h3>🏛️ Marco Institucional y Avales de Investigación</h3>
+      <button class="icono" id="btnCerrarInst" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="inst-cuerpo">
+      <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.5">
+        Esta tesis doctoral se desarrolla en el marco del programa de Doctorado en Sostenibilidad de la Universitat Politècnica de Catalunya (UPC), articulando metodologías internacionales con el análisis empírico y cartografía oficial de entidades del territorio metropolitano de Barranquilla y del Caribe colombiano.
+      </p>
+      <div class="inst-grilla">
+        <div class="inst-card">
+          <div class="inst-badge">UNIVERSIDAD SEDE DOCTORAL</div>
+          <strong>Universitat Politècnica de Catalunya (UPC)</strong>
+          <p>Doctorat en Sostenibilitat · Institut Universitari de Recerca en Sostenibilitat (IS.UPC). Barcelona, España.</p>
+        </div>
+        <div class="inst-card">
+          <div class="inst-badge">UNIVERSIDAD DE COOPERACIÓN</div>
+          <strong>Universidad del Atlántico</strong>
+          <p>Facultad de Arquitectura · Grupo de Investigación Hábitat y Desarrollo Sostenible. Barranquilla, Colombia.</p>
+        </div>
+        <div class="inst-card">
+          <div class="inst-badge">PLANIFICACIÓN METROPOLITANA</div>
+          <strong>Área Metropolitana de Barranquilla (AMB)</strong>
+          <p>Plan de Manejo y Ordenamiento Territorial (PMOT) · Información de límites y directrices supramunicipales.</p>
+        </div>
+        <div class="inst-card">
+          <div class="inst-badge">AGROLOGÍA Y CARTOGRAFÍA OFICIAL</div>
+          <strong>Instituto Geográfico Agustín Codazzi (IGAC)</strong>
+          <p>Estudios agrológicos semidetallados, capacidad de uso de las tierras y coberturas espaciales del Atlántico.</p>
+        </div>
+        <div class="inst-card">
+          <div class="inst-badge">AUTORIDAD AMBIENTAL REGIONAL</div>
+          <strong>Corporación Autónoma Regional del Atlántico (CRA)</strong>
+          <p>Zonificación de ecosistemas estratégicos, Ciénaga de Mallorquín y conflictos de uso del suelo rural.</p>
+        </div>
+        <div class="inst-card">
+          <div class="inst-badge">AUTORIDAD MARÍTIMA Y PORTUARIA</div>
+          <strong>DIMAR & Asoportuaria</strong>
+          <p>Datos de tráfico marítimo-fluvial sobre el canal navegable del Río Magdalena y terminales portuarios.</p>
+        </div>
+      </div>
     </div>
   </div>
 </dialog>

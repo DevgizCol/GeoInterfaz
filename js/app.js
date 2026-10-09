@@ -990,16 +990,611 @@
     window.fitImageZoomer = fitToScreen;
   }
 
-  // --- CAMBIO DE VISTA DEL LIENZO (MAPA / LÁMINA / DOCUMENTO) ---
+  // --- MOTOR DE ESQUEMAS CONCEPTUALES INTERACTIVOS (DOCTORADO UPC) ---
+  const ESQUEMAS_DATA = {
+    'esq-1': {
+      insignia: 'MARCO TEÓRICO · CAPÍTULO II',
+      titulo: 'Genealogía paradigmática de la interfaz urbano-rural',
+      subtitulo: 'Evolución histórica y epistemológica del concepto de interfaz: desde la visión dicotómica clásica hasta el enfoque hidro-logístico portuario contemporáneo.',
+      nodos: [
+        {
+          id: 'p1',
+          fase: '1900 – 1950',
+          nombre: 'Enfoque Dicótomo / Dualista',
+          desc: 'Frontera rígida y separación absoluta entre ciudad y campo.',
+          color: '#64748b',
+          icono: '🧱',
+          autores: 'Von Thünen (1826), Park & Burgess (1925), Christaller (1933)',
+          concepto: 'La ciudad y el campo se conciben como dos entidades cerradas, opuestas y mutuamente excluyentes. El borde es una línea divisoria física y administrativa sin espesor funcional ni gradación.',
+          indicadores: [
+            'Límites político-administrativos perimetrales cerrados',
+            'Renta de la tierra con gradiente concéntrico decreciente clásico',
+            'Inexistencia de dinámicas híbridas reconocidas normativamente'
+          ],
+          impacto: 'En Barranquilla histórica, este modelo se reflejó en la separación neta entre el casco fundacional y el suelo rústico de haciendas ganaderas antes del inicio del proceso de metropolización.',
+          mapasRel: ['fig-2']
+        },
+        {
+          id: 'p2',
+          fase: '1950 – 1980',
+          nombre: 'Enfoque Periurbano y Fringe Clásico',
+          desc: 'Zona de transición, dispersión suburbana y especulación de rentas.',
+          color: '#0284c7',
+          icono: '🏘️',
+          autores: 'Wehrwein (1942), Pryor (1968), Conzen (1960), Carter (1972)',
+          concepto: 'Aparición del concepto de "Urban Fringe". Se reconoce la franja como una corona de fricción donde compiten el uso agrícola residual y la invasión de usos urbanos, caracterizada por discontinuidad morfológica y parcelaciones.',
+          indicadores: [
+            'Tasas aceleradas de cambio de cobertura vegetal a suelo sellado',
+            'Aparición de parcelaciones residenciales y canteras periféricas',
+            'Invasión progresiva a lo largo de vías radiales e infraestructura'
+          ],
+          impacto: 'Explicó el crecimiento desbordado hacia el suroccidente y sur del AMB (Soledad y Malambo) durante las décadas de industrialización y migración regional.',
+          mapasRel: ['fig-3', 'atlas-3-5']
+        },
+        {
+          id: 'p3',
+          fase: '1980 – 2010',
+          nombre: 'Enfoque Sistémico y Ecología del Paisaje',
+          desc: 'Territorio híbrido, mosaico ecológico y flujos metabólicos.',
+          color: '#059669',
+          icono: '🌿',
+          autores: 'Forman & Godron (1986), Allen (2003), Tacoli (1998), Sieverts (1997)',
+          concepto: 'La interfaz deja de verse como borde residual para entenderse como un ecosistema híbrido dinámico ("Zwischenstadt" o ciudad intermedia) con intercambios bidireccionales de materia, energía, recursos hídricos y mano de obra.',
+          indicadores: [
+            'Fragmentación de hábitats y pérdida de corredores biológicos',
+            'Servicios ecosistémicos de aprovisionamiento y regulación hídrica',
+            'Movilidad pendular y mercados laborales periurbanos'
+          ],
+          impacto: 'Fundamental para comprender la extrema fragilidad de la Ciénaga de Mallorquín frente al avance constructivo del norte de Barranquilla y Puerto Colombia.',
+          mapasRel: ['fig-4', 'atlas-3-9']
+        },
+        {
+          id: 'p4',
+          fase: '2010 – 2026',
+          nombre: 'Interfaz Portuaria y Territorios Hidro-Logísticos',
+          desc: 'Articulación global-local, nodos portuarios y gradientes del Sur Global.',
+          color: '#d49a37',
+          icono: '🚢',
+          autores: 'Palmett (2026), Hoyle (1989), Ducruet (2006), Monios & Wilmsmeier (2012)',
+          concepto: 'Aporte central de la tesis doctoral: en ciudades portuarias, la interfaz urbano-rural está tensionada por cadenas globales de suministro, frentes de agua fluvio-marítimos y plataformas logísticas supramunicipales que exigen ordenamiento funcional.',
+          indicadores: [
+            'Presión de bodegas, patios de contenedores y zonas francas sobre suelo rural',
+            'Canal navegable del Río Magdalena y accesos marítimos',
+            'Conflictos de zonificación entre autoridades portuarias (DIMAR) y ambientales (CRA)'
+          ],
+          impacto: 'Base del Modelo IOTF-IUR implementado para el Corredor Portuario, Vía 40 y la Circunvalar de la Prosperidad en el Área Metropolitana de Barranquilla.',
+          mapasRel: ['fig-52', 'fig-56', 'fig-63']
+        }
+      ]
+    },
+    'esq-2': {
+      insignia: 'DIMENSIONES ANALÍTICAS · CAPÍTULO II',
+      titulo: 'Cuatro dimensiones constitutivas de la interfaz urbano-rural',
+      subtitulo: 'Estructura analítica tetradimensional para diagnosticar, delimitar y ordenar operativamente las franjas de borde en ciudades portuarias.',
+      nodos: [
+        {
+          id: 'd1',
+          fase: 'Dimensión 1',
+          nombre: 'Dimensión Biofísica y Ecosistémica',
+          desc: 'Estructura ecológica principal, cuencas hídricas y vulnerabilidad ambiental.',
+          color: '#059669',
+          icono: '🌊',
+          autores: 'Forman (1995), McHarg (1969), CRA Atlántico (2020)',
+          concepto: 'Soporte natural del territorio que condiciona y debe orientar la ocupación humana. Integra cuerpos de agua lénticos y lóticos, coberturas vegetales nativas, geología, pendientes y áreas de amortiguamiento ambiental estuarino.',
+          indicadores: [
+            'Cuenca Ciénaga de Mallorquín y dinámica mareal estuarina',
+            'Relictos de Bosque Seco Tropical (BST) y rondas hídricas de arroyos',
+            'Conflictos de uso por sobreutilización y pérdida de permeabilidad del suelo'
+          ],
+          impacto: 'Permite delimitar las áreas no urbanizables de protección estricta en el borde norte costero y la ribera del Río Magdalena.',
+          mapasRel: ['fig-4', 'atlas-3-9']
+        },
+        {
+          id: 'd2',
+          fase: 'Dimensión 2',
+          nombre: 'Dimensión Morfológica y Espacial',
+          desc: 'Forma urbana, gradientes de densidad, fragmentación y frentes de agua.',
+          color: '#0284c7',
+          icono: '📐',
+          autores: 'Pryor (1968), Conzen (1960), Indovina (1990)',
+          concepto: 'Patrones geométricos y físicos de ocupación del suelo. Mide la compacidad vs. dispersión (sprawl), la continuidad del parcelario y la conformación de frentes fluviales y marítimos bajo presión inmobiliaria.',
+          indicadores: [
+            'Huella urbana y evolución temporal de áreas selladas',
+            'Tamaño medio y geometría de predios en suelo de expansión',
+            'Efecto barrera de grandes infraestructuras viales metropolitanas'
+          ],
+          impacto: 'Revela la discontinuidad del borde entre Barranquilla y Puerto Colombia a lo largo del corredor universitario y la Vía al Mar.',
+          mapasRel: ['fig-3', 'atlas-3-4', 'atlas-3-8']
+        },
+        {
+          id: 'd3',
+          fase: 'Dimensión 3',
+          nombre: 'Dimensión Funcional, Productiva y Logística',
+          desc: 'Actividades económicas, corredores intermodales y suelo logístico-industrial.',
+          color: '#d49a37',
+          icono: '🏭',
+          autores: 'Hoyle (1989), Hesse (2008), Ducruet (2007)',
+          concepto: 'Flujos de personas, mercancías y energía que articulan el borde metropolitano con el puerto y el hinterland regional. Capacidad de soporte para operaciones logísticas e intermodales de gran escala.',
+          indicadores: [
+            'Localización de zonas francas, bodegas y terminales de carga',
+            'Capacidad y aforos vehiculares sobre la Circunvalar de la Prosperidad',
+            'Aptitud agrológica del suelo según estudios del IGAC'
+          ],
+          impacto: 'Determina la delimitación de las UFP 1 (Unidades Logístico-Portuarias) en proximidad al canal navegable y autopistas troncales.',
+          mapasRel: ['atlas-3-10', 'fig-52', 'comp-articulador']
+        },
+        {
+          id: 'd4',
+          fase: 'Dimensión 4',
+          nombre: 'Dimensión Socio-Institucional y de Gobernanza',
+          desc: 'Competencias jurisdiccionales, vacíos normativos y gobernanza metropolitana.',
+          color: '#7c3aed',
+          icono: '⚖️',
+          autores: 'Allen (2003), Brenner (2004), AMB (2020)',
+          concepto: 'Marco normativo, instrumentos de planificación (POT/PMOT) y capacidad institucional de coordinación supramunicipal frente a presiones inmobiliarias y descoordinación entre los municipios.',
+          indicadores: [
+            'Desfase normativo entre los POT de los 5 municipios metropolitanos',
+            'Superposición de autoridades: AMB, CRA, DIMAR y Gobernación',
+            'Vulnerabilidad social y acceso a equipamientos básicos en la periferia'
+          ],
+          impacto: 'Demuestra la urgencia de adoptar el Modelo IOTF-IUR como norma vinculante de superior jerarquía en el AMB.',
+          mapasRel: ['fig-2', 'tabla-74', 'comp-normativo']
+        }
+      ]
+    },
+    'esq-3': {
+      insignia: 'MODELO MORFOLÓGICO · CAPÍTULO II',
+      titulo: 'Modelo estructural-funcional de Pryor adaptado al Sur Global',
+      subtitulo: 'Reconfiguración del gradiente de borde periurbano para metrópolis portuarias latinoamericanas con alta polarización socio-espacial.',
+      nodos: [
+        {
+          id: 'z1',
+          fase: 'Zona 1',
+          nombre: 'Núcleo Metropolitano Consolidado (Urban Core)',
+          desc: 'Máxima densidad, servicios completos y actividades financieras.',
+          color: '#0f172a',
+          icono: '🏙️',
+          autores: 'Pryor (1968), Adaptación Palmett (2026)',
+          concepto: 'Centro de gravedad económico y residencial de la metrópoli. Presenta consolidación constructiva total, concentración de empleo terciario y acceso directo al puerto histórico.',
+          indicadores: [
+            'Densidades superiores a 120 hab/ha',
+            'Cobertura de servicios públicos domiciliarios > 98%',
+            'Suelo urbano consolidado sin vacíos de gran escala'
+          ],
+          impacto: 'Corresponde a las localidades Norte-Centro Histórico y Riomar de Barranquilla.',
+          mapasRel: ['fig-2', 'atlas-3-4']
+        },
+        {
+          id: 'z2',
+          fase: 'Zona 2',
+          nombre: 'Franja Urbana Interna (Inner Urban Fringe)',
+          desc: 'Transición inmediata, renovación urbana y choque de densidades.',
+          color: '#0284c7',
+          icono: '🏗️',
+          autores: 'Pryor (1968), Wehrwein (1942)',
+          concepto: 'Espacio de contacto directo entre la ciudad consolidada y las zonas de crecimiento reciente. Coexisten procesos de densificación vertical con asentamientos populares consolidados.',
+          indicadores: [
+            'Suelo urbano no consolidado y áreas de cesión',
+            'Cambios de uso de vivienda a comercio y talleres industriales',
+            'Presión sobre corredores viales primarios'
+          ],
+          impacto: 'Franja de contacto en Soledad norte y borde de la Vía 40.',
+          mapasRel: ['fig-3', 'atlas-3-8']
+        },
+        {
+          id: 'z3',
+          fase: 'Zona 3',
+          nombre: 'Franja Urbana Externa (Outer Urban Fringe)',
+          desc: 'Expansión formal, condominios campestres y plataformas de carga.',
+          color: '#d49a37',
+          icono: '🚛',
+          autores: 'Pryor (1968), Follmann (2015)',
+          concepto: 'Zona de mayor intensidad de transformación territorial. En ciudades portuarias, este sector aloja centros de distribución logística, zonas francas y urbanizaciones cerradas de estrato alto.',
+          indicadores: [
+            'Predios de gran extensión con licencias de parcelación',
+            'Alta dependencia del vehículo particular y transporte pesado',
+            'Transformación acelerada de fincas rústicas'
+          ],
+          impacto: 'Corredor Puerto Colombia - Galapa y eje de la Circunvalar de la Prosperidad.',
+          mapasRel: ['fig-52', 'fig-62']
+        },
+        {
+          id: 'z4',
+          fase: 'Zona 4',
+          nombre: 'Franja Rural Interna (Inner Rural Fringe)',
+          desc: 'Agricultura residual, minería de materiales y asentamientos dispersos.',
+          color: '#16a34a',
+          icono: '🚜',
+          autores: 'Pryor (1968), Bryant et al. (1982)',
+          concepto: 'Predominio de usos agrícolas y pecuarios tradicionales, pero sometidos a alta incertidumbre por expectativas de especulación inmobiliaria y concesiones viales.',
+          indicadores: [
+            'Capacidad agrológica agredida por canteras de calizas y agregados',
+            'Dispersión habitacional y déficit de saneamiento básico',
+            'Supervivencia de economías campesinas locales'
+          ],
+          impacto: 'Sector rural de Galapa y Malambo interior.',
+          mapasRel: ['atlas-3-10', 'fig-55']
+        },
+        {
+          id: 'z5',
+          fase: 'Zona 5',
+          nombre: 'Matriz Rural Profunda (Hinterland Ecológico-Regional)',
+          desc: 'Conservación ambiental, humedales y conectividad regional.',
+          color: '#15803d',
+          icono: '🌳',
+          autores: 'Forman (1995), Palmett (2026)',
+          concepto: 'Matriz biofísica que suministra servicios ecosistémicos de escala regional. Actúa como reservorio de biodiversidad y amortiguador climático ante eventos extremos.',
+          indicadores: [
+            'Complejo cenagoso y llanuras de inundación del Magdalena',
+            'Suelo rural de protección forestal y recarga de acuíferos',
+            'Mínima presión de impermeabilización'
+          ],
+          impacto: 'Ciénagas de Mallorquín, Bahía y zona sur del departamento del Atlántico.',
+          mapasRel: ['fig-4', 'atlas-3-9']
+        }
+      ]
+    },
+    'esq-4': {
+      insignia: 'DINÁMICAS DE TRANSFORMACIÓN · CAPÍTULO II',
+      titulo: 'Tres vectores de periurbanización contemporánea (Follmann)',
+      subtitulo: 'Fuerzas conductoras que moldean el territorio periférico en metrópolis del Sur Global según Alexander Follmann (2015).',
+      nodos: [
+        {
+          id: 'v1',
+          fase: 'Vector 1',
+          nombre: 'Expansión Residencial Dual (Formal e Informal)',
+          desc: 'Gated communities de élite frente a hábitats autoconstruidos populares.',
+          color: '#0284c7',
+          icono: '🏘️',
+          autores: 'Follmann (2015), Borsdorf (2003), Sabatini (2001)',
+          concepto: 'Polarización socioespacial aguda en el borde: condominios cerrados con áreas recreativas privadas y colegios coexisten contiguos a asentamientos sin títulos ni redes hidrosanitarias completas.',
+          indicadores: [
+            'Segregación espacial y barreras de control de acceso físico',
+            'Precios del m² de suelo con brechas superiores al 800%',
+            'Asentamientos en zonas de alto riesgo de inundación o remoción en masa'
+          ],
+          impacto: 'Contraste visible en Puerto Colombia (Altos de Pradomar / Sabanilla) frente a sectores vulnerables de Soledad y Malambo.',
+          mapasRel: ['atlas-3-4', 'fig-53']
+        },
+        {
+          id: 'v2',
+          fase: 'Vector 2',
+          nombre: 'Implantación Logística, Portuaria e Industrial',
+          desc: 'Plataformas intermodales, bodegaje masivo y zonas francas.',
+          color: '#d49a37',
+          icono: '📦',
+          autores: 'Follmann (2015), Hesse (2008), Cidell (2010)',
+          concepto: 'Colonización del suelo rural plano y económico por infraestructuras de apoyo a la globalización. El borde periurbano se transforma en el corazón logístico de la región metropolitana.',
+          indicadores: [
+            'Hectáreas de suelo rústico convertidas a polígonos industriales',
+            'Flujos continuos de transporte de carga pesada',
+            'Dependencia directa de la conectividad fluvio-marítima y accesos portuarios'
+          ],
+          impacto: 'Concentración de parques empresariales sobre la Circunvalar de la Prosperidad y el Corredor Portuario de Barranquilla.',
+          mapasRel: ['fig-52', 'fig-60', 'comp-articulador']
+        },
+        {
+          id: 'v3',
+          fase: 'Vector 3',
+          nombre: 'Degradación Agraria y Presión Ecosistémica',
+          desc: 'Pérdida de soberanía alimentaria, parcelaciones rústicas y erosión.',
+          color: '#dc2626',
+          icono: '📉',
+          autores: 'Follmann (2015), Allen (2003), CRA (2020)',
+          concepto: 'Asfixia progresiva de la producción campesina debido a la subida de avalúos, contaminación hídrica, venta de parcelas para ocio de fin de semana y extracción minera no regulada.',
+          indicadores: [
+            'Disminución del área cultivada en cultivos tradicionales de pancoger',
+            'Sobreexplotación de canteras para materiales de construcción urbana',
+            'Disrupción hidrológica de caños y ciénagas por rellenos ilegales'
+          ],
+          impacto: 'Deterioro de la capacidad agrológica documentado por el IGAC en los municipios metropolitanos.',
+          mapasRel: ['atlas-3-9', 'atlas-3-10']
+        }
+      ]
+    },
+    'esq-5': {
+      insignia: 'ARQUITECTURA DE LA INVESTIGACIÓN · CAPÍTULO I',
+      titulo: 'Trazabilidad epistemológica y articulación metodológica',
+      subtitulo: 'Ruta metodológica en cinco fases sucesivas desde la fundamentación teórica hasta la propuesta operativa de planificación territorial.',
+      nodos: [
+        {
+          id: 'f1',
+          fase: 'Fase I',
+          nombre: 'Fundamentación Teórico-Epistemológica',
+          desc: 'Revisión crítica de la literatura de franjas de interfaz en ciudades portuarias.',
+          color: '#3b82f6',
+          icono: '📚',
+          autores: 'Capítulo I y II de la Tesis',
+          concepto: 'Construcción del marco teórico interdisciplinario articulando el urbanismo, la ecología del paisaje, la geografía portuaria y el derecho territorial latinoamericano.',
+          indicadores: [
+            'Revisión sistemática de más de 200 fuentes bibliográficas internacionales',
+            'Formulación de hipótesis y preguntas de investigación doctoral',
+            'Definición del marco conceptual de 4 dimensiones constitutivas'
+          ],
+          impacto: 'Estableció las bases conceptuales para diferenciar la interfaz portuaria de un periurbano mediterráneo o interior tradicional.',
+          mapasRel: ['esq-1', 'esq-2', 'esq-3']
+        },
+        {
+          id: 'f2',
+          fase: 'Fase II',
+          nombre: 'Benchmarking y Análisis Comparado Internacional',
+          desc: 'Estudio de 4 metrópolis portuarias: Barranquilla, Veracruz, Santos y Valparaíso.',
+          color: '#0284c7',
+          icono: '🌎',
+          autores: 'Capítulo IV de la Tesis',
+          concepto: 'Evaluación comparativa multivariable entre ciudades portuarias que combinan dinámicas fluviales y marítimas para identificar patrones comunes de tensión urbano-rural.',
+          indicadores: [
+            'Matriz comparativa de gobernanza portuaria y escala metropolitana',
+            'Tráfico TEUs y longitud de interfaces logísticas',
+            'Vulnerabilidad ambiental y modelos de expansión periurbana'
+          ],
+          impacto: 'Permitió validar que las patologías de borde observadas en Barranquilla responden a dinámicas estructurales de las ciudades puerto del continente.',
+          mapasRel: ['fig-1', 'fig-40', 'fig-43', 'fig-46']
+        },
+        {
+          id: 'f3',
+          fase: 'Fase III',
+          nombre: 'Diagnóstico Territorial Multidimensional del AMB',
+          desc: 'Geoprocesamiento en QGIS, armonización de planes POT/PMOT y cruce agrológico IGAC/CRA.',
+          color: '#10b981',
+          icono: '🔬',
+          autores: 'Capítulo III de la Tesis',
+          concepto: 'Procesamiento espacial de más de 43 capas vectoriales del AMB para caracterizar la realidad empírica del borde a escala 1:10.000 y 1:25.000.',
+          indicadores: [
+            'Armonización de capas de uso del suelo de 5 municipios metropolitanos',
+            'Evaluación agrológica semidetallada IGAC (Clases agrológicas IV a VII)',
+            'Mapa de conflictos de uso del suelo CRA'
+          ],
+          impacto: 'Producción del Atlas Cartográfico de la Interfaz con 13 láminas de alta precisión espacial.',
+          mapasRel: ['fig-3', 'fig-4', 'atlas-3-8', 'atlas-3-9', 'atlas-3-10']
+        },
+        {
+          id: 'f4',
+          fase: 'Fase IV',
+          nombre: 'Modelo IOTF-IUR y Delimitación Funcional',
+          desc: 'Formulación del Instrumento de Ordenamiento y delimitación de las UFP.',
+          color: '#f59e0b',
+          icono: '🧭',
+          autores: 'Capítulo V de la Tesis',
+          concepto: 'Superación del límite rígido mediante una delimitación funcional basada en variables continuas y zonificación operativa en Unidades Funcionales de Planificación (UFP 1 a 4).',
+          indicadores: [
+            'Algoritmo de delimitación funcional por gradientes territoriales',
+            'Fichas técnicas normativas para UFP logísticas y residenciales',
+            'Límites de amortiguamiento y protección ecosistémica'
+          ],
+          impacto: 'Entrega una cartografía propositiva lista para ser incorporada en la revisión del PMOT del AMB.',
+          mapasRel: ['fig-52', 'fig-56', 'tabla-74']
+        },
+        {
+          id: 'f5',
+          fase: 'Fase V',
+          nombre: 'Propuesta de Gobernanza e Instrumentos de Gestión',
+          desc: 'Sistema multinodal, lineamientos de política pública y transferencia metodológica.',
+          color: '#8b5cf6',
+          icono: '🏛️',
+          autores: 'Capítulo V y Conclusiones',
+          concepto: 'Diseño institucional de una mesa permanente de gobernanza territorial y un modelo de articulación intermodal centrado en 4 nodos y un nuevo puerto interior.',
+          indicadores: [
+            'Matriz de competencias institucionales cruzadas',
+            'Esquema multinodal sobre la Circunvalar de la Prosperidad',
+            'Directrices para instrumentos de captura de plusvalías y compensación'
+          ],
+          impacto: 'Hoja de ruta concreta para que los tomadores de decisiones armonicen la expansión económica portuaria con la preservación ambiental.',
+          mapasRel: ['fig-57', 'fig-61', 'fig-63']
+        }
+      ]
+    },
+    'esq-6-1': {
+      insignia: 'SÍNTESIS DOCTORAL · CAPÍTULO V',
+      titulo: 'Modelo Metodológico Integral IOTF-IUR',
+      subtitulo: 'Instrumento de Ordenamiento Territorial Funcional para la Interfaz Urbano-Rural: el aporte troncal de la investigación doctoral.',
+      nodos: [
+        {
+          id: 'c1',
+          fase: 'Pilar A',
+          nombre: 'Delimitación Funcional y Criterios Multiescalares',
+          desc: 'Definición operativa de la franja superando límites político-administrativos.',
+          color: '#0284c7',
+          icono: '📐',
+          autores: 'Aida Palmett (2026), Tesis Doctoral UPC',
+          concepto: 'Reemplaza el perímetro urbano estático por una franja de espesor variable definida mediante la superposición multicriterio de discontinuidades morfológicas, cuencas hídricas y áreas de influencia vial.',
+          indicadores: [
+            'Polígono funcional de la interfaz metropolitana del AMB',
+            'Buffer de conectividad multimodal sobre vías 4G',
+            'Envolvente de amortiguamiento del ecosistema de Mallorquín'
+          ],
+          impacto: 'Establece con precisión milimétrica la geografía de intervención del instrumento.',
+          mapasRel: ['fig-3', 'fig-65', 'tabla-74']
+        },
+        {
+          id: 'c2',
+          fase: 'Pilar B',
+          nombre: 'Zonificación en Unidades Funcionales (UFPs 1 al 4)',
+          desc: 'Régimen de usos compatibles, condicionados y prohibidos.',
+          color: '#d49a37',
+          icono: '📑',
+          autores: 'Aida Palmett (2026)',
+          concepto: 'Cuatro categorías operativas que traducen el diagnóstico en reglas claras de aprovechamiento: UFP 1 (Logístico-Portuaria), UFP 2 (Residencial de Expansión), UFP 3 (Transición Ambiental) y UFP 4 (Protección Ecosistémica).',
+          indicadores: [
+            'Índices de ocupación y construcción diferenciados',
+            'Compatibilidad con la capacidad agrológica del suelo (IGAC)',
+            'Obligación de cesiones para corredores de conectividad verde'
+          ],
+          impacto: 'Resuelve el caos de incompatibilidad entre industrias pesadas y viviendas periurbanas.',
+          mapasRel: ['fig-52', 'fig-56', 'comp-normativo']
+        },
+        {
+          id: 'c3',
+          fase: 'Pilar C',
+          nombre: 'Sistema Multinodal y Corredores de Integración',
+          desc: '4 Nodos estratégicos integrados por la Circunvalar y el Nuevo Puerto Interior.',
+          color: '#059669',
+          icono: '⚡',
+          autores: 'Aida Palmett (2026)',
+          concepto: 'Estructura reticular que descentraliza las actividades del núcleo metropolitano conectando nodos especializados: Nodo 1 (Ecoturístico), Nodo 2 (Agroindustrial), Nodo 3 (Cultural) y Nodo 4 (Industrial-Aeronáutico).',
+          indicadores: [
+            'Localización del Nuevo Puerto Interior sobre el eje platanal',
+            'Capacidad de intercambio modal de carga y pasajeros',
+            'Reducción de congestión vehicular en el casco central de Barranquilla'
+          ],
+          impacto: 'Convierte la Circunvalar de la Prosperidad en el eje vertebrador del futuro metropolitano.',
+          mapasRel: ['fig-57', 'fig-58', 'fig-59', 'fig-60', 'fig-61', 'fig-62', 'fig-63']
+        },
+        {
+          id: 'c4',
+          fase: 'Pilar D',
+          nombre: 'Gobernanza Supramunicipal y Monitoreo Territorial',
+          desc: 'Mecanismo institucional vinculante para los 5 municipios y entes de control.',
+          color: '#7c3aed',
+          icono: '🏛️',
+          autores: 'Aida Palmett (2026)',
+          concepto: 'Estructura de gestión participativa y técnica liderada por el AMB, con participación de la CRA, DIMAR y secretarías de planeación para asegurar la aplicación estricta del modelo.',
+          indicadores: [
+            'Mesa Técnica Permanente de la Interfaz Portuaria',
+            'Geovisor GeoInterfaz como Observatorio Territorial Abierto',
+            'Banco metropolitano de suelo e instrumentos de captura de plusvalías'
+          ],
+          impacto: 'Garantiza la sostenibilidad y permanencia de las directrices de la tesis a largo plazo.',
+          mapasRel: ['tabla-74', 'comp-normativo']
+        }
+      ]
+    }
+  };
+
+  function renderEsquemaInteractivo(item) {
+    const visEsquema = document.getElementById('visEsquema');
+    if (!visEsquema) return;
+
+    const data = ESQUEMAS_DATA[item.id] || {
+      insignia: 'ESQUEMA CONCEPTUAL · TESIS DOCTORAL',
+      titulo: item.titulo,
+      subtitulo: item.nota || 'Esquema metodológico de la investigación doctoral.',
+      nodos: []
+    };
+
+    let nodosHtml = '';
+    (data.nodos || []).forEach((nodo, idx) => {
+      nodosHtml += `
+        <div class="esq-nodo-card ${idx === 0 ? 'activo' : ''}" data-idx="${idx}" style="--c-nodo:${nodo.color}">
+          <div class="esq-nodo-icono">${nodo.icono || '📌'}</div>
+          <div class="esq-nodo-info">
+            <span class="esq-nodo-fase">${nodo.fase || 'FASE'}</span>
+            <h4>${nodo.nombre}</h4>
+            <p>${nodo.desc || ''}</p>
+          </div>
+          <div class="esq-nodo-flecha">→</div>
+        </div>
+      `;
+    });
+
+    visEsquema.innerHTML = `
+      <div class="esq-contenedor">
+        <div class="esq-cabecera">
+          <div class="esq-insignia">✨ ${data.insignia}</div>
+          <h2>${item.etiqueta}: ${data.titulo}</h2>
+          <p>${data.subtitulo}</p>
+        </div>
+        <div class="esq-layout">
+          <div class="esq-nodos-col">
+            <div class="esq-instruccion">🔍 Seleccione o pase el mouse sobre un componente para explorar su fundamentación:</div>
+            <div class="esq-nodos-lista" id="esqNodosLista">
+              ${nodosHtml}
+            </div>
+          </div>
+          <div class="esq-detalle-col" id="esqDetalleCol"></div>
+        </div>
+      </div>
+    `;
+
+    function actualizarDetalle(idx) {
+      const nodo = (data.nodos || [])[idx];
+      if (!nodo) return;
+
+      const detCol = document.getElementById('esqDetalleCol');
+      if (!detCol) return;
+
+      const indHtml = (nodo.indicadores || [])
+        .map((ind) => `<li><strong>•</strong> ${ind}</li>`)
+        .join('');
+
+      let ctaHtml = '';
+      if (nodo.mapasRel && nodo.mapasRel.length) {
+        ctaHtml = nodo.mapasRel
+          .map((mid) => {
+            const m = ITEMS_MAP.get(mid);
+            if (!m) return '';
+            return `<a href="#/${m.id}" class="btn chico" style="text-decoration:none">🗺️ Ver ${m.etiqueta}: ${m.titulo.substring(0, 30)}…</a>`;
+          })
+          .filter(Boolean)
+          .join('');
+      }
+
+      const hasImagen = Boolean((item.lamina && item.lamina.src) || (item.imagenes && item.imagenes.length));
+      if (hasImagen) {
+        ctaHtml += `<button class="btn chico" id="btnEsqVerImagen" title="Ver lámina/gráfico original de alta definición">🖼️ Gráfico original</button>`;
+      }
+
+      detCol.innerHTML = `
+        <div class="esq-det-cab">
+          <div class="esq-det-ico" style="background:${nodo.color}18;color:${nodo.color}">${nodo.icono || '📌'}</div>
+          <div class="esq-det-tit-wrap">
+            <span style="font-size:11px;font-weight:700;color:${nodo.color};letter-spacing:.05em">${nodo.fase}</span>
+            <h3>${nodo.nombre}</h3>
+            ${nodo.autores ? `<div class="esq-det-autores"><strong>Referencia:</strong> ${nodo.autores}</div>` : ''}
+          </div>
+        </div>
+
+        <div class="esq-det-sec-tit">Definición conceptual y marco doctoral</div>
+        <div class="esq-det-concepto">${nodo.concepto}</div>
+
+        ${nodo.indicadores && nodo.indicadores.length ? `
+          <div class="esq-det-sec-tit">Variables e indicadores analizados</div>
+          <ul class="esq-det-ind-lista">${indHtml}</ul>
+        ` : ''}
+
+        ${nodo.impacto ? `
+          <div class="esq-det-impacto">
+            <strong>Impacto en el AMB / Ciudades Portuarias:</strong><br>
+            ${nodo.impacto}
+          </div>
+        ` : ''}
+
+        ${ctaHtml ? `<div class="esq-det-cta">${ctaHtml}</div>` : ''}
+      `;
+
+      document.getElementById('btnEsqVerImagen')?.addEventListener('click', () => {
+        switchLienzoView('imagen');
+      });
+    }
+
+    // Inicializar primer nodo
+    actualizarDetalle(0);
+
+    const cards = visEsquema.querySelectorAll('.esq-nodo-card');
+    cards.forEach((card) => {
+      const idx = parseInt(card.getAttribute('data-idx'), 10);
+      const activar = () => {
+        cards.forEach((c) => c.classList.remove('activo'));
+        card.classList.add('activo');
+        actualizarDetalle(idx);
+      };
+      card.addEventListener('mouseenter', activar);
+      card.addEventListener('click', activar);
+    });
+  }
+
+  // --- CAMBIO DE VISTA DEL LIENZO (MAPA / LÁMINA / DOCUMENTO / ESQUEMA) ---
   function switchLienzoView(mode) {
     const visMapa = document.getElementById('visMapa');
     const visImagen = document.getElementById('visImagen');
     const visDoc = document.getElementById('visDoc');
+    const visEsquema = document.getElementById('visEsquema');
     const segButtons = document.querySelectorAll('#cabecera .seg button');
 
     visMapa.hidden = mode !== 'mapa';
     visImagen.hidden = mode !== 'imagen';
     visDoc.hidden = mode !== 'doc';
+    if (visEsquema) visEsquema.hidden = mode !== 'esquema';
 
     segButtons.forEach((b) => {
       b.classList.toggle('on', b.getAttribute('data-v') === mode);
@@ -1051,6 +1646,7 @@
     const migaTxt = item.ruta && item.ruta.length ? item.ruta.join(' › ') : 'Tesis doctoral';
 
     // Determinar vistas disponibles para el conmutador segmentado (.seg)
+    const isEsquema = item.clase === 'esquema' || item.tipo === 'esquema' || Boolean(ESQUEMAS_DATA[item.id]);
     const hasMapa = Boolean(item.vista);
     const hasLamina = Boolean(item.lamina && item.lamina.src);
     const hasFiguraImg = Boolean(item.imagenes && item.imagenes.length);
@@ -1058,7 +1654,14 @@
     const hasDoc = Boolean(item.tabla || hasFiguraImg);
 
     let segHtml = '';
-    if (hasMapa && hasImagen) {
+    if (isEsquema) {
+      segHtml = `
+        <div class="seg" role="group" aria-label="Cambiar vista">
+          <button data-v="esquema" class="on">🧠 Esquema conceptual interactivo</button>
+          ${hasImagen ? `<button data-v="imagen">🖼️ Gráfico original (Alta resolución)</button>` : ''}
+        </div>
+      `;
+    } else if (hasMapa && hasImagen) {
       segHtml = `
         <div class="seg" role="group" aria-label="Cambiar vista">
           <button data-v="mapa" class="on">🗺️ Mapa interactivo</button>
@@ -1143,7 +1746,14 @@
     const zoomImg = document.getElementById('zoomImg');
     const visDoc = document.getElementById('visDoc');
 
-    if (hasMapa) {
+    if (isEsquema) {
+      switchLienzoView('esquema');
+      renderEsquemaInteractivo(item);
+      if (zoomImg && (hasLamina || hasFiguraImg)) {
+        zoomImg.src = `data/${hasLamina ? item.lamina.src : item.imagenes[0].src}`;
+        zoomImg.alt = item.titulo;
+      }
+    } else if (hasMapa) {
       switchLienzoView('mapa');
       loadVista(item.vista);
       if (zoomImg) {
@@ -1182,7 +1792,7 @@
       } catch (_) {
         visDoc.innerHTML = `<div class="hoja"><p>No se pudo cargar la tabla ${item.tabla}</p></div>`;
       }
-    } else if (hasFiguraImg) {
+    } else if (hasFiguraImg && !isEsquema) {
       visDoc.innerHTML = `
         <div class="hoja" style="text-align:center">
           <h2>${item.etiqueta} · Gráfico extraído del manuscrito</h2>
@@ -1191,6 +1801,53 @@
       `;
     }
   }
+
+  // Diccionario de temas para clasificación de las salidas cartográficas
+  const MAPAS_TEMAS = {
+    'fig-1': ['borde', 'comparativo'],
+    'fig-2': ['borde'],
+    'fig-3': ['borde'],
+    'esq-2': ['teorico', 'borde'],
+    'esq-3': ['teorico', 'borde'],
+    'fig-3b': ['borde'],
+    'fig-4': ['ecologico', 'borde'],
+    'fig-6': ['borde', 'nodos'],
+    'atlas-3-4': ['usos', 'borde'],
+    'atlas-3-5': ['borde', 'usos'],
+    'atlas-3-6': ['nodos', 'usos'],
+    'atlas-3-7': ['nodos'],
+    'atlas-3-8': ['usos'],
+    'atlas-3-9': ['usos', 'ecologico'],
+    'atlas-3-10': ['usos', 'ufp'],
+    'atlas-3-11': ['nodos'],
+    'atlas-3-12': ['borde'],
+    'atlas-3-13': ['borde', 'ufp'],
+    'fig-40': ['comparativo', 'borde'],
+    'fig-41': ['comparativo', 'nodos'],
+    'fig-42': ['comparativo', 'ecologico'],
+    'fig-43': ['comparativo', 'borde'],
+    'fig-44': ['comparativo', 'ecologico'],
+    'fig-45': ['comparativo', 'borde'],
+    'fig-46': ['comparativo', 'borde'],
+    'fig-47': ['comparativo', 'ecologico'],
+    'fig-48': ['comparativo', 'ecologico'],
+    'fig-52': ['ufp', 'nodos'],
+    'fig-53': ['ufp'],
+    'fig-54': ['ufp'],
+    'fig-55': ['ufp'],
+    'fig-56': ['ufp', 'usos'],
+    'fig-57': ['nodos', 'ecologico'],
+    'fig-58': ['nodos', 'usos'],
+    'fig-59': ['nodos'],
+    'fig-60': ['nodos', 'usos'],
+    'fig-61': ['nodos'],
+    'fig-62': ['nodos'],
+    'fig-63': ['nodos', 'ufp'],
+    'fig-65': ['borde', 'ufp'],
+    'tabla-74': ['ufp', 'borde', 'usos'],
+    'comp-articulador': ['nodos', 'ufp'],
+    'comp-normativo': ['usos', 'ufp']
+  };
 
   // --- PÁGINA: INICIO (#pgInicio) ---
   function renderInicio() {
@@ -1205,37 +1862,70 @@
     const nEsquemas = CATALOGO.items.filter((i) => i.clase === 'esquema').length;
     const nCapas = Object.keys(CAPAS || {}).length;
 
-    const destacados = [
-      'fig-1',
-      'fig-2',
-      'fig-3',
-      'fig-4',
-      'atlas-3-8',
-      'atlas-3-9',
-      'atlas-3-10',
-      'fig-40',
-      'fig-43',
-      'fig-46',
-      'fig-52',
-      'fig-56',
-      'fig-63',
-      'tabla-74'
-    ]
-      .map((id) => ITEMS_MAP.get(id))
-      .filter(Boolean);
+    // Catálogo completo de salidas cartográficas y mapas interactivos (43 mapas)
+    const todosMapas = (CATALOGO.items || []).filter((i) => i.tipo === 'mapa' || i.vista);
 
-    const cardsHtml = destacados
-      .map(
-        (it) => `
-        <a class="tarj t-${it.tipo}" href="#/${it.id}">
-          <div class="img" style="background-image:url('data/${it.mini || 'logo_upc.png'}')"></div>
-          <div class="pie">
-            <span class="eti">${it.etiqueta}</span>
-            <div style="font-weight:600;margin-top:2px">${it.titulo}</div>
-          </div>
-        </a>
-      `
-      )
+    const cardsHtml = todosMapas
+      .map((it) => {
+        const imgUrl = it.mini
+          ? `data/${it.mini}`
+          : it.lamina
+          ? `data/${it.lamina.src}`
+          : it.imagenes && it.imagenes.length
+          ? `data/${it.imagenes[0].src}`
+          : 'logo_aida.svg';
+        const nCapasVista = VISTAS && VISTAS[it.vista] && VISTAS[it.vista].capas ? VISTAS[it.vista].capas.length : 0;
+        const temasArr = MAPAS_TEMAS[it.id] || ['borde'];
+        const capNum =
+          it.capitulo === 's1'
+            ? 'Cap. I'
+            : it.capitulo === 's22'
+            ? 'Cap. II'
+            : it.capitulo === 's48'
+            ? 'Cap. III'
+            : it.capitulo === 's130'
+            ? 'Cap. IV'
+            : it.capitulo === 's177'
+            ? 'Cap. V'
+            : 'Tesis';
+
+        const temasEtiquetas = temasArr
+          .map((t) => {
+            if (t === 'borde') return 'Borde';
+            if (t === 'usos') return 'Usos';
+            if (t === 'ecologico') return 'Ecosistémico';
+            if (t === 'nodos') return 'Nodos';
+            if (t === 'ufp') return 'UFP';
+            if (t === 'comparativo') return 'Internacional';
+            return 'Teórico';
+          })
+          .join(' · ');
+
+        return `
+        <article class="g-card" data-cap="${it.capitulo}" data-temas="${temasArr.join(',')}" data-id="${it.id}">
+          <a class="g-card-link" href="#/${it.id}">
+            <div class="g-card-img" style="background-image:url('${imgUrl}')">
+              <span class="g-card-badge">${capNum}</span>
+              ${
+                nCapasVista > 0
+                  ? `<span class="g-card-layers">🗺️ ${nCapasVista} capas SIG</span>`
+                  : it.lamina
+                  ? `<span class="g-card-layers">🖼️ Atlas HD</span>`
+                  : `<span class="g-card-layers">📐 Gráfico</span>`
+              }
+            </div>
+            <div class="g-card-cuerpo">
+              <span class="g-card-eti">${it.etiqueta}</span>
+              <h4 class="g-card-tit" title="${it.titulo}">${it.titulo}</h4>
+              <div class="g-card-meta">
+                <span>${temasEtiquetas}</span>
+                <span class="g-card-btn">Ver interactivo →</span>
+              </div>
+            </div>
+          </a>
+        </article>
+      `;
+      })
       .join('');
 
     pg.innerHTML = `
@@ -1258,17 +1948,107 @@
         </div>
       </div>
 
+      <div class="instituciones-franja">
+        <div class="inst-franja-texto">
+          <strong>🏛️ Marco Institucional y Avales de Investigación Doctoral</strong>
+          <span>Doctorado en Sostenibilidad UPC (Barcelona) · Cooperación académica con Universidad del Atlántico, AMB, IGAC, CRA y DIMAR.</span>
+        </div>
+        <button class="btn chico" id="btnVerInstitucionesHero">Ver entidades y avales ▾</button>
+      </div>
+
       <div class="inicio-cuerpo">
         <div class="como">
           <strong>💡 Plataforma cartográfica para la evaluación doctoral:</strong>
-          Cada mapa, lámina del atlas, tabla de encuestas y esquema conceptual cuenta con un identificador único y permalink propio (ej: <code>#/fig-3</code>, <code>#/atlas-3-8</code>).
+          Cada mapa, lámina del atlas, tabla y esquema conceptual cuenta con un identificador único y permalink propio (ej: <code>#/fig-3</code>, <code>#/atlas-3-8</code>, <code>#/fig-52</code>).
           En el botón <em>Compartir / Citar</em> de cada vista obtendrá el enlace directo y el código QR oficial para anexar en la nota de cada mapa de su manuscrito, permitiendo a los directores y jurados evaluar las capas, simbología de QGIS y atributos espaciales en vivo.
         </div>
 
-        <h2>Cartografía y salidas destacadas de la investigación <small>Selección representativa de los Capítulos I al V</small></h2>
-        <div class="rejilla">${cardsHtml}</div>
+        <section class="galeria-seccion">
+          <div class="galeria-cab">
+            <div>
+              <h2>Cartografía y salidas destacadas de la investigación</h2>
+              <p>Selección sistemática clasificada de los Capítulos I al V (${todosMapas.length} mapas interactivos)</p>
+            </div>
+            <div class="galeria-stats">
+              <div class="g-stat" id="galeriaContador">Mostrando <strong>${todosMapas.length}</strong> de ${todosMapas.length} mapas</div>
+            </div>
+          </div>
+
+          <!-- Filtro por Capítulo -->
+          <div class="galeria-pills-cap" id="filtroCaps">
+            <span class="g-cap-lbl">Capítulo:</span>
+            <button class="g-cap-btn on" data-cap="todos">Todos (${todosMapas.length})</button>
+            <button class="g-cap-btn" data-cap="s1">Cap. I: Problema (3)</button>
+            <button class="g-cap-btn" data-cap="s22">Cap. II: Marco Teórico (2)</button>
+            <button class="g-cap-btn" data-cap="s48">Cap. III: Barranquilla - AMB (13)</button>
+            <button class="g-cap-btn" data-cap="s130">Cap. IV: Comparativo Int. (9)</button>
+            <button class="g-cap-btn" data-cap="s177">Cap. V: Modelo IOTF-IUR (16)</button>
+          </div>
+
+          <!-- Filtro por Eje Temático -->
+          <div class="galeria-pills-tema" id="filtroTemas">
+            <span class="g-tema-lbl">Eje temático:</span>
+            <button class="g-tema-btn on" data-tema="todos">Todos los temas</button>
+            <button class="g-tema-btn" data-tema="borde">🌐 Borde y Delimitación</button>
+            <button class="g-tema-btn" data-tema="usos">📐 Usos del Suelo y Normativa</button>
+            <button class="g-tema-btn" data-tema="ecologico">🌿 Estructura Ecosistémica</button>
+            <button class="g-tema-btn" data-tema="nodos">⚡ Nodos y Corredores</button>
+            <button class="g-tema-btn" data-tema="ufp">🏛️ Unidades UFP</button>
+            <button class="g-tema-btn" data-tema="comparativo">🚢 Comparativo Internacional</button>
+          </div>
+
+          <!-- Grilla de mapas -->
+          <div class="galeria-grid" id="galeriaGrid">
+            ${cardsHtml}
+          </div>
+        </section>
       </div>
     `;
+
+    // Filtros interactivos de la galería
+    let capFiltro = 'todos';
+    let temaFiltro = 'todos';
+
+    function actualizarFiltros() {
+      const cards = pg.querySelectorAll('.g-card');
+      let visibles = 0;
+      cards.forEach((c) => {
+        const cCap = c.getAttribute('data-cap');
+        const cTemas = (c.getAttribute('data-temas') || '').split(',');
+        const matchCap = capFiltro === 'todos' || cCap === capFiltro;
+        const matchTema = temaFiltro === 'todos' || cTemas.includes(temaFiltro);
+        if (matchCap && matchTema) {
+          c.hidden = false;
+          visibles++;
+        } else {
+          c.hidden = true;
+        }
+      });
+      const cnt = document.getElementById('galeriaContador');
+      if (cnt) cnt.innerHTML = `Mostrando <strong>${visibles}</strong> de ${todosMapas.length} mapas`;
+    }
+
+    pg.querySelectorAll('#filtroCaps .g-cap-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pg.querySelectorAll('#filtroCaps .g-cap-btn').forEach((b) => b.classList.remove('on'));
+        btn.classList.add('on');
+        capFiltro = btn.getAttribute('data-cap');
+        actualizarFiltros();
+      });
+    });
+
+    pg.querySelectorAll('#filtroTemas .g-tema-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pg.querySelectorAll('#filtroTemas .g-tema-btn').forEach((b) => b.classList.remove('on'));
+        btn.classList.add('on');
+        temaFiltro = btn.getAttribute('data-tema');
+        actualizarFiltros();
+      });
+    });
+
+    document.getElementById('btnVerInstitucionesHero')?.addEventListener('click', () => {
+      document.getElementById('dlgInstituciones')?.showModal();
+    });
 
     pg.querySelectorAll('a.cifra[data-filtro]').forEach((a) => {
       a.addEventListener('click', (e) => {
@@ -2020,6 +2800,17 @@
 
       document.getElementById('cajonCerrar')?.addEventListener('click', () => {
         document.getElementById('cajon').hidden = true;
+      });
+
+      const dlgInst = document.getElementById('dlgInstituciones');
+      document.getElementById('btnInstituciones')?.addEventListener('click', () => {
+        dlgInst?.showModal();
+      });
+      document.getElementById('btnCerrarInst')?.addEventListener('click', () => {
+        dlgInst?.close();
+      });
+      dlgInst?.addEventListener('click', (e) => {
+        if (e.target === dlgInst) dlgInst.close();
       });
 
       document.querySelectorAll('#bases .base-card').forEach((card) => {
