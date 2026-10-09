@@ -1678,7 +1678,7 @@
         <p>El geovisor no añade interpretaciones ni datos que no estén en la tesis: todo lo que muestra procede del manuscrito y de las capas del sistema de información geográfico.</p>
 
         <h2>Cómo citar una vista</h2>
-        <p>Cada elemento tiene una dirección propia, por ejemplo <code>#/fig-3</code>, <code>#/atlas-3-8</code> o <code>#/tabla-74</code>. El botón <strong>Citar</strong> entrega el enlace permanente, un código QR y un texto breve para añadir a la nota del mapa.</p>
+        <p>Cada elemento tiene una dirección propia, por ejemplo <code>#/fig-3</code>, <code>#/atlas-3-8</code> o <code>#/tabla-12</code>. El botón <strong>Citar</strong> entrega el enlace permanente, un código QR y un texto breve para añadir a la nota del mapa.</p>
 
         <h2>Fuentes de la información geográfica</h2>
         <p>Las entidades siguientes son la fuente de las capas, tal como se indica en la nota de cada mapa. Su mención no implica aval institucional del geovisor.</p>

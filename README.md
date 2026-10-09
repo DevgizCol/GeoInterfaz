@@ -19,7 +19,7 @@ El sitio no añade contenido propio: todo lo que muestra sale del manuscrito y d
 - **Mapa interactivo**: leyenda, capas con interruptor y opacidad, tabla de atributos, rótulos, medición, perspectiva, encuadres de la tesis y captura de imagen.
 - **Lámina** del atlas en alta resolución con zoom, y **tablas** del manuscrito.
 - **Ficha** de cada elemento: nota y fuente, ubicación en la tesis, proyecto y composición de QGIS, archivo de la lámina.
-- **Citar**: enlace permanente y código QR de cada vista (`#/fig-3`, `#/atlas-3-8`, `#/tabla-74`…).
+- **Citar**: enlace permanente y código QR de cada vista (`#/fig-3`, `#/atlas-3-8`, `#/tabla-12`…).
 - Navegación con anterior y siguiente (`Mayús+←` y `Mayús+→`).
 - **Comparar**: mapa interactivo y lámina impresa lado a lado.
 - **Presentar** (`P`): pantalla completa sin menús, para exponer pasando con las flechas.
