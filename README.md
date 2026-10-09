@@ -1,4 +1,4 @@
-# Geovisor · Tesis Doctoral
+# GeoInterfaz · Geovisor de la Tesis Doctoral
 
 > **"Enfoques y metodologías de planificación territorial local para el desarrollo de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias"**  
 > *Barranquilla, ciudad puerto y ciudad río*
