@@ -20,6 +20,7 @@
   const ITEMS_MAP = new Map();
   const GEOJSON_CACHE = new Map();
   let ORDEN = [];
+  let INST = [];
 
   let map = null;
   let mapReady = false;
@@ -871,7 +872,10 @@
         return `<div class="ley-grupo"><div class="ley-tit">${esc(nom)}</div>${filas}</div>`;
       })
       .join('');
-    cont.innerHTML = bloques || '<p class="ayuda">No hay capas visibles. Actívelas en la pestaña «Capas».</p>';
+    const fuentes = currentItem && currentItem._inst && currentItem._inst.length
+      ? `<div class="ley-fuentes"><div class="ley-tit">Fuentes de los datos</div>${logosDe(currentItem, 'logos-fila chicos')}</div>`
+      : '';
+    cont.innerHTML = (bloques || '<p class="ayuda">No hay capas visibles. Actívelas en la pestaña «Capas».</p>') + fuentes;
   }
 
   function renderPanel(vista) {
@@ -1253,6 +1257,7 @@
         <h4>Ubicación en la tesis</h4>
         <ol class="ficha-ruta">${ruta}</ol>
         ${tecnico}
+        ${item._inst && item._inst.length ? `<h4>Entidades citadas como fuente</h4>${logosDe(item, 'logos-fila')}` : ''}
         ${relHtml ? `<h4>En el mismo apartado</h4><div class="rels">${relHtml}</div>` : ''}
         <h4>Enlace permanente</h4>
         <div class="url">${esc(enlaceDe(item))}</div>
@@ -1389,7 +1394,7 @@
   }
 
   // ---------------------------------------------------------- inicio
-  const IMPRESCINDIBLES = ['fig-2', 'fig-3b', 'fig-4', 'atlas-3-8', 'atlas-3-13', 'fig-40', 'fig-56', 'fig-63'];
+  const IMPRESCINDIBLES = ['fig-2', 'fig-3', 'fig-4', 'atlas-3-8', 'atlas-3-13', 'fig-40', 'fig-56', 'fig-63'];
 
   function tarjeta(it) {
     const img = it.mini ? `data/${it.mini}` : it.lamina ? `data/${it.lamina.mini || it.lamina.src}` : it.imagenes && it.imagenes.length ? `data/${it.imagenes[0].src}` : 'logo_aida.svg';
@@ -1425,7 +1430,7 @@
       .concat(caps.map((c) => `<button data-cap="${c.id}" title="${esc(c.titulo)}">Cap. ${c.num}<span>${esc(capNombre(c))}</span></button>`))
       .join('');
 
-    const primero = ITEMS_MAP.get('fig-3b') || ITEMS_MAP.get('fig-3') || items.find((i) => i.vista);
+    const primero = ITEMS_MAP.get('fig-3') || ITEMS_MAP.get('fig-3') || items.find((i) => i.vista);
 
     pg.innerHTML = `
       <div class="hero">
@@ -1466,6 +1471,8 @@
           <div class="rejilla" id="recGrid"></div>
           <div class="rec-pie" id="recPie"></div>
         </section>
+
+        ${muroInst(true)}
       </div>
     `;
 
@@ -1675,6 +1682,7 @@
 
         <h2>Fuentes de la información geográfica</h2>
         <p>Las entidades siguientes son la fuente de las capas, tal como se indica en la nota de cada mapa. Su mención no implica aval institucional del geovisor.</p>
+        ${muroInst(false)}
         <table class="cat ficha-t">
           <tbody>${FUENTES.map((f) => `<tr><th>${esc(f[0])}</th><td>${esc(f[1])}</td></tr>`).join('')}</tbody>
         </table>
@@ -2055,7 +2063,7 @@
 
   // ---------------------------------- ir a un lugar (encuadres de la propia tesis)
   const LUGARES = [
-    ['Área de estudio', [['Área Metropolitana de Barranquilla', 'fig-2'], ['Franja de interfaz urbano-rural', 'fig-3b'], ['Ciénaga de Mallorquín', 'fig-4']]],
+    ['Área de estudio', [['Área Metropolitana de Barranquilla', 'fig-2'], ['Franja de interfaz urbano-rural', 'fig-3'], ['Ciénaga de Mallorquín', 'fig-4']]],
     ['Propuesta', [['Nodo 1 · Puerto Colombia', 'fig-57'], ['Nodo 2 · Galapa', 'fig-58'], ['Nodo 3 · Barranquilla - Galapa', 'fig-59'], ['Nodo 4 · Malambo', 'fig-60'], ['Nuevo puerto interior', 'fig-61']]],
     ['Casos comparados', [['Veracruz', 'fig-40'], ['Valparaíso', 'fig-43'], ['Santos', 'fig-46']]]
   ];
@@ -2220,6 +2228,79 @@
     });
   }
 
+  // ------------------------------------------- entidades y logotipos
+  // Los logotipos identifican a las entidades cuyos datos se citan en cada mapa (nota y capas).
+  function prepararInst() {
+    INST.forEach((e) => {
+      e._re = (e.claves || []).map((c) => new RegExp(c));
+      e._items = [];
+    });
+    (CATALOGO.items || []).forEach((it) => {
+      const v = it.vista && VISTAS[it.vista];
+      const t = [it.titulo, it.nota || '', v ? v.capas.map((c) => c.nombre).join(' | ') : ''].join(' | ');
+      it._inst = INST.filter((e) => e._re.some((r) => r.test(t)));
+      it._inst.forEach((e) => e._items.push(it));
+    });
+  }
+
+  function logosDe(it, clase) {
+    return `<div class="${clase}">${it._inst
+      .map((e) => `<button class="logo-mini" data-inst="${e.id}" title="${esc(e.nombre)}"><img src="${e.logo}" alt="${esc(e.sigla)}" loading="lazy"></button>`)
+      .join('')}</div>`;
+  }
+
+  function muroInst(conTitulo) {
+    if (!INST.length) return '';
+    const grupos = [];
+    INST.forEach((e) => {
+      let g = grupos.find((x) => x[0] === e.grupo);
+      if (!g) { g = [e.grupo, []]; grupos.push(g); }
+      g[1].push(e);
+    });
+    const html = grupos
+      .map(([g, es]) => `
+        <div class="inst-grupo">
+          <div class="inst-pais">${esc(g)}</div>
+          <div class="inst-fila">${es
+            .map((e) => `
+              <button class="inst" data-inst="${e.id}" title="${esc(e.nombre)}">
+                <span class="inst-logo"><img src="${e.logo}" alt="${esc(e.nombre)}" loading="lazy"></span>
+                <strong>${esc(e.sigla)}</strong>
+                <small>${e._items.length ? `${e._items.length} ${e._items.length === 1 ? 'elemento' : 'elementos'}` : (e.grupo === 'Universidad' ? 'Universidad de la tesis' : 'Fuente cartográfica')}</small>
+              </button>`)
+            .join('')}</div>
+        </div>`)
+      .join('');
+    return `
+      <section class="instituciones">
+        ${conTitulo ? '<div class="rec-cab"><h2>Entidades y fuentes de la cartografía</h2></div><p class="rec-desc">Las entidades cuyos datos sustentan los mapas de la tesis. Elija una para ver en qué figuras y tablas se cita.</p>' : ''}
+        <div class="inst-muro">${html}</div>
+        <p class="ayuda">Los logotipos identifican la procedencia de los datos, tal como se indica en la nota de cada mapa. No implican aval institucional.</p>
+      </section>`;
+  }
+
+  function abrirInst(id) {
+    const e = INST.find((x) => x.id === id);
+    const dlg = $('dlg');
+    if (!e || !dlg) return;
+    const lista = e._items
+      .map((o) => `<a class="rel" href="#/${o.id}"><i class="pt t-${o.tipo}"></i><b>${esc(etiquetaCorta(o))}</b><span>${esc(o.titulo)}</span></a>`)
+      .join('');
+    $('dlgCuerpo').innerHTML = `
+      <div class="dlg-cab">
+        <div class="inst-cab">
+          <span class="inst-logo grande"><img src="${e.logo}" alt=""></span>
+          <div><div class="dlg-sup">${esc(e.grupo)}</div><h3>${esc(e.nombre)}</h3><p class="ayuda">${esc(e.papel)}</p></div>
+        </div>
+        <button class="ico-btn" id="dlgCerrar" aria-label="Cerrar">${ICO.cerrar}</button>
+      </div>
+      ${lista ? `<label>Se cita en ${e._items.length} ${e._items.length === 1 ? 'elemento' : 'elementos'} de la tesis</label><div class="rels inst-lista">${lista}</div>` : ''}
+      <p class="ayuda">El logotipo identifica la fuente de los datos; no implica aval institucional.</p>`;
+    $('dlgCerrar').addEventListener('click', () => dlg.close());
+    $('dlgCuerpo').querySelectorAll('a.rel').forEach((a) => a.addEventListener('click', () => dlg.close()));
+    if (!dlg.open) dlg.showModal();
+  }
+
   // ------------------------------------------------- tema, presentación y ayudas
   function temaOscuro() {
     return document.documentElement.getAttribute('data-tema') === 'oscuro';
@@ -2304,6 +2385,10 @@
 
   function initExtras() {
     $('btnTema').addEventListener('click', () => setTema(!temaOscuro()));
+    document.addEventListener('click', (e) => {
+      const b = e.target.closest && e.target.closest('[data-inst]');
+      if (b) abrirInst(b.getAttribute('data-inst'));
+    });
     $('btnAtajos').addEventListener('click', abrirAtajos);
     $('presSalir').addEventListener('click', () => togglePresentacion(false));
     const paso = (d) => {
@@ -2343,6 +2428,8 @@
       VISTAS = await resVis.json();
       CAPAS = await resCap.json();
       (CATALOGO.items || []).forEach((it) => ITEMS_MAP.set(it.id, it));
+      try { INST = await (await fetch('data/instituciones.json')).json(); } catch (_) { INST = []; }
+      prepararInst();
 
       renderArbol();
       initPanel();

@@ -1,0 +1,237 @@
+[
+ {
+  "id": "upc",
+  "nombre": "Universitat Politècnica de Catalunya",
+  "sigla": "UPC",
+  "grupo": "Universidad",
+  "papel": "Universidad en la que se desarrolla la tesis doctoral",
+  "logo": "logos/upc.png",
+  "w": 180,
+  "h": 180,
+  "claves": []
+ },
+ {
+  "id": "amb",
+  "nombre": "Área Metropolitana de Barranquilla",
+  "sigla": "AMB",
+  "grupo": "Colombia",
+  "papel": "Cartografía metropolitana, movilidad y PEMOT",
+  "logo": "logos/amb.png",
+  "w": 168,
+  "h": 90,
+  "claves": [
+   "Área Metropolitana de Barranquilla",
+   "\\(AMB\\)",
+   "\\bPEMOT\\b"
+  ]
+ },
+ {
+  "id": "cra",
+  "nombre": "Corporación Autónoma Regional del Atlántico",
+  "sigla": "C.R.A.",
+  "grupo": "Colombia",
+  "papel": "Información ambiental y POMCA de la Ciénaga de Mallorquín",
+  "logo": "logos/cra.png",
+  "w": 171,
+  "h": 180,
+  "claves": [
+   "C\\.R\\.A",
+   "\\bCRA\\b",
+   "Corporación Autónoma Regional",
+   "\\bPOMCA\\b"
+  ]
+ },
+ {
+  "id": "inegi",
+  "nombre": "Instituto Nacional de Estadística y Geografía",
+  "sigla": "INEGI",
+  "grupo": "México · Veracruz",
+  "papel": "Límites municipales y estadística de la zona metropolitana",
+  "logo": "logos/inegi.png",
+  "w": 173,
+  "h": 180,
+  "claves": [
+   "\\bINEGI\\b"
+  ]
+ },
+ {
+  "id": "asipona",
+  "nombre": "Administración del Sistema Portuario Nacional Veracruz",
+  "sigla": "ASIPONA",
+  "grupo": "México · Veracruz",
+  "papel": "Terminales y zonificación portuaria",
+  "logo": "logos/asipona.png",
+  "w": 167,
+  "h": 180,
+  "claves": [
+   "\\bASIPONA\\b"
+  ]
+ },
+ {
+  "id": "conanp",
+  "nombre": "Comisión Nacional de Áreas Naturales Protegidas",
+  "sigla": "CONANP",
+  "grupo": "México · Veracruz",
+  "papel": "Parque Nacional Sistema Arrecifal Veracruzano",
+  "logo": "logos/conanp.png",
+  "w": 264,
+  "h": 82,
+  "claves": [
+   "\\bCONANP\\b",
+   "\\bPNSAV\\b"
+  ]
+ },
+ {
+  "id": "epv",
+  "nombre": "Empresa Portuaria Valparaíso",
+  "sigla": "EPV",
+  "grupo": "Chile · Valparaíso",
+  "papel": "Infraestructura portuaria",
+  "logo": "logos/epv.png",
+  "w": 360,
+  "h": 58,
+  "claves": [
+   "\\bEPV\\b",
+   "Empresa Portuaria Valpara"
+  ]
+ },
+ {
+  "id": "ide_chile",
+  "nombre": "IDE Chile · Ministerio de Bienes Nacionales",
+  "sigla": "IDE Chile",
+  "grupo": "Chile · Valparaíso",
+  "papel": "Cartografía oficial de referencia",
+  "logo": "logos/ide_chile.png",
+  "w": 199,
+  "h": 180,
+  "claves": [
+   "IDE[ -]Chile",
+   "\\bBCN\\b"
+  ]
+ },
+ {
+  "id": "ine_chile",
+  "nombre": "Instituto Nacional de Estadísticas",
+  "sigla": "INE",
+  "grupo": "Chile · Valparaíso",
+  "papel": "Manchas urbanas y estadística censal",
+  "logo": "logos/ine_chile.png",
+  "w": 360,
+  "h": 171,
+  "claves": [
+   "\\(INE\\)",
+   "\\bINE Chile\\b",
+   "\\bINE,"
+  ]
+ },
+ {
+  "id": "conaf",
+  "nombre": "Corporación Nacional Forestal",
+  "sigla": "CONAF",
+  "grupo": "Chile · Valparaíso",
+  "papel": "Áreas protegidas e incendios de interfaz",
+  "logo": "logos/conaf.png",
+  "w": 360,
+  "h": 152,
+  "claves": [
+   "\\bCONAF\\b",
+   "\\bSNASPE\\b"
+  ]
+ },
+ {
+  "id": "senapred",
+  "nombre": "Servicio Nacional de Prevención y Respuesta ante Desastres",
+  "sigla": "SENAPRED",
+  "grupo": "Chile · Valparaíso",
+  "papel": "Áreas afectadas por incendios",
+  "logo": "logos/senapred.png",
+  "w": 199,
+  "h": 180,
+  "claves": [
+   "\\bSENAPRED\\b"
+  ]
+ },
+ {
+  "id": "odepa",
+  "nombre": "Oficina de Estudios y Políticas Agrarias",
+  "sigla": "ODEPA",
+  "grupo": "Chile · Valparaíso",
+  "papel": "Zonificación agrícola y periurbana",
+  "logo": "logos/odepa.png",
+  "w": 198,
+  "h": 180,
+  "claves": [
+   "\\bODEPA\\b",
+   "\\bCIREN\\b"
+  ]
+ },
+ {
+  "id": "ibge",
+  "nombre": "Instituto Brasileiro de Geografia e Estatística",
+  "sigla": "IBGE",
+  "grupo": "Brasil · Santos",
+  "papel": "Límites municipales y manchas urbanas",
+  "logo": "logos/ibge.png",
+  "w": 360,
+  "h": 95,
+  "claves": [
+   "\\bIBGE\\b"
+  ]
+ },
+ {
+  "id": "cetesb",
+  "nombre": "Companhia Ambiental do Estado de São Paulo",
+  "sigla": "CETESB",
+  "grupo": "Brasil · Santos",
+  "papel": "Riesgo tecnológico y calidad ambiental",
+  "logo": "logos/cetesb.png",
+  "w": 145,
+  "h": 180,
+  "claves": [
+   "\\bCETESB\\b"
+  ]
+ },
+ {
+  "id": "governo_sp",
+  "nombre": "Governo do Estado de São Paulo",
+  "sigla": "Governo SP",
+  "grupo": "Brasil · Santos",
+  "papel": "Parque Estadual da Serra do Mar y cartografía estatal",
+  "logo": "logos/governo_sp.png",
+  "w": 155,
+  "h": 180,
+  "claves": [
+   "Serra do Mar",
+   "\\bPESM\\b",
+   "Governo d[eo] S"
+  ]
+ },
+ {
+  "id": "santos",
+  "nombre": "Prefeitura de Santos",
+  "sigla": "Santos",
+  "grupo": "Brasil · Santos",
+  "papel": "Complejo portuario y planeamiento municipal",
+  "logo": "logos/santos.png",
+  "w": 184,
+  "h": 180,
+  "claves": [
+   "Porto (Organizado )?(de )?Santos",
+   "Complexo Portuario de Santos",
+   "Prefeitura de Santos"
+  ]
+ },
+ {
+  "id": "cubatao",
+  "nombre": "Prefeitura de Cubatão",
+  "sigla": "Cubatão",
+  "grupo": "Brasil · Santos",
+  "papel": "Polo industrial y asentamientos",
+  "logo": "logos/cubatao.png",
+  "w": 159,
+  "h": 180,
+  "claves": [
+   "Cubat[aã]o"
+  ]
+ }
+]

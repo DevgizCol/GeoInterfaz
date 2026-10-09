@@ -165,6 +165,36 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
 :root[data-tema="oscuro"] #btnTema { color: var(--acento); }
 :root[data-tema="oscuro"] .tipos button, :root[data-tema="oscuro"] .rec-tabs button { border-color: var(--linea); }
 
+/* ------------------------------------------------- entidades y logotipos */
+.instituciones { margin-top: 46px; }
+.pagina.doc .instituciones { margin: 6px 0 18px; }
+.inst-muro { display: flex; flex-wrap: wrap; gap: 22px 34px; }
+.inst-pais { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--gris2); margin-bottom: 9px; }
+.inst-fila { display: flex; flex-wrap: wrap; gap: 10px; }
+.inst {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; width: 128px; padding: 10px 8px 11px;
+  border: 1px solid var(--linea); border-radius: 16px; background: var(--papel); text-align: center;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s;
+}
+.inst:hover { transform: translateY(-3px); box-shadow: var(--sombra); border-color: var(--marca2); }
+.inst-logo { display: grid; place-items: center; width: 108px; height: 64px; padding: 7px; border-radius: 11px; background: #fff; margin-bottom: 5px; }
+.inst-logo img { display: block; width: auto; height: auto; max-width: 94px; max-height: 50px; object-fit: contain; filter: saturate(.82); opacity: .92; transition: filter .2s, opacity .2s; }
+.inst:hover .inst-logo img, .inst-logo.grande img { filter: none; opacity: 1; }
+.inst-logo.grande img { max-width: 104px; max-height: 68px; }
+.inst strong { font-size: 12.5px; font-weight: 700; color: var(--tinta); line-height: 1.2; }
+.inst small { font-size: 11px; color: var(--gris2); }
+.inst-cab { display: flex; gap: 16px; align-items: center; min-width: 0; }
+.inst-logo.grande { width: 120px; height: 84px; flex: none; border: 1px solid var(--linea); }
+.inst-lista { max-height: 38vh; overflow-y: auto; margin-bottom: 10px; padding-right: 4px; }
+.logos-fila { display: flex; flex-wrap: wrap; gap: 8px; }
+.logo-mini { display: grid; place-items: center; width: 74px; height: 46px; padding: 5px; border: 1px solid var(--linea); border-radius: 10px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+.logo-mini:hover { border-color: var(--marca2); box-shadow: var(--sombra-sm); }
+.logo-mini img { display: block; width: auto; height: auto; max-width: 62px; max-height: 34px; object-fit: contain; }
+.logos-fila.chicos .logo-mini img { max-width: 44px; max-height: 24px; }
+.logos-fila.chicos .logo-mini { width: 54px; height: 34px; padding: 4px; border-radius: 8px; }
+.ley-fuentes { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--linea2); }
+.ley-fuentes .ley-tit { margin-bottom: 8px; }
+
 /* ------------------------------------------------ adaptación a cada pantalla */
 @media (min-width: 1800px) {
   :root { --ancho-indice: 360px; }
@@ -210,6 +240,9 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
   .seg button { padding: 0 11px; }
   .cmd-item { grid-template-columns: 84px 1fr; }
   .cmd-item-cap { display: none; }
+  .inst { width: calc(50% - 5px); }
+  .inst-grupo, .inst-fila { width: 100%; }
+  .inst-cab { flex-direction: column; align-items: flex-start; }
   .cabecera h1 { font-size: 16px; }
   .nota-linea { -webkit-line-clamp: 1; }
   .tesis-tabla table { min-width: 560px; }
