@@ -58,6 +58,12 @@
       attribution: '&copy; OpenStreetMap &copy; CARTO',
       maxzoom: 20
     },
+    oscuro: {
+      tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      maxzoom: 20
+    },
     nada: null
   };
 
@@ -353,7 +359,14 @@
         if (coordEl) coordEl.textContent = '';
       });
 
+      const tooltipEl = document.getElementById('mapTooltip');
       map.on('click', (e) => {
+        if (modoMedicion) {
+          puntosMedicion.push([e.lngLat.lng, e.lngLat.lat]);
+          actualizarMedicionGeoJSON();
+          return;
+        }
+
         const visibleLayers = activeVectorLayerIds.filter((id) => {
           const l = map.getLayer(id);
           return l && map.getLayoutProperty(id, 'visibility') !== 'none' && !id.endsWith('__label');
@@ -401,16 +414,43 @@
       });
 
       map.on('mousemove', (e) => {
+        if (modoMedicion) {
+          map.getCanvas().style.cursor = 'crosshair';
+          if (tooltipEl) tooltipEl.hidden = true;
+          return;
+        }
         const visibleLayers = activeVectorLayerIds.filter((id) => {
           const l = map.getLayer(id);
           return l && map.getLayoutProperty(id, 'visibility') !== 'none' && !id.endsWith('__label');
         });
         if (!visibleLayers.length) {
           map.getCanvas().style.cursor = '';
+          if (tooltipEl) tooltipEl.hidden = true;
           return;
         }
         const features = map.queryRenderedFeatures(e.point, { layers: visibleLayers });
-        map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+        if (features && features.length > 0) {
+          map.getCanvas().style.cursor = 'pointer';
+          if (tooltipEl) {
+            const p = features[0].properties || {};
+            const tit = p.NOMBRE || p.Nombre || p.nombre || p.Name || p.MpNombre || p.DeNombre || p.NOMAH || p.UFP || '';
+            if (tit) {
+              tooltipEl.textContent = tit;
+              tooltipEl.style.left = `${e.point.x}px`;
+              tooltipEl.style.top = `${e.point.y}px`;
+              tooltipEl.hidden = false;
+            } else {
+              tooltipEl.hidden = true;
+            }
+          }
+        } else {
+          map.getCanvas().style.cursor = '';
+          if (tooltipEl) tooltipEl.hidden = true;
+        }
+      });
+
+      map.on('mouseout', () => {
+        if (tooltipEl) tooltipEl.hidden = true;
       });
 
       mapReady = true;
@@ -434,6 +474,11 @@
   // Cambio de mapa base raster
   function setBaseMap(type) {
     currentBase = type;
+    document.querySelectorAll('#bases .base-card').forEach((card) => {
+      card.classList.toggle('on', card.getAttribute('data-base') === type);
+    });
+    const rad = document.querySelector(`input[name="base"][value="${type}"]`);
+    if (rad) rad.checked = true;
     if (!map || !mapReady) return;
 
     if (type === 'nada') {
@@ -961,7 +1006,14 @@
     });
 
     if (mode === 'mapa' && map && mapReady) {
-      setTimeout(() => map.resize(), 60);
+      setTimeout(() => {
+        map.resize();
+        if (currentVista) ajustarEncuadreVista(currentVista);
+      }, 60);
+      setTimeout(() => {
+        map.resize();
+        if (currentVista) ajustarEncuadreVista(currentVista);
+      }, 200);
     } else if (mode === 'imagen' && window.fitImageZoomer) {
       setTimeout(() => window.fitImageZoomer(), 60);
     }
@@ -1544,6 +1596,386 @@
     }
   }
 
+  // --- HERRAMIENTA DE MEDICIÓN ESPACIAL INTERACTIVA (TURF.JS) ---
+  let modoMedicion = false;
+  let puntosMedicion = [];
+  const srcMedicionId = 'src_medicion_interactiva';
+
+  function initHerramientaMedicion() {
+    const btnMedir = document.getElementById('btnMedir');
+    const hud = document.getElementById('medicionHud');
+    const txt = document.getElementById('medTexto');
+    const btnLimpiar = document.getElementById('btnLimpiarMed');
+    const btnCerrar = document.getElementById('btnCerrarMed');
+
+    if (!btnMedir || !hud) return;
+
+    btnMedir.addEventListener('click', () => {
+      toggleMedicion(!modoMedicion);
+    });
+
+    btnLimpiar?.addEventListener('click', () => {
+      puntosMedicion = [];
+      actualizarMedicionGeoJSON();
+      if (txt) txt.textContent = 'Haga clic en el mapa para marcar puntos de medición';
+    });
+
+    btnCerrar?.addEventListener('click', () => {
+      toggleMedicion(false);
+    });
+  }
+
+  function toggleMedicion(activar) {
+    modoMedicion = activar;
+    const btnMedir = document.getElementById('btnMedir');
+    const hud = document.getElementById('medicionHud');
+    const txt = document.getElementById('medTexto');
+    if (btnMedir) btnMedir.classList.toggle('on', modoMedicion);
+    if (hud) hud.hidden = !modoMedicion;
+
+    if (!modoMedicion) {
+      puntosMedicion = [];
+      limpiarMedicionCapas();
+      if (map) map.getCanvas().style.cursor = '';
+    } else {
+      if (txt) txt.textContent = 'Haga clic en el mapa para marcar puntos de medición (distancia / área)';
+      asegurarMedicionCapas();
+      if (map) map.getCanvas().style.cursor = 'crosshair';
+    }
+  }
+
+  function asegurarMedicionCapas() {
+    if (!map || !mapReady) return;
+    if (!map.getSource(srcMedicionId)) {
+      map.addSource(srcMedicionId, {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] }
+      });
+    }
+    if (!map.getLayer('lyr_med_fill')) {
+      map.addLayer({
+        id: 'lyr_med_fill',
+        type: 'fill',
+        source: srcMedicionId,
+        filter: ['==', '$type', 'Polygon'],
+        paint: {
+          'fill-color': '#38bdf8',
+          'fill-opacity': 0.25
+        }
+      });
+    }
+    if (!map.getLayer('lyr_med_line')) {
+      map.addLayer({
+        id: 'lyr_med_line',
+        type: 'line',
+        source: srcMedicionId,
+        paint: {
+          'line-color': '#0284c7',
+          'line-width': 2.5,
+          'line-dasharray': [2, 2]
+        }
+      });
+    }
+    if (!map.getLayer('lyr_med_points')) {
+      map.addLayer({
+        id: 'lyr_med_points',
+        type: 'circle',
+        source: srcMedicionId,
+        filter: ['==', '$type', 'Point'],
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#ffffff',
+          'circle-stroke-color': '#0284c7',
+          'circle-stroke-width': 2.5
+        }
+      });
+    }
+  }
+
+  function limpiarMedicionCapas() {
+    if (!map || !mapReady) return;
+    ['lyr_med_points', 'lyr_med_line', 'lyr_med_fill'].forEach((id) => {
+      if (map.getLayer(id)) map.removeLayer(id);
+    });
+    if (map.getSource(srcMedicionId)) map.removeSource(srcMedicionId);
+  }
+
+  function actualizarMedicionGeoJSON() {
+    if (!map || !mapReady) return;
+    const src = map.getSource(srcMedicionId);
+    if (!src) return;
+
+    const features = [];
+    puntosMedicion.forEach((pt) => {
+      features.push({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: pt }
+      });
+    });
+
+    if (puntosMedicion.length >= 2) {
+      features.push({
+        type: 'Feature',
+        geometry: { type: 'LineString', coordinates: puntosMedicion }
+      });
+    }
+
+    if (puntosMedicion.length >= 3) {
+      features.push({
+        type: 'Feature',
+        geometry: { type: 'Polygon', coordinates: [[...puntosMedicion, puntosMedicion[0]]] }
+      });
+    }
+
+    src.setData({ type: 'FeatureCollection', features });
+
+    const txt = document.getElementById('medTexto');
+    if (!txt) return;
+
+    if (puntosMedicion.length === 1) {
+      txt.textContent = '1 vértice marcado · Haga clic para medir distancia al siguiente punto';
+    } else if (puntosMedicion.length >= 2) {
+      let distKm = 0;
+      let areaTxt = '';
+      if (window.turf) {
+        try {
+          const line = turf.lineString(puntosMedicion);
+          distKm = turf.length(line, { units: 'kilometers' });
+          if (puntosMedicion.length >= 3) {
+            const poly = turf.polygon([[...puntosMedicion, puntosMedicion[0]]]);
+            const m2 = turf.area(poly);
+            const ha = (m2 / 10000).toFixed(2);
+            const km2 = (m2 / 1000000).toFixed(3);
+            areaTxt = ` | Área: ${ha} ha (${km2} km²)`;
+          }
+        } catch (_) {}
+      }
+
+      const distTxt = distKm < 1 ? `${Math.round(distKm * 1000)} m` : `${distKm.toFixed(2)} km`;
+      txt.textContent = `Longitud: ${distTxt}${areaTxt} · (${puntosMedicion.length} vértices)`;
+    }
+  }
+
+  // --- MODO 3D / PERSPECTIVA DE PAISAJE ---
+  let modo3D = false;
+  function init3DToggle() {
+    const btn3D = document.getElementById('btn3D');
+    const lbl3D = document.getElementById('lbl3D');
+    if (!btn3D) return;
+
+    btn3D.addEventListener('click', () => {
+      if (!map || !mapReady) return;
+      modo3D = !modo3D;
+      btn3D.classList.toggle('on', modo3D);
+      if (lbl3D) lbl3D.textContent = modo3D ? '2D' : '3D';
+
+      if (modo3D) {
+        map.easeTo({
+          pitch: 55,
+          bearing: -15,
+          duration: 900
+        });
+        showToast('Perspectiva 3D activada (inclinación 55°)');
+      } else {
+        map.easeTo({
+          pitch: 0,
+          bearing: 0,
+          duration: 900
+        });
+        showToast('Vista plana 2D restablecida');
+      }
+    });
+  }
+
+  // --- SALTOS ESPACIALES RÁPIDOS A NODOS Y ESTRUCTURA TERRITORIAL ---
+  const SALTOS_COORDS = {
+    amb: { center: [-74.83, 10.95], zoom: 10.3, pitch: 0, bearing: 0 },
+    franja: { center: [-74.845, 10.94], zoom: 11.2, pitch: 25, bearing: -5 },
+    nodo1: { center: [-74.881, 11.041], zoom: 13.8, pitch: 45, bearing: 10 },
+    nodo2: { center: [-74.883, 10.895], zoom: 13.8, pitch: 45, bearing: -10 },
+    nodo3: { center: [-74.836, 10.942], zoom: 13.8, pitch: 45, bearing: 0 },
+    nodo4: { center: [-74.762, 10.846], zoom: 13.8, pitch: 45, bearing: 15 },
+    puerto: { center: [-74.740, 10.893], zoom: 14.0, pitch: 50, bearing: -20 },
+    mallorquin: { center: [-74.848, 11.055], zoom: 13.0, pitch: 35, bearing: 5 }
+  };
+
+  function initSaltosRapidos() {
+    const btn = document.getElementById('btnSaltos');
+    const menu = document.getElementById('menuSaltos');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      menu.hidden = !menu.hidden;
+    });
+
+    document.addEventListener('click', () => {
+      menu.hidden = true;
+    });
+
+    menu.querySelectorAll('button[data-salto]').forEach((b) => {
+      b.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        menu.hidden = true;
+        const key = b.getAttribute('data-salto');
+        const conf = SALTOS_COORDS[key];
+        if (conf && map && mapReady) {
+          map.flyTo({
+            center: conf.center,
+            zoom: conf.zoom,
+            pitch: conf.pitch,
+            bearing: conf.bearing,
+            duration: 1600,
+            essential: true
+          });
+        }
+      });
+    });
+  }
+
+  // --- CAPTURA DE ALTA RESOLUCIÓN DEL LIENZO CARTOGRÁFICO ---
+  function initCapturaMapa() {
+    const btn = document.getElementById('btnCapturaMapa');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      if (!map || !mapReady) return;
+      try {
+        const mapCanvas = map.getCanvas();
+        const exportCanvas = document.createElement('canvas');
+        const ctx = exportCanvas.getContext('2d');
+
+        const padTop = 64;
+        const padBottom = 38;
+        exportCanvas.width = mapCanvas.width;
+        exportCanvas.height = mapCanvas.height + padTop + padBottom;
+
+        ctx.fillStyle = '#071527';
+        ctx.fillRect(0, 0, exportCanvas.width, padTop);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, padTop, exportCanvas.width, mapCanvas.height);
+        ctx.fillStyle = '#071527';
+        ctx.fillRect(0, padTop + mapCanvas.height, exportCanvas.width, padBottom);
+
+        ctx.drawImage(mapCanvas, 0, padTop);
+
+        ctx.fillStyle = '#d49a37';
+        ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('GeoInterfaz UPC · Plataforma Cartográfica Doctoral', 24, 26);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '13.5px "Plus Jakarta Sans", sans-serif';
+        const tit = currentItem ? `${currentItem.etiqueta}: ${currentItem.titulo}` : 'Cartografía de Franjas de Interfaz';
+        ctx.fillText(tit.slice(0, 95), 24, 48);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11.5px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('Aida del Carmen Palmett Padilla (2026) · Universitat Politècnica de Catalunya', 24, exportCanvas.height - 15);
+
+        const link = document.createElement('a');
+        link.download = `GeoInterfaz_${currentItem?.id || 'mapa'}_lamina.png`;
+        link.href = exportCanvas.toDataURL('image/png');
+        link.click();
+        showToast('📸 Lámina cartográfica capturada con éxito en alta resolución');
+      } catch (err) {
+        console.warn('Error capturando mapa:', err);
+        showToast('Nota: La captura requiere aceleración gráfica compatible');
+      }
+    });
+  }
+
+  // --- COMMAND PALETTE (CTRL+K / /) SPOTLIGHT SEARCH ---
+  function initCommandPalette() {
+    const dlg = document.getElementById('cmdPalette');
+    const input = document.getElementById('cmdInput');
+    const resEl = document.getElementById('cmdResultados');
+    const btnOpen = document.getElementById('btnCmdOpen');
+    if (!dlg || !input || !resEl) return;
+
+    btnOpen?.addEventListener('click', () => abrirPalette());
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        abrirPalette();
+      } else if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        abrirPalette();
+      } else if (e.key === 'Escape' && dlg.open) {
+        dlg.close();
+      } else if (e.key.toLowerCase() === 'm' && !dlg.open && document.activeElement.tagName !== 'INPUT') {
+        toggleMedicion(!modoMedicion);
+      } else if (e.key === '3' && !dlg.open && document.activeElement.tagName !== 'INPUT') {
+        document.getElementById('btn3D')?.click();
+      }
+    });
+
+    function abrirPalette() {
+      input.value = '';
+      renderizarResultadosPalette('');
+      dlg.showModal();
+      input.focus();
+    }
+
+    input.addEventListener('input', () => {
+      renderizarResultadosPalette(input.value.trim().toLowerCase());
+    });
+
+    let itemsFiltrados = [];
+    let indiceSeleccionado = 0;
+
+    function renderizarResultadosPalette(q) {
+      if (!CATALOGO || !CATALOGO.items) return;
+      itemsFiltrados = CATALOGO.items.filter((it) => {
+        if (!q) return true;
+        const texto = `${it.etiqueta} ${it.titulo} ${it.clase} ${it.ruta?.join(' ')}`.toLowerCase();
+        return texto.includes(q);
+      }).slice(0, 30);
+
+      indiceSeleccionado = 0;
+      if (itemsFiltrados.length === 0) {
+        resEl.innerHTML = '<div class="cmd-vacio">No se encontraron elementos coincidentes en la investigación</div>';
+        return;
+      }
+
+      resEl.innerHTML = itemsFiltrados.map((it, idx) => `
+        <div class="cmd-item${idx === 0 ? ' activo' : ''}" data-idx="${idx}" data-id="${it.id}">
+          <span class="cmd-item-eti">${it.etiqueta}</span>
+          <span class="cmd-item-tit">${it.titulo}</span>
+          <span class="cmd-item-cap">${it.tipo === 'mapa' ? '🗺️ Mapa' : it.clase}</span>
+        </div>
+      `).join('');
+
+      resEl.querySelectorAll('.cmd-item').forEach((el) => {
+        el.addEventListener('click', () => {
+          dlg.close();
+          navigate(`#/${el.getAttribute('data-id')}`);
+        });
+      });
+    }
+
+    input.addEventListener('keydown', (e) => {
+      const items = resEl.querySelectorAll('.cmd-item');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        indiceSeleccionado = (indiceSeleccionado + 1) % items.length;
+        items.forEach((it, idx) => it.classList.toggle('activo', idx === indiceSeleccionado));
+        items[indiceSeleccionado]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        indiceSeleccionado = (indiceSeleccionado - 1 + items.length) % items.length;
+        items.forEach((it, idx) => it.classList.toggle('activo', idx === indiceSeleccionado));
+        items[indiceSeleccionado]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (itemsFiltrados[indiceSeleccionado]) {
+          dlg.close();
+          navigate(`#/${itemsFiltrados[indiceSeleccionado].id}`);
+        }
+      }
+    });
+  }
+
   // --- INICIALIZACIÓN GLOBAL DE LA APLICACIÓN ---
   async function initApp() {
     try {
@@ -1563,6 +1995,11 @@
 
       renderArbol();
       initZoomer();
+      initCommandPalette();
+      initHerramientaMedicion();
+      init3DToggle();
+      initSaltosRapidos();
+      initCapturaMapa();
 
       document.getElementById('btnMenu')?.addEventListener('click', () => {
         document.getElementById('indice')?.classList.toggle('abierto');
@@ -1583,6 +2020,13 @@
 
       document.getElementById('cajonCerrar')?.addEventListener('click', () => {
         document.getElementById('cajon').hidden = true;
+      });
+
+      document.querySelectorAll('#bases .base-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          const val = card.getAttribute('data-base');
+          if (val) setBaseMap(val);
+        });
       });
 
       document.querySelectorAll('#bases input[name="base"]').forEach((radio) => {

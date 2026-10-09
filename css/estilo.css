@@ -1160,6 +1160,371 @@ dialog textarea {
   color: var(--azul);
 }
 
+/* ==========================================================================
+   HERRAMIENTAS ULTRA AVANZADAS: TOOLBAR FLOTANTE, MEDICIÓN, COMMAND PALETTE
+   ========================================================================== */
+
+/* Barra de herramientas flotante sobre el mapa */
+.mapa-flotante-herramientas {
+  position: absolute;
+  top: 14px;
+  left: 60px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 30px;
+  padding: 4px 6px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12);
+  pointer-events: auto;
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mapa-flotante-herramientas:hover {
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.16);
+  border-color: rgba(203, 213, 225, 1);
+}
+.t-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all .16s ease;
+  line-height: 1;
+}
+.t-btn:hover {
+  background: #f1f5f9;
+  color: var(--azul);
+}
+.t-btn.on {
+  background: var(--azul);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(11, 25, 44, 0.25);
+}
+.t-ico { font-size: 13px; }
+.t-flecha { font-size: 9px; opacity: 0.7; margin-left: 2px; }
+
+/* Menú de saltos espaciales */
+.t-dropdown { position: relative; }
+.t-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 260px;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.16);
+  padding: 6px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: tMenuIn .15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.t-menu[hidden] { display: none; }
+@keyframes tMenuIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.t-menu-tit {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--gris);
+  letter-spacing: .06em;
+  padding: 6px 10px 2px;
+}
+.t-menu button {
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #334155;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all .12s ease;
+}
+.t-menu button:hover {
+  background: #f1f5f9;
+  color: var(--azul);
+  padding-left: 13px;
+}
+
+/* HUD interactivo de medición */
+.medicion-hud {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  z-index: 5;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  border-radius: 30px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+  animation: tMenuIn .2s ease;
+}
+.medicion-hud[hidden] { display: none; }
+.med-punto {
+  width: 8px;
+  height: 8px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #38bdf8;
+  animation: medPulse 1.4s infinite;
+}
+@keyframes medPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+.med-texto {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+.med-btn {
+  border: 0;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background .12s ease;
+}
+.med-btn:hover { background: rgba(255, 255, 255, 0.3); }
+.med-btn.cerrar { background: #ef4444; }
+.med-btn.cerrar:hover { background: #dc2626; }
+
+/* Tooltip interactivo al mover cursor sobre geometrías */
+.map-tooltip {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.94);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translate(-50%, -130%);
+  transition: opacity .1s ease;
+}
+.map-tooltip[hidden] { display: none; }
+
+/* Botón rápido de búsqueda en la barra superior */
+.barra-acciones {
+  display: flex;
+  align-items: center;
+  margin: 0 16px;
+}
+.btn-buscar-rapido {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.btn-buscar-rapido:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: var(--dorado);
+  color: #fff;
+}
+.btn-buscar-rapido kbd {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--dorado-claro);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Selector de mapas base con tarjetas */
+.bases {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.base-card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #334155;
+  transition: all .15s ease;
+}
+.base-card:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+.base-card.on {
+  background: #eff6ff;
+  border-color: var(--azul);
+  color: var(--azul);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(11, 25, 44, 0.08);
+}
+.base-card input { display: none; }
+
+/* Spotlight Command Palette (Ctrl+K) */
+.cmd-dialog {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  max-width: 620px;
+  width: 90vw;
+  margin: 60px auto auto;
+}
+.cmd-dialog::backdrop {
+  background: rgba(11, 25, 44, 0.65);
+  backdrop-filter: blur(8px);
+}
+.cmd-caja {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+}
+.cmd-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+.cmd-ico { font-size: 16px; opacity: 0.7; }
+.cmd-input-wrap input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+  color: var(--tinta);
+}
+.cmd-kbd {
+  background: #e2e8f0;
+  color: var(--gris);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.cmd-resultados {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cmd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--tinta);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .1s ease;
+}
+.cmd-item:hover, .cmd-item.activo {
+  background: #f1f5f9;
+  color: var(--azul);
+}
+.cmd-item-eti {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--azul);
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex: none;
+}
+.cmd-item-tit {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmd-item-cap {
+  font-size: 11px;
+  color: var(--gris);
+  flex: none;
+}
+.cmd-vacio {
+  padding: 30px;
+  text-align: center;
+  color: var(--gris);
+  font-size: 13px;
+}
+.cmd-pie {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 18px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  font-size: 11px;
+  color: var(--gris);
+}
+.cmd-pie kbd {
+  background: #e2e8f0;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
 @media (max-width: 900px) {
   .solo-movil { display: block; }
   .indice {

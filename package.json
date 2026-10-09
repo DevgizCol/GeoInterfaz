@@ -1,0 +1,22 @@
+{
+  "name": "geointerfaz",
+  "version": "1.0.0",
+  "description": "GeoInterfaz · Plataforma Cartográfica y Geovisor de la Tesis Doctoral (UPC 2026)",
+  "author": "Aida del Carmen Palmett Padilla (UPC)",
+  "scripts": {
+    "start": "npx serve -s .",
+    "dev": "npx serve -s .",
+    "build": "echo 'GeoInterfaz static build ready'"
+  },
+  "keywords": [
+    "geovisor",
+    "maplibre",
+    "qgis",
+    "sig",
+    "gis",
+    "urbanismo",
+    "ciudades-portuarias",
+    "upc"
+  ],
+  "license": "UNLICENSED"
+}

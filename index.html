@@ -22,6 +22,11 @@
       <small>Franjas de interfaz urbano-rural en ciudades portuarias · Barranquilla</small>
     </span>
   </a>
+  <div class="barra-acciones">
+    <button class="btn-buscar-rapido" id="btnCmdOpen" title="Búsqueda rápida en la tesis (Ctrl+K)">
+      <span class="lupa">🔍</span> Buscar <kbd>Ctrl+K</kbd>
+    </button>
+  </div>
   <nav class="nav">
     <a href="#/" data-nav="inicio">Inicio</a>
     <a href="#/datos" data-nav="datos">Capas y datos</a>
@@ -58,6 +63,49 @@
         <div class="vis vis-mapa" id="visMapa">
           <div id="mapa"></div>
           <div class="coord" id="coord"></div>
+
+          <!-- Barra de herramientas flotante de alta gama -->
+          <div class="mapa-flotante-herramientas" id="mapToolbar">
+            <button class="t-btn" id="btnMedir" title="Herramienta de medición de distancia y área (M)">
+              <span class="t-ico">📏</span> Medir
+            </button>
+            <button class="t-btn" id="btn3D" title="Alternar perspectiva 3D y vista plana (3)">
+              <span class="t-ico">📐</span> <span id="lbl3D">3D</span>
+            </button>
+            <div class="t-dropdown" id="dropSaltos">
+              <button class="t-btn" id="btnSaltos" title="Saltos espaciales rápidos a nodos y municipios">
+                <span class="t-ico">📍</span> Saltos <span class="t-flecha">▾</span>
+              </button>
+              <div class="t-menu" id="menuSaltos" hidden>
+                <div class="t-menu-tit">Área de estudio</div>
+                <button data-salto="amb">Área Metropolitana (Global)</button>
+                <button data-salto="franja">Franja de Interfaz IOTF-IUR</button>
+                <div class="t-menu-tit">Nodos de desarrollo</div>
+                <button data-salto="nodo1">Nodo 1: Puerto Colombia (Ecoturístico)</button>
+                <button data-salto="nodo2">Nodo 2: Galapa (Agroindustrial)</button>
+                <button data-salto="nodo3">Nodo 3: Barranquilla - Galapa (Cultural)</button>
+                <button data-salto="nodo4">Nodo 4: Malambo (Industrial Logístico)</button>
+                <button data-salto="puerto">Nuevo Puerto Interior (Río)</button>
+                <div class="t-menu-tit">Estructura ecológica</div>
+                <button data-salto="mallorquin">Ciénaga de Mallorquín</button>
+              </div>
+            </div>
+            <button class="t-btn" id="btnCapturaMapa" title="Exportar lámina PNG del encuadre actual">
+              <span class="t-ico">📸</span> Captura
+            </button>
+          </div>
+
+          <!-- HUD interactivo de medición -->
+          <div class="medicion-hud" id="medicionHud" hidden>
+            <div class="med-punto"></div>
+            <div class="med-texto" id="medTexto">Haga clic en el mapa para iniciar la medición</div>
+            <button class="med-btn" id="btnLimpiarMed" title="Reiniciar medición">Limpiar</button>
+            <button class="med-btn cerrar" id="btnCerrarMed" title="Finalizar medición">✕</button>
+          </div>
+
+          <!-- Tooltip flotante interactivo para inspección de geometrías -->
+          <div class="map-tooltip" id="mapTooltip" hidden></div>
+
           <aside class="panel" id="panel">
             <button class="plegar" id="btnPlegar" title="Ocultar o mostrar el panel">›</button>
             <div class="panel-int">
@@ -65,10 +113,11 @@
               <div id="listaCapas"></div>
               <h3>Mapa base</h3>
               <div class="bases" id="bases">
-                <label><input type="radio" name="base" value="osm" checked> Calles</label>
-                <label><input type="radio" name="base" value="sat"> Satélite</label>
-                <label><input type="radio" name="base" value="claro"> Claro</label>
-                <label><input type="radio" name="base" value="nada"> Sin fondo</label>
+                <label data-base="osm" class="base-card on"><input type="radio" name="base" value="osm" checked> <span>🗺️ Calles</span></label>
+                <label data-base="sat" class="base-card"><input type="radio" name="base" value="sat"> <span>🛰️ Satélite</span></label>
+                <label data-base="claro" class="base-card"><input type="radio" name="base" value="claro"> <span>⚪ Carto Claro</span></label>
+                <label data-base="oscuro" class="base-card"><input type="radio" name="base" value="oscuro"> <span>🌙 Carto Dark</span></label>
+                <label data-base="nada" class="base-card"><input type="radio" name="base" value="nada"> <span>⏹️ Sin fondo</span></label>
               </div>
               <div id="omitidas"></div>
             </div>
@@ -103,10 +152,28 @@
   </main>
 </div>
 
+<!-- Modal Spotlight / Command Palette (Ctrl+K) -->
+<dialog id="cmdPalette" class="cmd-dialog">
+  <div class="cmd-caja">
+    <div class="cmd-input-wrap">
+      <span class="cmd-ico">🔍</span>
+      <input type="search" id="cmdInput" placeholder="Buscar en la tesis: figuras, tablas, mapas, capas, nodos… (Esc para salir)" autocomplete="off">
+      <kbd class="cmd-kbd">ESC</kbd>
+    </div>
+    <div class="cmd-resultados" id="cmdResultados"></div>
+    <div class="cmd-pie">
+      <span><kbd>↑</kbd> <kbd>↓</kbd> Navegar</span>
+      <span><kbd>ENTER</kbd> Abrir</span>
+      <span><kbd>ESC</kbd> Cerrar</span>
+    </div>
+  </div>
+</dialog>
+
 <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 <dialog id="dlg"><div id="dlgCuerpo"></div><form method="dialog"><button class="btn">Cerrar</button></form></dialog>
 
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="js/app.js"></script>
