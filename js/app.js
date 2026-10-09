@@ -697,7 +697,6 @@
   async function abrirCajonAtributos(capaObj) {
     const cajon = document.getElementById('cajon');
     const tit = document.getElementById('cajonTit');
-    const desc = document.getElementById('cajonDesc');
     const filtro = document.getElementById('cajonFiltro');
     const cajonN = document.getElementById('cajonN');
     const tablaCont = document.getElementById('cajonTabla');
@@ -705,8 +704,6 @@
     if (!cajon || !tablaCont) return;
 
     tit.textContent = capaObj.nombre;
-    desc.href = `data/capas/${capaObj.capa}.geojson`;
-    desc.setAttribute('download', `${capaObj.capa}.geojson`);
     cajon.hidden = false;
     tablaCont.innerHTML = '<div style="padding:16px;color:var(--gris)">Cargando datos espaciales…</div>';
     filtro.value = '';
@@ -1221,7 +1218,7 @@
             <td class="num">${c.n ? c.n.toLocaleString('es-CO') : '—'}</td>
             <td>${c.crs || '—'}</td>
             <td><small>${c.fuente || 'SIG Tesis'}</small></td>
-            <td><a class="btn chico pri" href="data/${c.archivo}" download="${c.id}.geojson">GeoJSON</a></td>
+            <td><span class="tag" style="background:#eef2f6;color:var(--gris)">🔒 Solo lectura</span></td>
           </tr>
           <tr class="det" id="det_${c.id}" hidden>
             <td colspan="6">
@@ -1278,7 +1275,7 @@
                 <th class="num">Elementos</th>
                 <th>CRS Origen</th>
                 <th>Fuente original en SIG</th>
-                <th>Descarga</th>
+                <th>Acceso</th>
               </tr>
             </thead>
             <tbody>${filasHtml}</tbody>
