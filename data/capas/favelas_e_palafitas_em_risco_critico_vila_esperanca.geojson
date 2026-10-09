@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "favelas_e_palafitas_em_risco_critico_vila_esperanca",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "comunidade": "Vila Esperança", "tipologia": "Palafitas sobre Manguezal do Rio Casqueiro", "populacao": 22000, "vulnerabil": "Extrema: Marés altas, ressacas, incêndios em madeira e falta de saneamento" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.400208, -23.932863 ], [ -46.400013, -23.914803 ], [ -46.370546, -23.915069 ], [ -46.370736, -23.933129 ], [ -46.400208, -23.932863 ] ] ] } },
+{ "type": "Feature", "properties": { "comunidade": "Vila dos Pescadores", "tipologia": "Palafitas e Solo Inundável Estuarino", "populacao": 14000, "vulnerabil": "Muito Alta: Inundação de maré e contaminação de sedimentos" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.419954, -23.941712 ], [ -46.419786, -23.926362 ], [ -46.40014, -23.926542 ], [ -46.400305, -23.941892 ], [ -46.419954, -23.941712 ] ] ] } },
+{ "type": "Feature", "properties": { "comunidade": "Pilões e Água Fria", "tipologia": "Ocupação em Encosta da Serra do Mar", "populacao": 6500, "vulnerabil": "Crítica: Deslizamentos de terra e corridas de massa (Serra do Mar)" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.453631, -23.878184 ], [ -46.453379, -23.85561 ], [ -46.428835, -23.85584 ], [ -46.429083, -23.878414 ], [ -46.453631, -23.878184 ] ] ] } },
+{ "type": "Feature", "properties": { "comunidade": "Vila Parisi (Sítio Histórico)", "tipologia": "Antiga Favela Industrial (Desocupada por Poluição Extrema)", "populacao": 800, "vulnerabil": "Histórico de Intoxicações e Doenças Respiratórias (CETESB)" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.385039, -23.892363 ], [ -46.384895, -23.878818 ], [ -46.365255, -23.878993 ], [ -46.365397, -23.892538 ], [ -46.385039, -23.892363 ] ] ] } },
+{ "type": "Feature", "properties": { "comunidade": "Bolsões (Bolsão 7, 8 e 9)", "tipologia": "Assentamentos Encurralados entre Rodovias e Indústrias", "populacao": 8500, "vulnerabil": "Isolamento espacial, ruído e emissões de poluentes industriais" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.395053, -23.910333 ], [ -46.394908, -23.896789 ], [ -46.375266, -23.896966 ], [ -46.375409, -23.91051 ], [ -46.395053, -23.910333 ] ] ] } }
+]
+}

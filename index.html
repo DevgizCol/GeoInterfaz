@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geovisor · Tesis doctoral — Franjas de interfaz urbano-rural en ciudades portuarias</title>
+<meta name="description" content="Geovisor de la tesis doctoral de Aida del Carmen Palmett Padilla (UPC): mapas interactivos, capas, figuras, tablas y datos de la investigación sobre franjas de interfaz urbano-rural en ciudades portuarias.">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+<header class="barra">
+  <button class="solo-movil icono" id="btnMenu" aria-label="Abrir índice">☰</button>
+  <a class="marca" href="#/">
+    <img src="logo_upc.png" alt="UPC" width="34" height="32">
+    <span class="marca-txt">
+      <strong>Geovisor de la tesis doctoral</strong>
+      <small>Franjas de interfaz urbano-rural en ciudades portuarias · Barranquilla</small>
+    </span>
+  </a>
+  <nav class="nav">
+    <a href="#/" data-nav="inicio">Inicio</a>
+    <a href="#/datos" data-nav="datos">Capas y datos</a>
+    <a href="#/acerca" data-nav="acerca">Acerca de</a>
+  </nav>
+</header>
+
+<div class="cuerpo">
+
+  <!-- ÍNDICE -->
+  <aside class="indice" id="indice">
+    <div class="buscador">
+      <input type="search" id="buscar" placeholder="Buscar figura, tabla, mapa…" autocomplete="off" aria-label="Buscar en el índice">
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo">
+        <button data-f="todos" class="on">Todo</button>
+        <button data-f="mapa">Mapas</button>
+        <button data-f="grafico">Figuras</button>
+        <button data-f="tabla">Tablas</button>
+        <button data-f="esquema">Esquemas</button>
+      </div>
+    </div>
+    <div class="arbol" id="arbol"></div>
+  </aside>
+
+  <main class="principal" id="principal">
+
+    <!-- INICIO -->
+    <section class="pagina" id="pgInicio" hidden></section>
+
+    <!-- ELEMENTO (mapa, figura, tabla, esquema) -->
+    <section class="pagina elemento" id="pgElemento" hidden>
+      <div class="cabecera" id="cabecera"></div>
+      <div class="lienzo">
+        <div class="vis vis-mapa" id="visMapa">
+          <div id="mapa"></div>
+          <div class="coord" id="coord"></div>
+          <aside class="panel" id="panel">
+            <button class="plegar" id="btnPlegar" title="Ocultar o mostrar el panel">›</button>
+            <div class="panel-int">
+              <h3>Capas del mapa</h3>
+              <div id="listaCapas"></div>
+              <h3>Mapa base</h3>
+              <div class="bases" id="bases">
+                <label><input type="radio" name="base" value="osm" checked> Calles</label>
+                <label><input type="radio" name="base" value="sat"> Satélite</label>
+                <label><input type="radio" name="base" value="claro"> Claro</label>
+                <label><input type="radio" name="base" value="nada"> Sin fondo</label>
+              </div>
+              <div id="omitidas"></div>
+            </div>
+          </aside>
+          <div class="cajon" id="cajon" hidden>
+            <div class="cajon-barra">
+              <strong id="cajonTit"></strong>
+              <input type="search" id="cajonFiltro" placeholder="Filtrar filas…">
+              <span id="cajonN"></span>
+              <a id="cajonDesc" class="btn chico" download>Descargar GeoJSON</a>
+              <button class="icono" id="cajonCerrar" aria-label="Cerrar tabla">✕</button>
+            </div>
+            <div class="cajon-tabla" id="cajonTabla"></div>
+          </div>
+        </div>
+        <div class="vis vis-imagen" id="visImagen" hidden>
+          <div class="zoomer" id="zoomer"><img id="zoomImg" alt=""></div>
+          <div class="zoom-ctl">
+            <button id="zMas" title="Acercar">+</button>
+            <button id="zMenos" title="Alejar">−</button>
+            <button id="zAjustar" title="Ajustar a la pantalla">⤢</button>
+          </div>
+        </div>
+        <div class="vis vis-doc" id="visDoc" hidden></div>
+      </div>
+    </section>
+
+    <!-- DATOS -->
+    <section class="pagina doc" id="pgDatos" hidden></section>
+    <!-- ACERCA -->
+    <section class="pagina doc" id="pgAcerca" hidden></section>
+  </main>
+</div>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+<dialog id="dlg"><div id="dlgCuerpo"></div><form method="dialog"><button class="btn">Cerrar</button></form></dialog>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

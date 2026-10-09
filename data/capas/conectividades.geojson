@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "conectividades",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "NORTEAMERICA" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.876207, 10.938869 ], [ -75.028438, 11.151458 ] ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "COLOMBIA" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.876207, 10.938869 ], [ -74.850432, 10.705371 ] ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "EUROPA" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.876207, 10.938869 ], [ -74.623098, 11.365209 ] ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "AFRICA" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.876207, 10.938869 ], [ -74.477262, 10.931989 ] ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "CENTROAMERICA" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.876207, 10.938869 ], [ -75.159261, 10.940568 ] ] } }
+]
+}

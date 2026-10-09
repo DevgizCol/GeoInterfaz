@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "susceptibilidade_a_escorregamento_serra_do_mar_ipt_r4",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "fonte": "IPT / Defesa Civil Estado de São Paulo", "grau_risco": "R4 - Risco Muito Alto de Escorregamento de Encosta", "morfologia": "Declividades >45°, solos rasos sobre rocha cristalina, chuvas orográficas extremas" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.473526, -23.900571 ], [ -46.478026, -23.864406 ], [ -46.462893, -23.828429 ], [ -46.428637, -23.837781 ], [ -46.439152, -23.900896 ], [ -46.473526, -23.900571 ] ] ] } }
+]
+}

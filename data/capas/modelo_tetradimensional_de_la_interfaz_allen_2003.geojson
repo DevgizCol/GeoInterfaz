@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "modelo_tetradimensional_de_la_interfaz_allen_2003",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "dimension": "Dimensión Morfológica (Tejido Urbano Consolidado)", "tipo": "Morfología", "conflicto": "Saturación y expulsión residencial hacia el borde" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -78.698779, -0.015933 ], [ -78.698798, 0.164349 ], [ -78.564478, 0.16438 ], [ -78.56446, -0.015936 ], [ -78.698779, -0.015933 ] ] ] } },
+{ "type": "Feature", "properties": { "dimension": "Dimensión Morfológica (Retroárea Portuaria y Logística)", "tipo": "Morfología", "conflicto": "Invasión de suelo rural y presión de patios de contenedores" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -78.564461, 0.029143 ], [ -78.564475, 0.146349 ], [ -78.457001, 0.14637 ], [ -78.456987, 0.029147 ], [ -78.564461, 0.029143 ] ] ] } },
+{ "type": "Feature", "properties": { "dimension": "Dimensión Funcional (Parque Industrial y Plataforma de Carga)", "tipo": "Funcional", "conflicto": "Generación de tráfico pesado y fractura de conectividad local" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -78.546551, 0.056192 ], [ -78.54656, 0.12832 ], [ -78.403255, 0.128345 ], [ -78.403247, 0.056203 ], [ -78.546551, 0.056192 ] ] ] } },
+{ "type": "Feature", "properties": { "dimension": "Dimensión Ecológica (Humedal / Manglar de Amortiguamiento)", "tipo": "Ecológica", "conflicto": "Degradación hídrica, relleno de esteros y pérdida de servicios ecosistémicos" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -78.58238, 0.119298 ], [ -78.582401, 0.209454 ], [ -78.403273, 0.209505 ], [ -78.430126, 0.119323 ], [ -78.58238, 0.119298 ] ] ] } }
+]
+}

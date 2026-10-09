@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "manguezais_degradados_e_aterros_historicos",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "setor": "Aterro Histórico da Alemoa e Saboó", "periodo": "1960 - 1990", "uso_atual": "Pátios de Contêineres e Tanques" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.356236, -23.955834 ], [ -46.356095, -23.942289 ], [ -46.336445, -23.942461 ], [ -46.336585, -23.956006 ], [ -46.356236, -23.955834 ] ] ] } },
+{ "type": "Feature", "properties": { "setor": "Aterro Portuário Conceiçãozinha (Guarujá)", "periodo": "1970 - 2000", "uso_atual": "Tecon e Retroárea Logística" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.282632, -23.965497 ], [ -46.282453, -23.947437 ], [ -46.262803, -23.9476 ], [ -46.262979, -23.96566 ], [ -46.282632, -23.965497 ] ] ] } },
+{ "type": "Feature", "properties": { "setor": "Aterro Industrial Ilha Barnabé Sul", "periodo": "1980 - 2010", "uso_atual": "Dutos e Píeres Químicos" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.306789, -23.924655 ], [ -46.306698, -23.915625 ], [ -46.287053, -23.915791 ], [ -46.287142, -23.924821 ], [ -46.306789, -23.924655 ] ] ] } }
+]
+}

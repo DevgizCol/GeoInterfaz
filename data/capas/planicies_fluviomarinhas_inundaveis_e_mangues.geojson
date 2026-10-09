@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "planicies_fluviomarinhas_inundaveis_e_mangues",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "tipo": "Planície Fluviomarinha Inundável", "dinamica": "Alagamentos por maré de sizígia, ressacas e cheias do Rio Casqueiro", "afetacao": "Impacto direto sobre habitações em palafitas de madeira" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.429828, -23.946136 ], [ -46.434491, -23.923516 ], [ -46.404827, -23.905729 ], [ -46.360676, -23.910641 ], [ -46.365919, -23.942202 ], [ -46.429828, -23.946136 ] ] ] } }
+]
+}

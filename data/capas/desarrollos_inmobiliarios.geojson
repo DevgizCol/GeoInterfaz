@@ -1,0 +1,18 @@
+{
+"type": "FeatureCollection",
+"name": "desarrollos_inmobiliarios",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "NOMBRE": "CIUDAD MALLORQUIN", "DNSDAD_POB": 700, "AREA_Has": 80.0 }, "geometry": { "type": "Point", "coordinates": [ -74.844269, 11.023135 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "ALAMEDA DEL RIO", "DNSDAD_POB": 459, "AREA_Has": 183.0 }, "geometry": { "type": "Point", "coordinates": [ -74.846548, 10.993376 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "VILLAS DE LA CORDIALIDAD", "DNSDAD_POB": 230, "AREA_Has": 48.0 }, "geometry": { "type": "Point", "coordinates": [ -74.861662, 10.939535 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "VILLAS DE SAN PABLO", "DNSDAD_POB": 510, "AREA_Has": 137.0 }, "geometry": { "type": "Point", "coordinates": [ -74.862786, 10.958831 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "CARIBE VERDE", "DNSDAD_POB": 415, "AREA_Has": 150.0 }, "geometry": { "type": "Point", "coordinates": [ -74.850476, 10.959367 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "PINAR DEL RIO", "DNSDAD_POB": 400, "AREA_Has": 56.0 }, "geometry": { "type": "Point", "coordinates": [ -74.867293, 10.964901 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "PUERTA DORADA", "DNSDAD_POB": 581, "AREA_Has": 60.0 }, "geometry": { "type": "Point", "coordinates": [ -74.831476, 10.92634 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "MUNDO FELIZ", "DNSDAD_POB": 308, "AREA_Has": 120.0 }, "geometry": { "type": "Point", "coordinates": [ -74.882847, 10.917669 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "VILLA OLIMPICA", "DNSDAD_POB": 360, "AREA_Has": 180.0 }, "geometry": { "type": "Point", "coordinates": [ -74.864415, 10.922007 ] } },
+{ "type": "Feature", "properties": { "NOMBRE": "URBANIZACION CASA GRANDE", "DNSDAD_POB": 690, "AREA_Has": 5.0 }, "geometry": { "type": "Point", "coordinates": [ -74.886991, 10.904444 ] } }
+]
+}

@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "canal_de_navegacao_do_estuario_limpio",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nombre": "Canal de Navegação do Estuário de Santos", "calado_m": 15.0 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.30729, -23.97432 ], [ -46.282945, -23.997102 ], [ -46.263507, -24.019841 ], [ -46.244106, -24.047092 ], [ -46.229701, -24.083332 ], [ -46.215203, -24.11054 ], [ -46.230003, -24.114937 ], [ -46.244498, -24.087727 ], [ -46.260911, -24.055985 ], [ -46.280265, -24.024217 ], [ -46.2997, -24.001477 ], [ -46.322123, -23.983224 ], [ -46.30729, -23.97432 ] ] ] } }
+]
+}

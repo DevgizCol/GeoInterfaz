@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "projeto_santos_2030_expansao_retroportuaria",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "fase": "Expansão Retroportuária Ilha Barnabé Norte", "conflicto": "Relleno proyectado sobre manglares de Ilha Diana" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.292531, -23.972639 ], [ -46.286545, -23.963658 ], [ -46.269946, -23.974634 ], [ -46.275931, -23.983615 ], [ -46.292531, -23.972639 ] ] ] } },
+{ "type": "Feature", "properties": { "fase": "Expansão Retroportuária Margem Esquerda (Conceiçãozinha)", "conflicto": "Supresión de manglares para terminal intermodal" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.243889, -24.024517 ], [ -46.237904, -24.015534 ], [ -46.221303, -24.027408 ], [ -46.227287, -24.036391 ], [ -46.243889, -24.024517 ] ] ] } }
+]
+}

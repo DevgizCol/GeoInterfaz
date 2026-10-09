@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "manchas_urbanas_consolidadas_ibge",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "aglomerado": "Núcleo Central: Santos - São Vicente", "pop_est": 748000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.39622, -24.018689 ], [ -46.405462, -23.964422 ], [ -46.356048, -23.937774 ], [ -46.297282, -23.956343 ], [ -46.307746, -24.01947 ], [ -46.39622, -24.018689 ] ] ] } },
+{ "type": "Feature", "properties": { "aglomerado": "Borde Insular: Guarujá (Vicente de Carvalho - Enseada)", "pop_est": 287000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.297553, -23.983433 ], [ -46.277363, -23.929418 ], [ -46.228072, -23.911758 ], [ -46.16946, -23.948339 ], [ -46.209184, -23.993186 ], [ -46.297553, -23.983433 ] ] ] } },
+{ "type": "Feature", "properties": { "aglomerado": "Praia Grande (Conurbação Litoral Sul)", "pop_est": 350000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.495043, -24.062907 ], [ -46.504455, -24.026695 ], [ -46.425213, -23.97327 ], [ -46.405854, -24.00054 ], [ -46.495043, -24.062907 ] ] ] } },
+{ "type": "Feature", "properties": { "aglomerado": "Cubatão (Borde Continental e Polo Industrial)", "pop_est": 112000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.434541, -23.928031 ], [ -46.433843, -23.864824 ], [ -46.365018, -23.856419 ], [ -46.355859, -23.919715 ], [ -46.434541, -23.928031 ] ] ] } },
+{ "type": "Feature", "properties": { "aglomerado": "Bertioga (Borde Litoral Norte)", "pop_est": 64000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.001372, -23.814055 ], [ -46.010839, -23.768835 ], [ -45.853419, -23.706562 ], [ -45.834031, -23.742796 ], [ -46.001372, -23.814055 ] ] ] } },
+{ "type": "Feature", "properties": { "aglomerado": "Mongaguá - Itanhaém - Peruíbe (Litoral Sul)", "pop_est": 242000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -47.120846, -24.443711 ], [ -47.149658, -24.398166 ], [ -46.652599, -24.079346 ], [ -46.623552, -24.115776 ], [ -47.120846, -24.443711 ] ] ] } }
+]
+}

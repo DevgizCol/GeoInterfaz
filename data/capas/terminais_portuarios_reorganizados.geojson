@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "terminais_portuarios_reorganizados",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "terminal": "Terminal BTP (Brasil Terminal Portuário)", "margem": "Direita (Santos)", "tipo_carga": "Contenedores y Carga General" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.312386, -23.992338 ], [ -46.297716, -23.999687 ], [ -46.299754, -24.006895 ], [ -46.315408, -23.999537 ], [ -46.312386, -23.992338 ] ] ] } },
+{ "type": "Feature", "properties": { "terminal": "Terminal Alemoa / Saboó (Líquidos)", "margem": "Direita (Santos)", "tipo_carga": "Graneles Líquidos e Inflamables" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.325053, -23.981392 ], [ -46.312368, -23.990532 ], [ -46.317356, -23.997714 ], [ -46.330041, -23.988574 ], [ -46.325053, -23.981392 ] ] ] } },
+{ "type": "Feature", "properties": { "terminal": "Terminal Ponta da Praia / Macuco (Sólidos)", "margem": "Direita (Santos)", "tipo_carga": "Graneles Agrícolas (Soja/Azúcar)" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.241374, -24.069691 ], [ -46.224869, -24.092401 ], [ -46.232781, -24.096853 ], [ -46.249285, -24.074142 ], [ -46.241374, -24.069691 ] ] ] } },
+{ "type": "Feature", "properties": { "terminal": "Tecon Santos Brasil (Margem Esquerda)", "margem": "Esquerda (Guaruja)", "tipo_carga": "Contenedores y Vehículos" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.256643, -24.021703 ], [ -46.248726, -24.01635 ], [ -46.231255, -24.039971 ], [ -46.239173, -24.045326 ], [ -46.256643, -24.021703 ] ] ] } },
+{ "type": "Feature", "properties": { "terminal": "DP World Santos (Embraport)", "margem": "Esquerda (Guaruja)", "tipo_carga": "Contenedores y Celulosa" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.29566, -23.990674 ], [ -46.288717, -23.984411 ], [ -46.266262, -23.99995 ], [ -46.273205, -24.006214 ], [ -46.29566, -23.990674 ] ] ] } },
+{ "type": "Feature", "properties": { "terminal": "Terminal Ilha Barnabé (Químicos)", "margem": "Ilha Barnabe", "tipo_carga": "Productos Químicos y Petroquímicos" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.302422, -23.978877 ], [ -46.297444, -23.972597 ], [ -46.282793, -23.981751 ], [ -46.28777, -23.988031 ], [ -46.302422, -23.978877 ] ] ] } }
+]
+}

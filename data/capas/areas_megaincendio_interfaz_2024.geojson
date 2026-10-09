@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "areas_megaincendio_interfaz_2024",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "evento": "Megaincendio Interfaz Febrero 2024 (Sector Viña Alto - Quilpué)", "afectacion": "Destrucción >9.000 viviendas (El Olivar, Villa Independencia, Canal Chacao)", "fuente": "SENAPRED / CONAF (2024)" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -71.607024, -33.026091 ], [ -71.585446, -33.020229 ], [ -71.553278, -33.018187 ], [ -71.532221, -33.030338 ], [ -71.538087, -33.048252 ], [ -71.56502, -33.054012 ], [ -71.591665, -33.049855 ], [ -71.607369, -33.037806 ], [ -71.607024, -33.026091 ] ] ] } },
+{ "type": "Feature", "properties": { "evento": "Incendio Interfaz Forestal Valparaíso (Cerro Rocuant - San Roque)", "afectacion": "Destrucción de viviendas en tomas de borde y laderas de quebrada", "fuente": "SENAPRED / CONAF (2024)" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -71.683075, -33.063248 ], [ -71.661537, -33.059202 ], [ -71.64019, -33.061459 ], [ -71.635189, -33.073286 ], [ -71.656783, -33.079139 ], [ -71.68022, -33.075031 ], [ -71.683075, -33.063248 ] ] ] } }
+]
+}

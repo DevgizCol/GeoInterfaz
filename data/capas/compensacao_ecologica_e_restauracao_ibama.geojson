@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "compensacao_ecologica_e_restauracao_ibama",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "programa": "Compensação Ecológica Terminais Santos 2030 (IBAMA/MPF)", "meta": "Restauração de 180 ha de manguezal e monitoramento hídrico permanente" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.267892, -23.96562 ], [ -46.260882, -23.952131 ], [ -46.236446, -23.965876 ], [ -46.243455, -23.979366 ], [ -46.267892, -23.96562 ] ] ] } }
+]
+}

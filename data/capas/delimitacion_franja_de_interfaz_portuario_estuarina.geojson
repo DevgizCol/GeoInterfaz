@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "delimitacion_franja_de_interfaz_portuario_estuarina",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nombre": "Franja de Interfaz Portuario-Estuarina de Santos", "tipo": "Zona de Conflicto Expansión Portuaria vs. Manglares", "descripcio": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.336725, -23.969551 ], [ -46.28786, -23.997061 ], [ -46.248848, -24.028992 ], [ -46.214777, -24.065389 ], [ -46.200362, -24.101627 ], [ -46.225127, -24.119492 ], [ -46.254247, -24.078617 ], [ -46.28822, -24.033181 ], [ -46.346645, -23.978495 ], [ -46.336725, -23.969551 ] ] ] } }
+]
+}

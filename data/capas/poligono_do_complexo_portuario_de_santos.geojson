@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "poligono_do_complexo_portuario_de_santos",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nome": "Complexo Portuário de Santos", "jurisdicao": "Autoridade Portuária de Santos (SPA)", "movimento": "Maior porto da América Latina (>160 milhões ton/ano)" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -46.366062, -23.955747 ], [ -46.336213, -23.919887 ], [ -46.267187, -23.893379 ], [ -46.237981, -23.920709 ], [ -46.277674, -23.961023 ], [ -46.302512, -23.987907 ], [ -46.366062, -23.955747 ] ] ] } }
+]
+}

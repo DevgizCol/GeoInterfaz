@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "ejes_funcionales_e_institucionales_de_borde",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "elemento": "Eje Conector Logístico Multimodal (Dimensión Funcional)", "efecto": "Corredor de alta velocidad que genera efecto barrera" }, "geometry": { "type": "LineString", "coordinates": [ [ -78.743552, 0.092231 ], [ -78.385335, 0.092276 ] ] } },
+{ "type": "Feature", "properties": { "elemento": "Límite Político-Administrativo Intermunicipal (Dimensión Institucional)", "efecto": "Línea de fractura competencial y vacío de control conjunto" }, "geometry": { "type": "LineString", "coordinates": [ [ -78.510726, -0.03397 ], [ -78.510757, 0.218491 ] ] } }
+]
+}

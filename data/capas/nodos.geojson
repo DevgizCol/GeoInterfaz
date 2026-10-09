@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "nodos",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "id": 1.0, "NOMBRE": "NODO ECOTURISTICO", "NODO": "01" }, "geometry": { "type": "Point", "coordinates": [ -74.881184, 11.041338 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ARTICULADOR LOGISTICO", "NODO": "-" }, "geometry": { "type": "Point", "coordinates": [ -74.87461, 11.013007 ] } },
+{ "type": "Feature", "properties": { "id": 2.0, "NOMBRE": "NODO AGROINDUSTRIAL", "NODO": "02" }, "geometry": { "type": "Point", "coordinates": [ -74.883157, 10.894645 ] } },
+{ "type": "Feature", "properties": { "id": 3.0, "NOMBRE": "NODO CULTURAL", "NODO": "03" }, "geometry": { "type": "Point", "coordinates": [ -74.835693, 10.941885 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "NUEVO PUERTO INTERIOR", "NODO": "-" }, "geometry": { "type": "Point", "coordinates": [ -74.73985, 10.89287 ] } },
+{ "type": "Feature", "properties": { "id": 4.0, "NOMBRE": "NODO INDUSTRIAL LOGISTICO", "NODO": "04" }, "geometry": { "type": "Point", "coordinates": [ -74.762239, 10.845517 ] } }
+]
+}

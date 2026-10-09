@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "traza_corte_transversal_a_a",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "codigo": "A-A'", "nombre": "Traza Perfil Transversal Cerro - Quebrada - Plan", "long_km": 6.9227773511516038 }, "geometry": { "type": "LineString", "coordinates": [ [ -71.670823, -33.012118 ], [ -71.675291, -33.018334 ], [ -71.68083, -33.024527 ], [ -71.686396, -33.03162 ], [ -71.692074, -33.042317 ], [ -71.69885, -33.053892 ], [ -71.704614, -33.067291 ] ] } }
+]
+}

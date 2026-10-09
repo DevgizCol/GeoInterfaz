@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "parque_estadual_da_serra_do_mar_pesm",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nome": "Parque Estadual da Serra do Mar (PESM)", "nucleo": "Núcleos Itutinga-Pilões, Caminhos do Mar e Bertioga", "categoria": "Unidade de Conservação de Proteção Integral (SNUC)", "gestao": "Fundação Florestal / SEMIL SP", "funcao": "Contenção biofísica da expansão metropolitana e proteção de mananciais" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -47.127684, -24.26306 ], [ -46.967384, -24.084649 ], [ -46.719751, -23.952192 ], [ -46.52168, -23.818829 ], [ -46.42206, -23.68432 ], [ -46.176517, -23.641223 ], [ -45.833229, -23.616352 ], [ -45.804375, -23.706825 ], [ -46.030394, -23.759674 ], [ -46.325103, -23.793551 ], [ -46.453279, -23.846581 ], [ -46.552524, -23.935914 ], [ -46.770351, -24.059969 ], [ -46.989144, -24.219794 ], [ -47.120092, -24.398583 ], [ -47.127684, -24.26306 ] ] ] } }
+]
+}

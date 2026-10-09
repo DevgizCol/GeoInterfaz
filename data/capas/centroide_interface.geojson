@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "centroide_interface",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "NOMBRE": "FRANJA INTERFACE", "Area_Ha": 18587.50754312125 }, "geometry": { "type": "Point", "coordinates": [ -74.876207, 10.938869 ] } }
+]
+}

@@ -1,0 +1,26 @@
+{
+"type": "FeatureCollection",
+"name": "vertimientos",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "VENTANA AL MUNDO", "CLASIFICAC": "QUIMICO" }, "geometry": { "type": "Point", "coordinates": [ -74.836408, 11.032671 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ARROYO LEON", "CLASIFICAC": "ESCORRENTIA URBANA" }, "geometry": { "type": "Point", "coordinates": [ -74.878524, 11.043346 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "CAUJARAL", "CLASIFICAC": "TRAMPA DE SEDIMENTOS" }, "geometry": { "type": "Point", "coordinates": [ -74.883796, 11.015254 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ANTIGUO RELLENO SANITARIO", "CLASIFICAC": "LIXIVIADO RELLENO SANITARIO" }, "geometry": { "type": "Point", "coordinates": [ -74.854601, 11.0058 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "PTAR EL PUEBLITO", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.845663, 10.971286 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "VILLA OLIMPICA", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.858465, 10.925649 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "MALECON 1", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.78741, 11.013817 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "MALECON 2", "CLASIFICAC": "BOCATOMA ACUEDUCTO" }, "geometry": { "type": "Point", "coordinates": [ -74.791979, 11.020107 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "CHIPI", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.829972, 11.041535 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "NUEVA ESPERANZA", "CLASIFICAC": "AGUS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.83052, 11.04445 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "FLORES TURISTICO", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.829037, 11.046046 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "FLORES CAPATACION", "CLASIFICAC": "BOCATOMA ACUEDUCTO" }, "geometry": { "type": "Point", "coordinates": [ -74.829663, 11.046608 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "PIMSA", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.755193, 10.83046 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "CIENAGA SAN BLAS", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.761569, 10.854489 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ARROYO EL SAPO", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.766045, 10.862385 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ARROYO EL PLATANAL", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.754437, 10.916519 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ARROYO EL SALAO", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.754689, 10.932499 ] } },
+{ "type": "Feature", "properties": { "id": null, "NOMBRE": "ARROYO DON JUAN", "CLASIFICAC": "AGUAS GRISES" }, "geometry": { "type": "Point", "coordinates": [ -74.759126, 10.944541 ] } }
+]
+}

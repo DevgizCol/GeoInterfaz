@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "delimitacion_franja_de_interfaz_zmv",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nombre": "Franja de Interfaz Urbano-Rural de la Zona Metropolitana de Veracruz", "tipo": "Interfaz Metropolitana Periurbana", "municipios": "Veracruz, Boca del Rio, Medellin, La Antigua", "area_ha": 14250.0 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -96.145178, 19.313595 ], [ -96.116973, 19.295095 ], [ -96.089094, 19.258539 ], [ -96.061387, 19.212955 ], [ -96.034017, 19.149318 ], [ -96.016158, 19.085834 ], [ -96.031202, 19.040937 ], [ -96.064896, 19.014391 ], [ -96.102385, 19.042068 ], [ -96.129927, 19.096671 ], [ -96.147831, 19.16015 ], [ -96.175248, 19.223776 ], [ -96.183826, 19.278081 ], [ -96.169024, 19.309453 ], [ -96.145178, 19.313595 ] ] ] } }
+]
+}

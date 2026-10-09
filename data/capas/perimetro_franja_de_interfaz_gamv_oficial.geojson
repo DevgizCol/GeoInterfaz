@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "perimetro_franja_de_interfaz_gamv_oficial",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nombre": "Perímetro de la Franja de Interfaz Metropolitana del Gran Valparaíso (GAMV)", "tipo": "Perímetro de Interfaz Urbano-Rural y Ecológica", "ejes": "Eje Cerros-Quebradas, Eje Interior Quilpué-Villa Alemana-Limache, Eje Litoral Concón", "long_km": 98.5 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -71.576301, -32.889676 ], [ -71.523408, -32.908789 ], [ -71.460304, -32.946116 ], [ -71.386451, -32.983618 ], [ -71.312535, -33.021079 ], [ -71.33536, -33.074757 ], [ -71.4098, -33.055306 ], [ -71.485218, -33.071859 ], [ -71.561185, -33.106387 ], [ -71.635861, -33.095813 ], [ -71.677861, -33.067869 ], [ -71.70886, -33.031134 ], [ -71.621149, -32.960876 ], [ -71.598453, -32.916268 ], [ -71.576301, -32.889676 ] ] ] } }
+]
+}

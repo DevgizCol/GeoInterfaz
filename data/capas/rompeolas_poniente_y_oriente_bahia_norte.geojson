@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "rompeolas_poniente_y_oriente_bahia_norte",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-06,
+"features": [
+{ "type": "Feature", "properties": { "nombre": "Rompeolas Poniente (ASIPONA)", "tipo": "Rompeolas / Obra de Abrigo", "longitud_m": 26.9, "ID": "0" }, "geometry": { "type": "LineString", "coordinates": [ [ -96.100547, 19.141541 ], [ -96.100623, 19.141591 ], [ -96.100767, 19.141636 ] ] } },
+{ "type": "Feature", "properties": { "nombre": "Rompeolas Poniente (ASIPONA)", "tipo": "Rompeolas / Obra de Abrigo", "longitud_m": 24.0, "ID": "1" }, "geometry": { "type": "LineString", "coordinates": [ [ -96.100977, 19.141683 ], [ -96.100767, 19.141636 ] ] } },
+{ "type": "Feature", "properties": { "nombre": "Rompeolas Poniente (ASIPONA)", "tipo": "Rompeolas / Obra de Abrigo", "longitud_m": 31.8, "ID": "2" }, "geometry": { "type": "LineString", "coordinates": [ [ -96.100365, 19.141324 ], [ -96.100424, 19.14142 ], [ -96.100489, 19.141498 ], [ -96.100547, 19.141541 ] ] } },
+{ "type": "Feature", "properties": { "nombre": "Rompeolas Poniente (ASIPONA)", "tipo": "Rompeolas / Obra de Abrigo", "longitud_m": 19.6, "ID": "3" }, "geometry": { "type": "LineString", "coordinates": [ [ -96.123571, 19.192063 ], [ -96.123746, 19.192048 ] ] } }
+]
+}
