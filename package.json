@@ -5,8 +5,7 @@
   "author": "Aida del Carmen Palmett Padilla (UPC)",
   "scripts": {
     "start": "npx serve -s .",
-    "dev": "npx serve -s .",
-    "build": "echo 'GeoInterfaz static build ready'"
+    "dev": "npx serve -s ."
   },
   "keywords": [
     "geovisor",
