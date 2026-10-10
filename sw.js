@@ -1,11 +1,11 @@
 // GeoInterfaz Service Worker · DevGiz Cloud-Native WebGIS Cache
-const CACHE_NAME = 'geointerfaz-v1';
+const CACHE_NAME = 'geointerfaz-v2';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './css/estilo.css?v=3',
-  './css/refinado.css?v=5',
-  './js/app.js?v=9',
+  './css/refinado.css?v=6',
+  './js/app.js?v=10',
   './logo_aida.svg',
   './logo_devgiz.svg',
   './img/devgiz_lockup.svg',

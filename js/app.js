@@ -1503,6 +1503,8 @@
           <div class="pie-sitio-der">
             <nav class="pie-enlaces" aria-label="Enlaces del pie">
               <a href="#/datos">Capas y datos</a>
+              <a href="#/comparativa">Comparativa LATAM</a>
+              <a href="#/recorrido">Recorrido guiado</a>
               <a href="#/acerca">Acerca de</a>
               <a href="descargas/Atlas_cartografico_GeoInterfaz.docx" download>Atlas (Word)</a>
               <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="pie-link-ext">devgiz.vercel.app ↗</a>
@@ -1564,6 +1566,22 @@
           <div><b>1</b><div><strong>Elija qué ver</strong><span>Recorra la tesis por capítulos en el índice de la izquierda, o busque una figura o tabla por su número.</span></div></div>
           <div><b>2</b><div><strong>Explore el mapa</strong><span>Active capas, consulte la leyenda, haga clic sobre un elemento para ver sus datos y compare con la lámina impresa.</span></div></div>
           <div><b>3</b><div><strong>Cítelo</strong><span>Cada vista tiene un enlace permanente y un código QR para añadir a la nota del mapa en el manuscrito.</span></div></div>
+        </section>
+
+        <!-- Modos destacados de la plataforma -->
+        <section class="modos-clave">
+          <a href="#/recorrido" class="modo-tarjeta">
+            <span class="modo-badge">Hitos 01 - 06</span>
+            <h3>Recorrido Guiado por la Tesis</h3>
+            <p>Guía pedagógica en 6 hitos cronológicos y metodológicos: del diagnóstico metropolitano a la propuesta de Unidades Funcionales de Paisaje (UFP).</p>
+            <span class="modo-cta">Iniciar recorrido →</span>
+          </a>
+          <a href="#/comparativa" class="modo-tarjeta">
+            <span class="modo-badge">Radar Multidimensional</span>
+            <h3>Comparativa de Ciudades Puerto LATAM</h3>
+            <p>Matriz de evaluación y radar interactivo de 5 ejes contrastando a Barranquilla con Veracruz (México), Santos (Brasil) y Valparaíso (Chile).</p>
+            <span class="modo-cta">Ver comparativa →</span>
+          </a>
         </section>
 
         <section class="recorrido">
@@ -2124,6 +2142,9 @@
         <p>GeoInterfaz fue concebido y desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong></a> (<a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer">devgiz.vercel.app</a>) para convertir la producción científica, cartográfica y metodológica de la tesis en una plataforma web interactiva de alto rendimiento.</p>
         <ul>
           <li><strong>MapLibre GL JS</strong> para la renderización vectorial interactiva en el navegador con soporte de reproyección en vivo (EPSG:9377 / EPSG:4326).</li>
+          <li><strong>Relieve 3D Continuo (DEM)</strong> mediante motor raster-dem y mosaicos altimétricos globales (AWS Terrarium) para análisis topográfico volumétrico de la cuenca baja del Magdalena y los cerros de Tubará.</li>
+          <li><strong>Herramientas de Análisis Espacial en Vivo:</strong> cálculo dinámico de cortes de paisaje y perfiles topográficos transversales, medición de distancias geodésicas y áreas de polígonos (Turf.js), y visor de cortina comparativa (Swipe) entre vector y lámina de QGIS.</li>
+          <li><strong>Arquitectura PWA (Progressive Web App):</strong> Service Worker con estrategia de caché inteligente (stale-while-revalidate) para funcionamiento offline de alta resiliencia.</li>
           <li><strong>QGIS</strong> para el análisis territorial espacial y el diseño cartográfico de las láminas oficiales (MAGNA-SIRGAS 2018 / Origen Nacional, EPSG:9377).</li>
           <li><strong>Python, GeoPandas y Turf.js</strong> para el procesamiento de datos geográficos, mediciones espaciales y transformación de capas y estilos a especificaciones web.</li>
         </ul>
@@ -2666,13 +2687,23 @@
     let itemsFiltrados = [];
     let indiceSeleccionado = 0;
 
+    const SECCIONES_CMD = [
+      { id: 'sec_inicio', hash: '#/', etiqueta: 'Página', titulo: 'Inicio de la investigación doctoral', tipo: 'seccion', clase: 'Página' },
+      { id: 'sec_datos', hash: '#/datos', etiqueta: 'Página', titulo: 'Capas y datos del repositorio SIG', tipo: 'seccion', clase: 'Página' },
+      { id: 'sec_comparativa', hash: '#/comparativa', etiqueta: 'Dashboard', titulo: 'Comparativa LATAM · Radar de ciudades puerto', tipo: 'seccion', clase: 'Dashboard' },
+      { id: 'sec_recorrido', hash: '#/recorrido', etiqueta: 'Guía', titulo: 'Recorrido guiado en 6 hitos por la tesis', tipo: 'seccion', clase: 'Guía' },
+      { id: 'sec_acerca', hash: '#/acerca', etiqueta: 'Página', titulo: 'Acerca de este geovisor y desarrollo DevGiz', tipo: 'seccion', clase: 'Página' }
+    ];
+
     function renderizarResultadosPalette(q) {
       if (!CATALOGO || !CATALOGO.items) return;
-      itemsFiltrados = CATALOGO.items.filter((it) => {
+      const secMatch = SECCIONES_CMD.filter((s) => !q || `${s.titulo} ${s.etiqueta} ${s.clase}`.toLowerCase().includes(q));
+      const itemsMatch = CATALOGO.items.filter((it) => {
         if (!q) return true;
         const texto = `${it.etiqueta} ${it.titulo} ${it.clase} ${it.ruta?.join(' ')}`.toLowerCase();
         return texto.includes(q);
-      }).slice(0, 30);
+      });
+      itemsFiltrados = [...secMatch, ...itemsMatch].slice(0, 30);
 
       indiceSeleccionado = 0;
       if (itemsFiltrados.length === 0) {
@@ -2681,7 +2712,7 @@
       }
 
       resEl.innerHTML = itemsFiltrados.map((it, idx) => `
-        <div class="cmd-item${idx === 0 ? ' activo' : ''}" data-idx="${idx}" data-id="${it.id}">
+        <div class="cmd-item${idx === 0 ? ' activo' : ''}" data-idx="${idx}" data-id="${it.id}" data-hash="${it.hash || ''}">
           <span class="cmd-item-eti">${it.etiqueta}</span>
           <span class="cmd-item-tit">${it.titulo}</span>
           <span class="cmd-item-cap">${it.tipo === 'mapa' ? 'mapa' : it.clase}</span>
@@ -2691,7 +2722,8 @@
       resEl.querySelectorAll('.cmd-item').forEach((el) => {
         el.addEventListener('click', () => {
           dlg.close();
-          navigate(`#/${el.getAttribute('data-id')}`);
+          const target = el.getAttribute('data-hash') || `#/${el.getAttribute('data-id')}`;
+          navigate(target);
         });
       });
     }
@@ -2712,7 +2744,8 @@
         e.preventDefault();
         if (itemsFiltrados[indiceSeleccionado]) {
           dlg.close();
-          navigate(`#/${itemsFiltrados[indiceSeleccionado].id}`);
+          const sel = itemsFiltrados[indiceSeleccionado];
+          navigate(sel.hash || `#/${sel.id}`);
         }
       }
     });
