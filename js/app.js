@@ -647,7 +647,7 @@
     });
   }
   function ajustarEncuadreVista(vista, instant) {
-    if (vista) ajustarEncuadre(vista.bbox, instant);
+    if (vista) ajustarEncuadre(vista.bbox || vista.caja, instant);
   }
 
   // Rótulos cartográficos: un mismo criterio tipográfico para todas las vistas.
@@ -1268,8 +1268,24 @@
     $('fichaCopiar').addEventListener('click', () => copiar(enlaceDe(item), 'Enlace copiado'));
   }
 
+  const RUTA_ALIAS = {
+    'tabla-74-mapa': 'tabla-73',
+    'mapa-ufp': 'tabla-73',
+    'ufp': 'tabla-73',
+    'densidad': 'mapa-densidad-poblacional',
+    'densidad-poblacional': 'mapa-densidad-poblacional',
+    'accesibilidad': 'mapa-accesibilidad-puerto',
+    'isocronas': 'mapa-accesibilidad-puerto',
+    'gradiente': 'mapa-gradiente-usos',
+    'corredores': 'mapa-corredores-mercancias'
+  };
+
   // -------------------------------------------- detalle de un elemento
   async function showElement(id) {
+    if (RUTA_ALIAS[id]) {
+      navigate(`#/${RUTA_ALIAS[id]}`);
+      return;
+    }
     const item = ITEMS_MAP.get(id);
     if (!item) {
       console.warn('Elemento no encontrado en el catálogo:', id);
@@ -1369,7 +1385,19 @@
         const resp = await fetch(`data/${item.tabla}`);
         const tblHtml = await resp.text();
         if (currentItem !== item) return;
+        let avisoMapaT73 = '';
+        if (item.id === 'tabla-74') {
+          avisoMapaT73 = `
+            <div class="como" style="margin-bottom:14px;background:#eff6ff;border-color:#3b82f6;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <div>
+                <strong>🗺️ ¿Buscaba la cartografía de la propuesta de UFP?</strong>
+                <span style="font-size:12px;color:#334155;display:block;margin-top:2px">El mapa oficial de la franja delimitada con propuesta de UFP es la <strong>Tabla 73</strong>.</span>
+              </div>
+              <a href="#/tabla-73" class="btn chico pri" style="text-decoration:none">🗺️ Ver Mapa Tabla 73</a>
+            </div>`;
+        }
         visDoc.innerHTML = `
+          ${avisoMapaT73}
           <div class="hoja tesis-tabla">
             <div class="hoja-cab">
               <span>${esc(item.etiqueta)}</span>
@@ -1394,7 +1422,24 @@
   }
 
   // ---------------------------------------------------------- inicio
-  const IMPRESCINDIBLES = ['fig-2', 'fig-3', 'fig-4', 'atlas-3-8', 'atlas-3-13', 'fig-40', 'fig-56', 'fig-63'];
+  const IMPRESCINDIBLES = [
+    'fig-2',
+    'fig-3',
+    'fig-4',
+    'atlas-3-4',
+    'atlas-3-8',
+    'mapa-densidad-poblacional',
+    'atlas-3-12',
+    'atlas-3-13',
+    'fig-40',
+    'tabla-73',
+    'mapa-accesibilidad-puerto',
+    'mapa-gradiente-usos',
+    'mapa-corredores-mercancias',
+    'fig-52',
+    'fig-56',
+    'fig-63'
+  ];
 
   function tarjeta(it) {
     const img = it.mini ? `data/${it.mini}` : it.lamina ? `data/${it.lamina.mini || it.lamina.src}` : it.imagenes && it.imagenes.length ? `data/${it.imagenes[0].src}` : 'logo_aida.svg';

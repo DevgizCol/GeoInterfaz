@@ -1,0 +1,261 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Corredor Portuario Troncal",
+        "JERARQUIA": "Troncal Primario de Carga",
+        "CONECTIVIDAD": "Puente Pumarejo ↔ SPRB ↔ Vía 40",
+        "TIPO_TRAFICO": "Contenedores, graneles y carga pesada internacional",
+        "ANCHO_PX": 4.5,
+        "COLOR": "#d97706"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.755,
+            10.955
+          ],
+          [
+            -74.76,
+            10.965
+          ],
+          [
+            -74.7638,
+            10.9852
+          ],
+          [
+            -74.77,
+            11.0
+          ],
+          [
+            -74.78,
+            11.02
+          ],
+          [
+            -74.8,
+            11.035
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Circunvalar de la Prosperidad (Autopista 4G)",
+        "JERARQUIA": "Anillo Logístico Metropolitano",
+        "CONECTIVIDAD": "Puerto Colombia ↔ Galapa ↔ Malambo ↔ Corredor Industrial",
+        "TIPO_TRAFICO": "Transporte de carga intermunicipal de paso y distribución regional",
+        "ANCHO_PX": 4.0,
+        "COLOR": "#2563eb"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.95,
+            11.01
+          ],
+          [
+            -74.91,
+            10.99
+          ],
+          [
+            -74.88,
+            10.94
+          ],
+          [
+            -74.86,
+            10.9
+          ],
+          [
+            -74.82,
+            10.87
+          ],
+          [
+            -74.77,
+            10.86
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Eje Vía 40 / Corredor Industrial Norte",
+        "JERARQUIA": "Corredor Industrial Ribereño",
+        "CONECTIVIDAD": "Centro Industrial ↔ Las Flores ↔ Bocas de Ceniza",
+        "TIPO_TRAFICO": "Insumos químicos, manufacturas y carga siderúrgica",
+        "ANCHO_PX": 3.5,
+        "COLOR": "#059669"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.7638,
+            10.9852
+          ],
+          [
+            -74.78,
+            11.005
+          ],
+          [
+            -74.805,
+            11.025
+          ],
+          [
+            -74.82,
+            11.04
+          ],
+          [
+            -74.832,
+            11.052
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Eje Conexión Platanal ↔ Nuevo Puerto Interior ↔ Aeropuerto",
+        "JERARQUIA": "Eje Intermodal Fluvial-Aéreo",
+        "CONECTIVIDAD": "Soledad Industrial ↔ Ciénaga de la Bahía ↔ Aeropuerto de Carga",
+        "TIPO_TRAFICO": "Carga aérea, logística de paquetería y transferencia fluvial",
+        "ANCHO_PX": 3.8,
+        "COLOR": "#9333ea"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.76,
+            10.92
+          ],
+          [
+            -74.775,
+            10.9
+          ],
+          [
+            -74.785,
+            10.875
+          ],
+          [
+            -74.781,
+            10.889
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Troncal de la Cordialidad (Ruta Nacional 90)",
+        "JERARQUIA": "Radial Regional Carga",
+        "CONECTIVIDAD": "Barranquilla ↔ Galapa ↔ Cartagena / Centro del País",
+        "TIPO_TRAFICO": "Carga pesada agrícola y de abastecimiento",
+        "ANCHO_PX": 3.0,
+        "COLOR": "#dc2626"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.8,
+            10.95
+          ],
+          [
+            -74.83,
+            10.92
+          ],
+          [
+            -74.86,
+            10.89
+          ],
+          [
+            -74.89,
+            10.87
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Autopista al Mar (Vía 90A)",
+        "JERARQUIA": "Corredor Logístico-Turístico Norte",
+        "CONECTIVIDAD": "Barranquilla Norte ↔ Corredor Universitario ↔ Puerto Colombia ↔ Cartagena",
+        "TIPO_TRAFICO": "Transporte especializado, servicios portuarios y carga ligera",
+        "ANCHO_PX": 3.0,
+        "COLOR": "#0891b2"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.83,
+            11.01
+          ],
+          [
+            -74.87,
+            11.015
+          ],
+          [
+            -74.91,
+            11.005
+          ],
+          [
+            -74.96,
+            10.99
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NOMBRE": "Canal Navegable del Río Magdalena",
+        "JERARQUIA": "Arteria Fluvial Hidro-Logística",
+        "CONECTIVIDAD": "Bocas de Ceniza ↔ Puerto de Barranquilla ↔ Interior de Colombia",
+        "TIPO_TRAFICO": "Barcazas de hidrocarburos, carbón, graneles y convoyes de carga fluvial",
+        "ANCHO_PX": 4.5,
+        "COLOR": "#1e40af"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.85,
+            11.08
+          ],
+          [
+            -74.82,
+            11.04
+          ],
+          [
+            -74.78,
+            11.01
+          ],
+          [
+            -74.76,
+            10.98
+          ],
+          [
+            -74.745,
+            10.94
+          ],
+          [
+            -74.74,
+            10.89
+          ],
+          [
+            -74.75,
+            10.83
+          ]
+        ]
+      }
+    }
+  ]
+}
