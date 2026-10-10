@@ -1269,9 +1269,9 @@
   }
 
   const RUTA_ALIAS = {
-    'tabla-74-mapa': 'tabla-73',
-    'mapa-ufp': 'tabla-73',
-    'ufp': 'tabla-73',
+    'tabla-74-mapa': 'fig-66',
+    'mapa-ufp': 'fig-66',
+    'ufp': 'fig-66',
     'densidad': 'mapa-densidad-poblacional',
     'densidad-poblacional': 'mapa-densidad-poblacional',
     'accesibilidad': 'mapa-accesibilidad-puerto',
@@ -1386,7 +1386,7 @@
         const tblHtml = await resp.text();
         if (currentItem !== item) return;
         let avisoMapaT73 = '';
-        if (item.id === 'tabla-74') {
+        if (false) {  // aviso de una numeración anterior, ya sin uso
           avisoMapaT73 = `
             <div class="como" style="margin-bottom:14px;background:#eff6ff;border-color:#3b82f6;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
               <div>
@@ -1432,7 +1432,7 @@
     'atlas-3-12',
     'atlas-3-13',
     'fig-40',
-    'tabla-73',
+    'fig-66',
     'mapa-accesibilidad-puerto',
     'mapa-gradiente-usos',
     'mapa-corredores-mercancias',
