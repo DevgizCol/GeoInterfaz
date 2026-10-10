@@ -1,5 +1,6 @@
 {
  "supuestos_accesibilidad": "velocidades medias supuestas de 55 km/h en vías troncales, 40 en primarias, 32 en secundarias, 26 en terciarias y 20 en las demás; no incluye congestión ni tiempos de espera",
+ "conflicto_ufp": "UFP 1: 467 ha en conflicto alto o muy alto (24 % de su superficie dentro de la franja); UFP 2: 1.441 ha en conflicto alto o muy alto (24 % de su superficie dentro de la franja); UFP 3: 4.145 ha en conflicto alto o muy alto (39 % de su superficie dentro de la franja)",
  "ancho_banda_m": 400,
  "km": {
   "60": 332.2,
