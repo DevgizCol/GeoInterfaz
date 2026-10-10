@@ -7,6 +7,8 @@
 <meta name="description" content="GeoInterfaz: geovisor de la tesis doctoral de Aida del Carmen Palmett Padilla (UPC). Desarrollado por DevGiz. Mapas interactivos, láminas del atlas, figuras, tablas y capas de la investigación sobre franjas de interfaz urbano-rural en ciudades portuarias.">
 <meta name="author" content="Aida del Carmen Palmett Padilla">
 <meta name="developer" content="DevGiz (https://devgiz.vercel.app/)">
+<meta name="theme-color" content="#12324f">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="logo_aida.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,9 +39,14 @@
   <nav class="nav" aria-label="Secciones">
     <a href="#/" data-nav="inicio">Inicio</a>
     <a href="#/datos" data-nav="datos">Capas y datos</a>
+    <a href="#/comparativa" data-nav="comparativa">Comparativa LATAM</a>
+    <a href="#/recorrido" data-nav="recorrido">Recorrido guiado</a>
     <a href="#/acerca" data-nav="acerca">Acerca de</a>
     <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="nav-devgiz" title="Desarrollado por DevGiz (https://devgiz.vercel.app/)">DevGiz ↗</a>
   </nav>
+  <button class="ico-btn" id="btnLaser" title="Puntero láser para sustentación (L)" aria-label="Activar puntero láser">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+  </button>
   <button class="ico-btn" id="btnAtajos" title="Atajos de teclado (?)" aria-label="Atajos de teclado">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.6 2.3c-.8.5-1.2 1-1.2 1.9M12 16.8v.2"/></svg>
   </button>
@@ -96,7 +103,10 @@
             <button class="h-btn" id="btnMedir" data-tip="Medir distancia y área (M)">
               <svg viewBox="0 0 24 24"><path d="m3 17 14-14 4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></svg>
             </button>
-            <button class="h-btn" id="btn3D" data-tip="Vista en perspectiva (3)">
+            <button class="h-btn" id="btnPerfil" data-tip="Perfil topográfico y corte de paisaje (C)">
+              <svg viewBox="0 0 24 24"><path d="M3 19h18M4 16l4-6 4 4 5-8 3 5"/></svg>
+            </button>
+            <button class="h-btn" id="btn3D" data-tip="Relieve 3D continuo (DEM) y perspectiva (3)">
               <svg viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12 4 7.5M12 12l8-4.5M12 12v9"/></svg>
             </button>
             <div class="h-sep"></div>
@@ -116,6 +126,22 @@
             <span class="med-texto" id="medTexto">Haga clic en el mapa para iniciar la medición</span>
             <button class="med-btn" id="btnLimpiarMed">Limpiar</button>
             <button class="med-btn" id="btnCerrarMed" aria-label="Terminar medición">✕</button>
+          </div>
+
+          <!-- HUD de Perfil Topográfico y Corte de Paisaje -->
+          <div class="perfil-hud" id="perfilHud" hidden>
+            <div class="perfil-barra">
+              <span class="perfil-tit"><strong>Corte de Paisaje & Perfil Topográfico</strong> <small id="perfilResumen">Haga clic en el mapa para iniciar el corte transversal</small></span>
+              <div class="perfil-acciones">
+                <button class="med-btn" id="btnLimpiarPerfil">Reiniciar</button>
+                <button class="med-btn" id="btnCerrarPerfil" aria-label="Cerrar perfil">✕</button>
+              </div>
+            </div>
+            <div class="perfil-grafico-wrap" id="perfilGraficoWrap">
+              <svg id="perfilSvg" viewBox="0 0 600 130" preserveAspectRatio="none"></svg>
+              <div class="perfil-tooltip" id="perfilTooltip" hidden></div>
+            </div>
+            <div class="perfil-zonas" id="perfilZonas"></div>
           </div>
 
           <div class="map-tooltip" id="mapTooltip" hidden></div>
@@ -182,6 +208,18 @@
           <div class="zoom-ayuda">Rueda del ratón para acercar · arrastre para moverse</div>
         </div>
 
+        <!-- Divisor interactivo de la cortina (Swipe Splitter) -->
+        <div class="cortina-divisor" id="cortinaDivisor" hidden>
+          <div class="cortina-linea"></div>
+          <button class="cortina-tirador" id="cortinaTirador" aria-label="Deslizar cortina para comparar">
+            <svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>
+          </button>
+          <div class="cortina-etiquetas">
+            <span class="cortina-eti-izq">Mapa Vectorial</span>
+            <span class="cortina-eti-der">Lámina / Ortofoto</span>
+          </div>
+        </div>
+
         <div class="vis vis-doc" id="visDoc" hidden></div>
 
         <!-- Ficha del elemento -->
@@ -190,6 +228,8 @@
     </section>
 
     <section class="pagina doc" id="pgDatos" hidden></section>
+    <section class="pagina doc" id="pgComparativa" hidden></section>
+    <section class="pagina doc" id="pgRecorrido" hidden></section>
     <section class="pagina doc" id="pgAcerca" hidden></section>
   </main>
 </div>

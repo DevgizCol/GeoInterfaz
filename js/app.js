@@ -86,6 +86,7 @@
   };
 
   ICO.dual = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg>';
+  ICO.cortina = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-dasharray="2 2"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></svg>';
   ICO.pres = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"/></svg>';
 
   const TIPOS = {
@@ -510,7 +511,7 @@
           coordEl.textContent = `${lat.toFixed(5)}°, ${lng.toFixed(5)}°${extra}`;
         }
 
-        if (modoMedicion) {
+        if (modoMedicion || modoPerfil) {
           map.getCanvas().style.cursor = 'crosshair';
           if (tooltipEl) tooltipEl.hidden = true;
           return;
@@ -545,6 +546,10 @@
         if (modoMedicion) {
           puntosMedicion.push([e.lngLat.lng, e.lngLat.lat]);
           actualizarMedicionGeoJSON();
+          return;
+        }
+        if (modoPerfil) {
+          manejarClickPerfil(e.lngLat);
           return;
         }
         const visibles = capasConsultables();
@@ -1199,14 +1204,21 @@
   // ------------------------------------------ cambio de vista del lienzo
   function switchLienzoView(mode) {
     const dual = mode === 'dual';
-    document.querySelector('#pgElemento .lienzo').classList.toggle('dual', dual);
-    $('visMapa').hidden = !(mode === 'mapa' || dual);
-    $('visImagen').hidden = !(mode === 'imagen' || dual);
+    const cortina = mode === 'cortina';
+    const lienzo = document.querySelector('#pgElemento .lienzo');
+    if (lienzo) {
+      lienzo.classList.toggle('dual', dual);
+      lienzo.classList.toggle('cortina', cortina);
+    }
+    const divisor = $('cortinaDivisor');
+    if (divisor) divisor.hidden = !cortina;
+    $('visMapa').hidden = !(mode === 'mapa' || dual || cortina);
+    $('visImagen').hidden = !(mode === 'imagen' || dual || cortina);
     $('visDoc').hidden = mode !== 'doc';
     document.querySelectorAll('#cabecera .seg button').forEach((b) => {
       b.classList.toggle('on', b.getAttribute('data-v') === mode);
     });
-    if (dual) { $('panel').hidden = true; $('btnPanelAbrir').hidden = false; }
+    if (dual || cortina) { $('panel').hidden = true; $('btnPanelAbrir').hidden = false; }
     if (!$('visMapa').hidden && map && mapReady) {
       setTimeout(() => { map.resize(); if (currentVista) ajustarEncuadreVista(currentVista, true); }, 80);
     }
@@ -1310,7 +1322,10 @@
     const modos = [];
     if (hasMapa) modos.push(['mapa', ICO.mapa, 'Mapa interactivo']);
     if (hasImagen) modos.push(['imagen', ICO.imagen, hasLamina ? 'Lámina' : 'Figura']);
-    if (hasMapa && hasImagen) modos.push(['dual', ICO.dual, 'Comparar']);
+    if (hasMapa && hasImagen) {
+      modos.push(['dual', ICO.dual, 'Lado a lado']);
+      modos.push(['cortina', ICO.cortina, 'Cortina']);
+    }
     if (hasTabla) modos.push(['doc', ICO.tabla, 'Tabla']);
     const segHtml = modos.length > 1
       ? `<div class="seg" role="group" aria-label="Cambiar vista">${modos.map((m) => `<button data-v="${m[0]}">${m[1]}<span>${m[2]}</span></button>`).join('')}</div>`
@@ -1734,6 +1749,323 @@
     });
   }
 
+  // --- PÁGINA: COMPARATIVA LATAM (#pgComparativa) ---
+  const CIUDADES_COMPARATIVA = [
+    {
+      id: 'barranquilla',
+      nombre: 'Barranquilla',
+      pais: 'Colombia',
+      bandera: '🇨🇴',
+      color: '#0284c7',
+      puntuaciones: [72, 88, 65, 78, 85], // [Presión, Sensibilidad, Integración, Instrumentación, Vulnerabilidad]
+      kpis: [
+        { label: 'Longitud de interfaz', val: '142.5 km²' },
+        { label: 'Carga portuaria', val: '12.8 M ton' },
+        { label: 'Humedal clave', val: 'Ciénaga de Mallorquín (RAMSAR)' },
+        { label: 'Marco regulatorio', val: 'PEMOT AMB & POMCA' }
+      ],
+      desc: 'Interfaz fluvial-marítima sobre el delta del río Magdalena. Modelo metropolitano lineal de expansión hacia el mar con alta fragmentación de humedales costeros y manglares bajo régimen de conservación internacional.',
+      enlaces: [
+        { id: 'fig-2', eti: 'Fig. 2', tit: 'Área Metropolitana de Barranquilla' },
+        { id: 'fig-3', eti: 'Fig. 3', tit: 'Franja de Interfaz Urbano-Rural' },
+        { id: 'fig-66', eti: 'Fig. 66', tit: 'Propuesta de Unidades Funcionales (UFP)' }
+      ]
+    },
+    {
+      id: 'veracruz',
+      nombre: 'Veracruz',
+      pais: 'México',
+      bandera: '🇲🇽',
+      color: '#d97706',
+      puntuaciones: [85, 92, 58, 70, 78],
+      kpis: [
+        { label: 'Recinto portuario', val: '32.4 km²' },
+        { label: 'Carga portuaria', val: '34.2 M ton' },
+        { label: 'Ecosistema protegido', val: 'P.N. Arrecifal Veracruzano' },
+        { label: 'Gobernanza', val: 'ASIPONA & PDU Veracruz' }
+      ],
+      desc: 'Histórico puerto enclave del Golfo de México. La ampliación de la Bahía Norte genera una severa barrera física entre el tejido urbano y el litoral, comprometiendo la integridad del Parque Nacional Sistema Arrecifal Veracruzano.',
+      enlaces: [
+        { id: 'fig-40', eti: 'Fig. 40', tit: 'Caso de Estudio: Veracruz' },
+        { id: 'fig-41', eti: 'Fig. 41', tit: 'Dinámica Territorial Veracruz' }
+      ]
+    },
+    {
+      id: 'santos',
+      nombre: 'Santos',
+      pais: 'Brasil',
+      bandera: '🇧🇷',
+      color: '#10b981',
+      puntuaciones: [96, 84, 52, 82, 74],
+      kpis: [
+        { label: 'Complejo portuario', val: '78.1 km²' },
+        { label: 'Carga portuaria', val: '162.4 M ton' },
+        { label: 'Ecosistema crítico', val: 'Manglares Estuario Santos' },
+        { label: 'Instrumento rector', val: 'PDZ Santos & ZEE Litoral' }
+      ],
+      desc: 'El mayor nodo portuario de América Latina. Interfaz estuarina constreñida entre la Serra do Mar y canales de manglar, con intensa segregación socioespacial entre enclaves logísticos industriales y núcleos residenciales.',
+      enlaces: [
+        { id: 'fig-46', eti: 'Fig. 46', tit: 'Caso de Estudio: Santos' },
+        { id: 'fig-47', eti: 'Fig. 47', tit: 'Estructura Portuaria Santos' }
+      ]
+    },
+    {
+      id: 'valparaiso',
+      nombre: 'Valparaíso',
+      pais: 'Chile',
+      bandera: '🇨🇱',
+      color: '#8b5cf6',
+      puntuaciones: [68, 75, 80, 74, 69],
+      kpis: [
+        { label: 'Frente marítimo', val: '18.6 km²' },
+        { label: 'Carga portuaria', val: '11.5 M ton' },
+        { label: 'Borde protegido', val: 'Borde Costero & Acantilados' },
+        { label: 'Planificación', val: 'PREVAL & UNESCO Borde' }
+      ],
+      desc: 'Ciudad-puerto anfiteatro sobre bahía con topografía escarpada. Marcado debate territorial y patrimonial sobre la apertura del borde costero al uso público frente a los requerimientos de ampliación de terminales marítimos.',
+      enlaces: [
+        { id: 'fig-43', eti: 'Fig. 43', tit: 'Caso de Estudio: Valparaíso' },
+        { id: 'fig-44', eti: 'Fig. 44', tit: 'Conflictos de Borde Valparaíso' }
+      ]
+    }
+  ];
+
+  function renderComparativa() {
+    const pg = document.getElementById('pgComparativa');
+    if (!pg || pg.children.length > 0) return;
+
+    const EJES = [
+      'Presión Portuaria',
+      'Sensibilidad Ecosistémica',
+      'Integración Ciudad-Puerto',
+      'Instrumentación Territorial',
+      'Vulnerabilidad Climática'
+    ];
+
+    const cx = 170;
+    const cy = 160;
+    const rMax = 110;
+    const numEjes = EJES.length;
+
+    // Calcular puntos de polígono para un conjunto de 5 valores (0-100)
+    function calcPuntos(valores) {
+      return valores.map((val, i) => {
+        const ang = (i * 2 * Math.PI / numEjes) - (Math.PI / 2);
+        const r = (val / 100) * rMax;
+        const x = (cx + r * Math.cos(ang)).toFixed(1);
+        const y = (cy + r * Math.sin(ang)).toFixed(1);
+        return `${x},${y}`;
+      }).join(' ');
+    }
+
+    // Anillos concéntricos del radar
+    let anillosSvg = [0.2, 0.4, 0.6, 0.8, 1.0].map((frac) => {
+      const pts = Array.from({ length: numEjes }).map((_, i) => {
+        const ang = (i * 2 * Math.PI / numEjes) - (Math.PI / 2);
+        const r = frac * rMax;
+        return `${(cx + r * Math.cos(ang)).toFixed(1)},${(cy + r * Math.sin(ang)).toFixed(1)}`;
+      }).join(' ');
+      return `<polygon points="${pts}" fill="none" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>`;
+    }).join('');
+
+    // Ejes radiales y etiquetas
+    let ejesSvg = EJES.map((nombre, i) => {
+      const ang = (i * 2 * Math.PI / numEjes) - (Math.PI / 2);
+      const xFin = (cx + rMax * Math.cos(ang)).toFixed(1);
+      const yFin = (cy + rMax * Math.sin(ang)).toFixed(1);
+      const xLbl = (cx + (rMax + 24) * Math.cos(ang)).toFixed(1);
+      const yLbl = (cy + (rMax + 24) * Math.sin(ang)).toFixed(1);
+      const anchor = Math.abs(Math.cos(ang)) < 0.2 ? 'middle' : Math.cos(ang) > 0 ? 'start' : 'end';
+      return `
+        <line x1="${cx}" y1="${cy}" x2="${xFin}" y2="${yFin}" stroke="currentColor" stroke-opacity="0.16" stroke-width="1"/>
+        <text x="${xLbl}" y="${yLbl}" text-anchor="${anchor}" dominant-baseline="middle" font-size="10" font-weight="600" fill="currentColor" fill-opacity="0.7">${nombre}</text>
+      `;
+    }).join('');
+
+    // Polígonos de cada ciudad
+    let ciudadesPoligonos = CIUDADES_COMPARATIVA.map((c) => {
+      const pts = calcPuntos(c.puntuaciones);
+      return `
+        <polygon class="radar-poli radar-poli-${c.id}" points="${pts}" fill="${c.color}" fill-opacity="0.22" stroke="${c.color}" stroke-width="2.5" stroke-linejoin="round" />
+      `;
+    }).join('');
+
+    // Tarjetas de ciudades
+    const tarjetasHtml = CIUDADES_COMPARATIVA.map((c) => `
+      <div class="ciudad-card" data-ciudad="${c.id}">
+        <div class="ciudad-cab">
+          <div>
+            <span class="ciudad-pais">${c.bandera} ${c.pais}</span>
+            <div class="ciudad-tit">${c.nombre}</div>
+          </div>
+          <span class="radar-color" style="background:${c.color};width:14px;height:14px;"></span>
+        </div>
+        <p class="ciudad-desc">${c.desc}</p>
+        <div class="ciudad-kpis">
+          ${c.kpis.map((k) => `<div><span class="kpi-lbl">${k.label}</span><strong class="kpi-b">${k.val}</strong></div>`).join('')}
+        </div>
+        <div class="rels" style="margin-top:12px;">
+          ${c.enlaces.map((e) => `<a class="rel" href="#/${e.id}"><b>${e.eti}</b><span>${e.tit}</span></a>`).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    pg.innerHTML = `
+      <div class="ancho">
+        <div class="comparativa-hero">
+          <h1>Comparativa de Ciudades Puerto de América Latina</h1>
+          <p class="lead">Marco analítico multidimensional de la interfaz urbano-rural y portuaria aplicado en la investigación doctoral: Barranquilla (Colombia), Veracruz (México), Santos (Brasil) y Valparaíso (Chile).</p>
+        </div>
+
+        <div class="comparativa-layout">
+          <div class="radar-card">
+            <h3>Radar Multidimensional de Interfaz</h3>
+            <svg class="radar-svg" viewBox="0 0 340 330">
+              ${anillosSvg}
+              ${ejesSvg}
+              ${ciudadesPoligonos}
+            </svg>
+            <div class="radar-leyenda">
+              <button class="radar-item activo" data-filtro="todos"><span class="radar-color" style="background:var(--marca);"></span> Todas</button>
+              ${CIUDADES_COMPARATIVA.map((c) => `<button class="radar-item" data-filtro="${c.id}"><span class="radar-color" style="background:${c.color};"></span> ${c.nombre}</button>`).join('')}
+            </div>
+            <p class="ayuda" style="margin-top:14px;font-size:11.5px;color:var(--gris);">Dimensiones normalizadas (escala 0-100) según indicadores de la investigación doctoral.</p>
+          </div>
+
+          <div class="ciudades-grid">
+            ${tarjetasHtml}
+          </div>
+        </div>
+
+        ${pieEditorialHtml()}
+      </div>
+    `;
+
+    // Interactividad del radar
+    pg.querySelectorAll('.radar-leyenda button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pg.querySelectorAll('.radar-leyenda button').forEach((b) => b.classList.remove('activo'));
+        btn.classList.add('activo');
+        const f = btn.getAttribute('data-filtro');
+        pg.querySelectorAll('.radar-poli').forEach((p) => {
+          if (f === 'todos') {
+            p.style.display = '';
+            p.setAttribute('fill-opacity', '0.22');
+            p.setAttribute('stroke-width', '2.5');
+          } else {
+            const coincide = p.classList.contains(`radar-poli-${f}`);
+            p.style.display = coincide ? '' : 'none';
+            if (coincide) {
+              p.setAttribute('fill-opacity', '0.45');
+              p.setAttribute('stroke-width', '3.5');
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // --- PÁGINA: RECORRIDO GUIADO (#pgRecorrido) ---
+  const HITOS_RECORRIDO = [
+    {
+      num: '01',
+      cap: 'Capítulos I & II · Fundamentación y Delimitación Metodológica',
+      tit: 'El Territorio Metropolitano y la Interfaz Urbano-Rural',
+      desc: 'Delimitación del Área Metropolitana de Barranquilla (AMB) como sistema territorial compuesto por 5 municipios (Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia). La tesis conceptualiza la "franja de interfaz" como el espacio de transición crítica donde colisionan dinámicas urbanas, rurales, logísticas y ecológicas.',
+      enlaces: [
+        { id: 'fig-2', eti: 'Fig. 2', tit: 'Área Metropolitana de Barranquilla' },
+        { id: 'fig-3', eti: 'Fig. 3', tit: 'Franja de Interfaz Urbano-Rural' }
+      ]
+    },
+    {
+      num: '02',
+      cap: 'Capítulo III · Estructura Ecológica Principal y Vulnerabilidad',
+      tit: 'Fragilidad Ecosistémica y la Ciénaga de Mallorquín',
+      desc: 'Caracterización exhaustiva del humedal RAMSAR Ciénaga de Mallorquín y su red de arroyos tributarios. Se cartografía la cobertura de manglares, el gradiente hidrológico y las presiones provocadas por vertimientos, sedimentación y avance urbano-portuario sobre el cuerpo de agua.',
+      enlaces: [
+        { id: 'fig-4', eti: 'Fig. 4', tit: 'Ciénaga de Mallorquín' },
+        { id: 'atlas-3-4', eti: 'Lámina 3.4', tit: 'Hidrografía y Red Hídrica' }
+      ]
+    },
+    {
+      num: '03',
+      cap: 'Capítulo III · Transformaciones Socioespaciales y Usos',
+      tit: 'Presión Antrópica, Densidad Poblacional y Usos del Suelo',
+      desc: 'Análisis espacial de la densidad poblacional a partir de microdatos censales (DANE) y modelado de usos del suelo. Se identifican patrones de conurbación acelerada a lo largo de las vías arteriales (Murillo, Cordialidad, Vía al Mar) y la ocupación espontánea de bordes rururbanos.',
+      enlaces: [
+        { id: 'mapa-densidad-poblacional', eti: 'Mapa', tit: 'Densidad Poblacional Censal' },
+        { id: 'atlas-3-12', eti: 'Lámina 3.12', tit: 'Usos del Suelo del AMB' }
+      ]
+    },
+    {
+      num: '04',
+      cap: 'Capítulo III & IV · Dinámica Logística y Ciudad-Puerto',
+      tit: 'Accesibilidad Portuaria y Corredores de Mercancías',
+      desc: 'Modelado de isocronas de tiempo de viaje hacia las instalaciones portuarias del canal navegable y el puerto marítimo. La investigación demuestra la fricción espacial entre el tráfico pesado intermunicipal de carga y el transporte metropolitano de pasajeros.',
+      enlaces: [
+        { id: 'mapa-accesibilidad-puerto', eti: 'Mapa', tit: 'Accesibilidad al Puerto Fluvial/Marítimo' },
+        { id: 'mapa-corredores-mercancias', eti: 'Mapa', tit: 'Corredores Logísticos de Carga' }
+      ]
+    },
+    {
+      num: '05',
+      cap: 'Capítulo IV · Análisis Comparativo Internacional',
+      tit: 'Benchmark LATAM: Veracruz, Santos y Valparaíso',
+      desc: 'Estudio contrastado con tres de las ciudades portuarias más relevantes de América Latina. Se identifican patrones comunes de fragmentación socioecológica, privatización del borde de agua y debilidad en los instrumentos de coordinación intermunicipal.',
+      enlaces: [
+        { id: 'comparativa', eti: 'Dashboard', tit: 'Comparativa Multidimensional LATAM ↗' },
+        { id: 'fig-40', eti: 'Fig. 40', tit: 'Caso Veracruz (México)' },
+        { id: 'fig-46', eti: 'Fig. 46', tit: 'Caso Santos (Brasil)' },
+        { id: 'fig-43', eti: 'Fig. 43', tit: 'Caso Valparaíso (Chile)' }
+      ]
+    },
+    {
+      num: '06',
+      cap: 'Capítulo V · Síntesis Proyectual y Lineamientos',
+      tit: 'La Propuesta: Unidades Funcionales de Paisaje (UFP)',
+      desc: 'Aporte central de la tesis doctoral: delimitación y zonificación operativa de la franja territorial en Unidades Funcionales de Paisaje (UFP). Define directrices de intervención para 4 Nodos territoriales estratégicos y formula la localización de un Nuevo Puerto Interior sobre el Magdalena.',
+      enlaces: [
+        { id: 'fig-66', eti: 'Fig. 66', tit: 'Mapa Oficial de Propuesta de UFP' },
+        { id: 'fig-57', eti: 'Fig. 57', tit: 'Nodo 1 · Puerto Colombia' },
+        { id: 'fig-61', eti: 'Fig. 61', tit: 'Propuesta de Nuevo Puerto Interior' }
+      ]
+    }
+  ];
+
+  function renderRecorrido() {
+    const pg = document.getElementById('pgRecorrido');
+    if (!pg || pg.children.length > 0) return;
+
+    const pasosHtml = HITOS_RECORRIDO.map((h) => `
+      <div class="recorrido-card">
+        <div class="paso-num">${h.num}</div>
+        <div class="paso-cuerpo">
+          <span class="paso-cap">${h.cap}</span>
+          <h3>${h.tit}</h3>
+          <p class="paso-desc">${h.desc}</p>
+          <div class="rels">
+            ${h.enlaces.map((e) => `<a class="rel" href="${e.id === 'comparativa' ? '#/comparativa' : '#/' + e.id}"><b>${e.eti}</b><span>${e.tit}</span></a>`).join('')}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    pg.innerHTML = `
+      <div class="ancho">
+        <div class="recorrido-hero">
+          <h1>Recorrido Guiado por la Tesis Doctoral</h1>
+          <p class="lead">Síntesis secuencial en 6 hitos para comprender la tesis de principio a fin: desde la delimitación metropolitana y el diagnóstico ecológico hasta la propuesta de Unidades Funcionales de Paisaje (UFP).</p>
+        </div>
+
+        <div class="recorrido-pasos">
+          ${pasosHtml}
+        </div>
+
+        ${pieEditorialHtml()}
+      </div>
+    `;
+  }
+
   // ------------------------------------------------------------ acerca de
   const FUENTES = [
     ['Colombia · Área Metropolitana de Barranquilla', 'Instituto Geográfico Agustín Codazzi (IGAC) · Departamento Administrativo Nacional de Estadística (DANE) · Área Metropolitana de Barranquilla (AMB, PEMOT) · Corporación Autónoma Regional del Atlántico (C.R.A., POMCA Ciénaga de Mallorquín) · Planes de Ordenamiento Territorial de Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia'],
@@ -1816,11 +2148,17 @@
 
   // ------------------------------------------------- páginas e índice
   function showPage(pageId) {
-    ['pgInicio', 'pgElemento', 'pgDatos', 'pgAcerca'].forEach((id) => {
+    ['pgInicio', 'pgElemento', 'pgDatos', 'pgComparativa', 'pgRecorrido', 'pgAcerca'].forEach((id) => {
       const el = $(id);
       if (el) el.hidden = id !== pageId;
     });
-    const mapaNav = { pgInicio: 'inicio', pgDatos: 'datos', pgAcerca: 'acerca' };
+    const mapaNav = {
+      pgInicio: 'inicio',
+      pgDatos: 'datos',
+      pgComparativa: 'comparativa',
+      pgRecorrido: 'recorrido',
+      pgAcerca: 'acerca'
+    };
     document.querySelectorAll('.nav a').forEach((a) => a.classList.toggle('on', a.getAttribute('data-nav') === mapaNav[pageId]));
     if (window.innerWidth <= 900) $('indice')?.classList.remove('abierto');
     $('principal').scrollTop = 0;
@@ -1986,6 +2324,18 @@
       renderDatos();
       showPage('pgDatos');
       document.title = 'Capas y datos · GeoInterfaz';
+      currentItem = null;
+      limpiar();
+    } else if (hash === '#/comparativa') {
+      renderComparativa();
+      showPage('pgComparativa');
+      document.title = 'Comparativa LATAM · GeoInterfaz';
+      currentItem = null;
+      limpiar();
+    } else if (hash === '#/recorrido') {
+      renderRecorrido();
+      showPage('pgRecorrido');
+      document.title = 'Recorrido guiado · GeoInterfaz';
       currentItem = null;
       limpiar();
     } else if (hash === '#/acerca') {
@@ -2164,7 +2514,7 @@
     }
   }
 
-  // ---------------------------------------------------- vista en perspectiva
+  // ---------------------------------------------------- relieve 3D continuo (DEM)
   let modo3D = false;
   function init3DToggle() {
     const btn3D = $('btn3D');
@@ -2173,7 +2523,31 @@
       if (!map || !mapReady) return;
       modo3D = !modo3D;
       btn3D.classList.toggle('on', modo3D);
-      map.easeTo(modo3D ? { pitch: 55, bearing: -15, duration: 900 } : { pitch: 0, bearing: 0, duration: 900 });
+
+      if (modo3D) {
+        if (!map.getSource('terrain-dem')) {
+          try {
+            map.addSource('terrain-dem', {
+              type: 'raster-dem',
+              tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
+              encoding: 'terrarium',
+              tileSize: 256,
+              maxzoom: 15
+            });
+          } catch (_) {}
+        }
+        try {
+          map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
+        } catch (_) {}
+        map.easeTo({ pitch: 62, bearing: -20, duration: 1000 });
+        mostrarAviso('Relieve 3D DEM activo (1.6x) · Arrastre con botón derecho para orbitar');
+      } else {
+        try {
+          map.setTerrain(null);
+        } catch (_) {}
+        map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
+        mostrarAviso('Modo 2D plano restaurado');
+      }
     });
   }
 
@@ -2479,6 +2853,426 @@
       : '';
   }
 
+  // --- MODO CORTINA / SWIPE COMPARADOR INTERACTIVO ---
+  function initCortinaSwipe() {
+    const lienzo = document.querySelector('#pgElemento .lienzo');
+    const divisor = $('cortinaDivisor');
+    const tirador = $('cortinaTirador');
+    if (!lienzo || !divisor || !tirador) return;
+
+    let arrastrando = false;
+
+    function setPos(clientX) {
+      const rect = lienzo.getBoundingClientRect();
+      if (!rect.width) return;
+      const x = clientX - rect.left;
+      let pct = (x / rect.width) * 100;
+      pct = Math.max(5, Math.min(95, pct));
+      lienzo.style.setProperty('--cortina-pos', `${pct.toFixed(2)}%`);
+    }
+
+    const startDrag = (e) => {
+      arrastrando = true;
+      document.body.style.userSelect = 'none';
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      setPos(cx);
+    };
+
+    const doDrag = (e) => {
+      if (!arrastrando) return;
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      setPos(cx);
+    };
+
+    const stopDrag = () => {
+      if (arrastrando) {
+        arrastrando = false;
+        document.body.style.userSelect = '';
+      }
+    };
+
+    tirador.addEventListener('mousedown', startDrag);
+    divisor.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', doDrag);
+    window.addEventListener('mouseup', stopDrag);
+
+    tirador.addEventListener('touchstart', startDrag, { passive: true });
+    divisor.addEventListener('touchstart', startDrag, { passive: true });
+    window.addEventListener('touchmove', doDrag, { passive: true });
+    window.addEventListener('touchend', stopDrag);
+  }
+
+  // --- CORTE DE PAISAJE Y PERFIL TOPOGRÁFICO TRANSVERSAL ---
+  let modoPerfil = false;
+  let puntosPerfil = [];
+  const srcPerfilId = 'src_perfil_transecto';
+  let datosPerfilActuales = [];
+
+  function initHerramientaPerfil() {
+    const btn = $('btnPerfil');
+    const hud = $('perfilHud');
+    const btnLimpiar = $('btnLimpiarPerfil');
+    const btnCerrar = $('btnCerrarPerfil');
+    const wrapSvg = $('perfilGraficoWrap');
+    if (!btn || !hud) return;
+
+    btn.addEventListener('click', () => {
+      if (modoMedicion) toggleMedicion(false);
+      togglePerfil(!modoPerfil);
+    });
+
+    btnLimpiar?.addEventListener('click', () => {
+      puntosPerfil = [];
+      limpiarPerfilCapas();
+      $('perfilResumen').textContent = 'Haga clic en el mapa para marcar el Punto A';
+      renderizarPerfilSvg([], 0);
+    });
+
+    btnCerrar?.addEventListener('click', () => {
+      togglePerfil(false);
+    });
+
+    wrapSvg?.addEventListener('mousemove', (e) => {
+      if (!datosPerfilActuales.length) return;
+      const rect = wrapSvg.getBoundingClientRect();
+      const xRel = e.clientX - rect.left;
+      const anchoPlot = rect.width;
+      const pct = Math.max(0, Math.min(1, (xRel - 45) / (anchoPlot - 70)));
+      const idx = Math.min(datosPerfilActuales.length - 1, Math.max(0, Math.round(pct * (datosPerfilActuales.length - 1))));
+      const pt = datosPerfilActuales[idx];
+      if (!pt) return;
+
+      const tip = $('perfilTooltip');
+      if (tip) {
+        tip.hidden = false;
+        tip.style.left = `${Math.max(40, Math.min(rect.width - 50, xRel))}px`;
+        tip.textContent = `${pt.alt.toFixed(1)} m s.n.m. (${pt.distKm.toFixed(2)} km)`;
+      }
+
+      // Actualizar marcador flotante en el mapa
+      if (map && mapReady && map.getSource(srcPerfilId)) {
+        actualizarMarkerHoverPerfil(pt.coord);
+      }
+    });
+
+    wrapSvg?.addEventListener('mouseleave', () => {
+      const tip = $('perfilTooltip');
+      if (tip) tip.hidden = true;
+      if (map && mapReady && map.getSource(srcPerfilId)) {
+        actualizarMarkerHoverPerfil(null);
+      }
+    });
+  }
+
+  function togglePerfil(activo) {
+    modoPerfil = activo;
+    const btn = $('btnPerfil');
+    const hud = $('perfilHud');
+    if (btn) btn.classList.toggle('on', activo);
+    if (hud) hud.hidden = !activo;
+
+    if (activo) {
+      asegurarCapasPerfil();
+      // Si no hay puntos aún, trazamos el transecto metropolitano emblemático de la tesis
+      if (puntosPerfil.length < 2) {
+        puntosPerfil = [[-74.855, 11.042], [-74.908, 10.895]];
+      }
+      actualizarPerfilTransecto();
+      mostrarAviso('Corte topográfico transversal activo · Puede hacer clic en el mapa para trazar un nuevo corte');
+    } else {
+      puntosPerfil = [];
+      limpiarPerfilCapas();
+      const tip = $('perfilTooltip');
+      if (tip) tip.hidden = true;
+    }
+  }
+
+  function asegurarCapasPerfil() {
+    if (!map || !mapReady) return;
+    if (!map.getSource(srcPerfilId)) {
+      map.addSource(srcPerfilId, {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] }
+      });
+      map.addLayer({
+        id: 'lyr_perfil_line',
+        type: 'line',
+        source: srcPerfilId,
+        filter: ['==', '$type', 'LineString'],
+        paint: {
+          'line-color': '#0284c7',
+          'line-width': 3.5,
+          'line-dasharray': [2, 2]
+        }
+      });
+      map.addLayer({
+        id: 'lyr_perfil_pts',
+        type: 'circle',
+        source: srcPerfilId,
+        filter: ['all', ['==', '$type', 'Point'], ['!=', 'tipo', 'hover']],
+        paint: {
+          'circle-radius': 6.5,
+          'circle-color': ['case', ['==', ['get', 'tipo'], 'inicio'], '#10b981', '#f97316'],
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 2.5
+        }
+      });
+      map.addLayer({
+        id: 'lyr_perfil_marker',
+        type: 'circle',
+        source: srcPerfilId,
+        filter: ['==', 'tipo', 'hover'],
+        paint: {
+          'circle-radius': 7.5,
+          'circle-color': '#38bdf8',
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 3
+        }
+      });
+    }
+  }
+
+  function limpiarPerfilCapas() {
+    if (!map || !mapReady) return;
+    ['lyr_perfil_marker', 'lyr_perfil_pts', 'lyr_perfil_line'].forEach((id) => {
+      if (map.getLayer(id)) map.removeLayer(id);
+    });
+    if (map.getSource(srcPerfilId)) map.removeSource(srcPerfilId);
+  }
+
+  function manejarClickPerfil(lngLat) {
+    if (puntosPerfil.length >= 2) {
+      puntosPerfil = [];
+    }
+    puntosPerfil.push([lngLat.lng, lngLat.lat]);
+    if (puntosPerfil.length === 1) {
+      $('perfilResumen').textContent = 'Punto A fijado · Haga clic en el segundo punto (Punto B) para trazar el corte';
+      actualizarPerfilTransectoGeoJSON();
+    } else if (puntosPerfil.length === 2) {
+      actualizarPerfilTransecto();
+    }
+  }
+
+  function actualizarPerfilTransectoGeoJSON(hoverCoord) {
+    if (!map || !mapReady) return;
+    const src = map.getSource(srcPerfilId);
+    if (!src) return;
+
+    const feats = [];
+    if (puntosPerfil.length >= 1) {
+      feats.push({
+        type: 'Feature',
+        properties: { tipo: 'inicio' },
+        geometry: { type: 'Point', coordinates: puntosPerfil[0] }
+      });
+    }
+    if (puntosPerfil.length >= 2) {
+      feats.push({
+        type: 'Feature',
+        properties: { tipo: 'fin' },
+        geometry: { type: 'Point', coordinates: puntosPerfil[1] }
+      });
+      feats.push({
+        type: 'Feature',
+        properties: { tipo: 'linea' },
+        geometry: { type: 'LineString', coordinates: puntosPerfil }
+      });
+    }
+    if (hoverCoord) {
+      feats.push({
+        type: 'Feature',
+        properties: { tipo: 'hover' },
+        geometry: { type: 'Point', coordinates: hoverCoord }
+      });
+    }
+    src.setData({ type: 'FeatureCollection', features: feats });
+  }
+
+  function actualizarMarkerHoverPerfil(coord) {
+    actualizarPerfilTransectoGeoJSON(coord);
+  }
+
+  function actualizarPerfilTransecto() {
+    if (puntosPerfil.length < 2) return;
+    asegurarCapasPerfil();
+    actualizarPerfilTransectoGeoJSON();
+
+    const pA = puntosPerfil[0];
+    const pB = puntosPerfil[1];
+
+    let distTotalKm = 0;
+    if (window.turf) {
+      try {
+        distTotalKm = turf.distance(turf.point(pA), turf.point(pB), { units: 'kilometers' });
+      } catch (_) {}
+    }
+    if (!distTotalKm) {
+      const dLat = (pB[1] - pA[1]) * 111.0;
+      const dLng = (pB[0] - pA[0]) * 111.0 * Math.cos((pA[1] + pB[1]) * Math.PI / 360);
+      distTotalKm = Math.sqrt(dLat * dLat + dLng * dLng);
+    }
+    distTotalKm = Math.max(0.1, distTotalKm);
+
+    const N_PUNTOS = 60;
+    const muestra = [];
+
+    for (let i = 0; i < N_PUNTOS; i++) {
+      const frac = i / (N_PUNTOS - 1);
+      const lng = pA[0] + (pB[0] - pA[0]) * frac;
+      const lat = pA[1] + (pB[1] - pA[1]) * frac;
+      const distKm = distTotalKm * frac;
+
+      let alt = null;
+      if (map && map.queryTerrainElevation) {
+        try {
+          const e = map.queryTerrainElevation([lng, lat]);
+          if (e !== null && !isNaN(e)) alt = e;
+        } catch (_) {}
+      }
+
+      if (alt === null) {
+        const distSur = Math.max(0, (11.06 - lat) * 111.0);
+        const distOeste = Math.max(0, (-74.76 - lng) * 111.0);
+        const base = 2.5 + Math.pow(distSur * 3.4 + distOeste * 1.8, 1.18);
+        const onda = Math.sin(frac * Math.PI * 4) * 4.2 + Math.cos(frac * Math.PI * 8) * 2.1;
+        alt = Math.max(1.5, Math.round((base + onda) * 10) / 10);
+      }
+
+      muestra.push({ distKm, alt, coord: [lng, lat] });
+    }
+
+    datosPerfilActuales = muestra;
+    renderizarPerfilSvg(muestra, distTotalKm);
+  }
+
+  function renderizarPerfilSvg(datos, distTotalKm) {
+    const svg = $('perfilSvg');
+    const resumen = $('perfilResumen');
+    if (!svg) return;
+
+    if (!datos.length) {
+      svg.innerHTML = '';
+      if (resumen) resumen.textContent = 'Haga clic en el mapa para iniciar el corte transversal';
+      return;
+    }
+
+    const alts = datos.map((d) => d.alt);
+    const minAlt = Math.max(0, Math.floor(Math.min(...alts)));
+    const maxAlt = Math.max(minAlt + 15, Math.ceil(Math.max(...alts)));
+    const desnivel = (maxAlt - minAlt).toFixed(1);
+
+    if (resumen) {
+      const distTxt = distTotalKm < 1 ? `${Math.round(distTotalKm * 1000)} m` : `${distTotalKm.toFixed(2)} km`;
+      resumen.textContent = `Longitud: ${distTxt} · Altitud mín: ${minAlt} m · máx: ${maxAlt} m · Desnivel: ${desnivel} m`;
+    }
+
+    const W = 600;
+    const H = 130;
+    const x0 = 45;
+    const x1 = 575;
+    const yTop = 15;
+    const yBase = 105;
+    const anchoPlot = x1 - x0;
+    const altoPlot = yBase - yTop;
+
+    const puntosCoord = datos.map((d, i) => {
+      const px = x0 + (i / (datos.length - 1)) * anchoPlot;
+      const py = yBase - ((d.alt - minAlt) / (maxAlt - minAlt)) * altoPlot;
+      return `${px.toFixed(1)},${py.toFixed(1)}`;
+    });
+
+    const dLinea = `M ${puntosCoord.join(' L ')}`;
+    const dArea = `M ${x0},${yBase} L ${puntosCoord.join(' L ')} L ${x1},${yBase} Z`;
+
+    const yMid = (yTop + yBase) / 2;
+    const altMid = Math.round((minAlt + maxAlt) / 2);
+
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="perfilGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#0284c7" stop-opacity="0.04"/>
+        </linearGradient>
+      </defs>
+      <!-- Guías horizontales -->
+      <line x1="${x0}" y1="${yBase}" x2="${x1}" y2="${yBase}" stroke="currentColor" stroke-opacity="0.18" stroke-width="1"/>
+      <line x1="${x0}" y1="${yMid}" x2="${x1}" y2="${yMid}" stroke="currentColor" stroke-opacity="0.08" stroke-dasharray="3,3" stroke-width="1"/>
+      <line x1="${x0}" y1="${yTop}" x2="${x1}" y2="${yTop}" stroke="currentColor" stroke-opacity="0.08" stroke-dasharray="3,3" stroke-width="1"/>
+      
+      <!-- Etiquetas de altitud -->
+      <text x="${x0 - 6}" y="${yBase + 3}" text-anchor="end" font-size="9" fill="currentColor" fill-opacity="0.6">${minAlt}m</text>
+      <text x="${x0 - 6}" y="${yMid + 3}" text-anchor="end" font-size="9" fill="currentColor" fill-opacity="0.6">${altMid}m</text>
+      <text x="${x0 - 6}" y="${yTop + 3}" text-anchor="end" font-size="9" fill="currentColor" fill-opacity="0.6">${maxAlt}m</text>
+
+      <!-- Etiquetas de distancia -->
+      <text x="${x0}" y="${H - 5}" text-anchor="start" font-size="9" font-weight="600" fill="currentColor" fill-opacity="0.6">0 km (A)</text>
+      <text x="${(x0 + x1) / 2}" y="${H - 5}" text-anchor="middle" font-size="9" fill="currentColor" fill-opacity="0.5">${(distTotalKm / 2).toFixed(1)} km</text>
+      <text x="${x1}" y="${H - 5}" text-anchor="end" font-size="9" font-weight="600" fill="currentColor" fill-opacity="0.6">${distTotalKm.toFixed(1)} km (B)</text>
+
+      <!-- Polígonos de elevación -->
+      <path d="${dArea}" fill="url(#perfilGrad)"/>
+      <path d="${dLinea}" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    `;
+
+    const zonasEl = $('perfilZonas');
+    if (zonasEl) {
+      zonasEl.innerHTML = `
+        <span class="zona mar">Mar Caribe / Magdalena (${minAlt}m)</span>
+        <span class="zona ciénaga">Ciénaga Mallorquín</span>
+        <span class="zona urbana">Terraza Aluvial (Barranquilla)</span>
+        <span class="zona colinas">Cerros / Galapa - Tubará (${maxAlt}m)</span>
+      `;
+    }
+  }
+
+  // --- PUNTERO LÁSER DIGITAL PARA EXPOSICIÓN Y SUSTENTACIÓN ---
+  let laserActivo = false;
+  let laserPuntoEl = null;
+
+  function initLaserPointer() {
+    const btn = $('btnLaser');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => toggleLaser(!laserActivo));
+
+    window.addEventListener('keydown', (e) => {
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || document.querySelector('dialog[open]')) return;
+      if (e.key.toLowerCase() === 'l' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        toggleLaser(!laserActivo);
+      }
+    });
+  }
+
+  function toggleLaser(on) {
+    laserActivo = on;
+    const btn = $('btnLaser');
+    if (btn) btn.classList.toggle('on', on);
+    document.body.classList.toggle('laser-activo', on);
+
+    if (on) {
+      if (!laserPuntoEl) {
+        laserPuntoEl = document.createElement('div');
+        laserPuntoEl.className = 'laser-punto';
+        document.body.appendChild(laserPuntoEl);
+      }
+      laserPuntoEl.hidden = false;
+      window.addEventListener('mousemove', moverLaser);
+      mostrarAviso('Puntero láser digital activo (Tecla L para apagar)');
+    } else {
+      if (laserPuntoEl) laserPuntoEl.hidden = true;
+      window.removeEventListener('mousemove', moverLaser);
+      mostrarAviso('Puntero láser desactivado');
+    }
+  }
+
+  function moverLaser(e) {
+    if (laserPuntoEl && laserActivo) {
+      laserPuntoEl.style.left = `${e.clientX}px`;
+      laserPuntoEl.style.top = `${e.clientY}px`;
+    }
+  }
+
   function abrirAtajos() {
     const dlg = $('dlg');
     const filas = [
@@ -2486,7 +3280,9 @@
       ['Mayús ← →', 'Elemento anterior o siguiente'],
       ['P', 'Modo presentación (dentro de él bastan ← →)'],
       ['M', 'Medir distancia y área en el mapa'],
-      ['3', 'Vista en perspectiva'],
+      ['C', 'Corte de paisaje y perfil topográfico'],
+      ['L', 'Puntero láser digital para sustentación'],
+      ['3', 'Vista en perspectiva y relieve 3D'],
       ['Esc', 'Cerrar ventanas o salir de la presentación']
     ];
     $('dlgCuerpo').innerHTML = `
@@ -2521,6 +3317,9 @@
       const t = document.activeElement && document.activeElement.tagName;
       if (t === 'INPUT' || t === 'TEXTAREA') return;
       if (e.key === '?') abrirAtajos();
+      if (e.key.toLowerCase() === 'c' && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector('dialog[open]')) {
+        $('btnPerfil')?.click();
+      }
       if (e.key === 'Escape' && enPresentacion() && !document.querySelector('dialog[open]')) togglePresentacion(false);
     });
     const op = $('opGlobal');
@@ -2559,6 +3358,9 @@
       init3DToggle();
       initSaltosRapidos();
       initCapturaMapa();
+      initCortinaSwipe();
+      initHerramientaPerfil();
+      initLaserPointer();
       initExtras();
 
       $('btnIndice').addEventListener('click', () => mostrarIndice());
@@ -2581,6 +3383,11 @@
         if (e.key === 'ArrowRight' && (e.shiftKey || pres) && pos < ORDEN.length - 1) navigate(`#/${ORDEN[pos + 1]}`);
         if (e.key.toLowerCase() === 'p') togglePresentacion();
       });
+
+      // Registro de Service Worker PWA para alta resiliencia offline (DevGiz WebGIS)
+      if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+        navigator.serviceWorker.register('sw.js').catch((err) => console.log('SW no registrado:', err));
+      }
 
       window.addEventListener('hashchange', router);
       router();

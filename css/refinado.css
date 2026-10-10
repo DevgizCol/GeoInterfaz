@@ -481,4 +481,201 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
   }
 }
 
+/* ==========================================================================
+   MODO CORTINA / SWIPE COMPARADOR
+   ========================================================================== */
+.lienzo.cortina .vis-mapa {
+  position: absolute; inset: 0; display: block; z-index: 1;
+}
+.lienzo.cortina .vis-imagen {
+  position: absolute; inset: 0; display: block; z-index: 3;
+  clip-path: inset(0 0 0 var(--cortina-pos, 50%));
+  border: 0; pointer-events: none;
+}
+.lienzo.cortina .vis-imagen .zoom-ctl,
+.lienzo.cortina .vis-imagen .zoom-ayuda {
+  display: none !important;
+}
+.cortina-divisor {
+  position: absolute; top: 0; bottom: 0; left: var(--cortina-pos, 50%);
+  width: 0; z-index: 10; pointer-events: auto; cursor: ew-resize;
+  transform: translateX(-50%);
+}
+.cortina-linea {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
+  background: #38bdf8; transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+}
+.cortina-tirador {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #080c14; border: 2px solid #38bdf8;
+  color: #38bdf8; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.5);
+  cursor: ew-resize; transition: transform .15s ease, border-color .15s ease;
+}
+.cortina-tirador:hover, .cortina-tirador:active {
+  transform: translate(-50%, -50%) scale(1.12);
+  border-color: #ffffff; color: #ffffff;
+}
+.cortina-tirador svg {
+  width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.2;
+}
+.cortina-etiquetas {
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 40px; pointer-events: none; white-space: nowrap;
+}
+.cortina-eti-izq, .cortina-eti-der {
+  padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em; backdrop-filter: blur(10px);
+}
+.cortina-eti-izq {
+  background: rgba(14, 22, 31, 0.85); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
+  transform: translateX(-100%);
+}
+.cortina-eti-der {
+  background: rgba(255, 255, 255, 0.88); color: #0f172a; border: 1px solid rgba(0, 0, 0, 0.15);
+  transform: translateX(0);
+}
+:root[data-tema="oscuro"] .cortina-eti-der {
+  background: rgba(15, 23, 42, 0.88); color: #e2e8f0; border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   TERRENO 3D DEM (INDICADOR DE ESTADO)
+   ========================================================================== */
+.badge-3d-hud {
+  position: absolute; bottom: 42px; left: 140px; z-index: 4;
+  padding: 5px 11px; border-radius: 8px; font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  background: #080c14; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  display: flex; align-items: center; gap: 6px;
+  animation: fadeIn 0.2s ease;
+}
+.badge-3d-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8; animation: pulse 2s infinite;
+}
+
+/* ==========================================================================
+   PERFIL TOPOGRÁFICO Y CORTE DE PAISAJE
+   ========================================================================== */
+.perfil-hud {
+  position: absolute; left: 20px; right: 20px; bottom: 20px; z-index: 8;
+  max-width: 900px; margin: 0 auto;
+  background: var(--vidrio); border: 1px solid var(--vidrio-borde);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px; padding: 14px 18px 12px;
+  box-shadow: var(--sombra-lg);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.perfil-barra {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 8px;
+}
+.perfil-tit strong { font-size: 14px; color: var(--tinta); margin-right: 6px; }
+.perfil-tit small { font-size: 12px; color: var(--gris); }
+.perfil-acciones { display: flex; gap: 6px; }
+.perfil-grafico-wrap {
+  position: relative; width: 100%; height: 110px; background: rgba(0, 0, 0, 0.04);
+  border-radius: 10px; overflow: hidden; border: 1px solid var(--linea2);
+}
+:root[data-tema="oscuro"] .perfil-grafico-wrap { background: rgba(0, 0, 0, 0.28); }
+.perfil-grafico-wrap svg { width: 100%; height: 100%; display: block; }
+.perfil-tooltip {
+  position: absolute; top: 10px; padding: 4px 8px; border-radius: 6px;
+  background: #080c14; color: #fff; font-size: 11px; font-weight: 600;
+  pointer-events: none; border: 1px solid rgba(56, 189, 248, 0.4);
+  transform: translateX(-50%); white-space: nowrap;
+}
+.perfil-zonas {
+  display: flex; justify-content: space-between; gap: 8px; margin-top: 6px;
+  font-size: 11px; color: var(--gris); font-weight: 600;
+}
+
+/* ==========================================================================
+   PUNTERO LÁSER DIGITAL PARA SUSTENTACIÓN
+   ========================================================================== */
+body.laser-activo #mapa { cursor: crosshair; }
+.laser-punto {
+  position: fixed; width: 18px; height: 18px; border-radius: 50%;
+  background: #ef4444; border: 2px solid #ffffff;
+  box-shadow: 0 0 16px #ef4444, 0 0 32px #ef4444;
+  pointer-events: none; z-index: 99999; transform: translate(-50%, -50%);
+  transition: width .1s, height .1s;
+}
+
+/* ==========================================================================
+   DASHBOARD COMPARATIVA LATAM (#pgComparativa)
+   ========================================================================== */
+.comparativa-hero {
+  margin-bottom: 32px;
+}
+.comparativa-hero h1 { font-size: 28px; margin-bottom: 6px; }
+.comparativa-hero p { font-size: 15px; color: var(--gris); max-width: 75ch; margin: 0; }
+.comparativa-layout {
+  display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start;
+}
+.radar-card {
+  background: var(--papel); border: 1px solid var(--linea); border-radius: 16px;
+  padding: 20px; box-shadow: var(--sombra-sm); text-align: center;
+}
+.radar-card h3 { font-size: 16px; margin: 0 0 12px; color: var(--tinta); }
+.radar-svg { width: 100%; max-width: 320px; height: auto; margin: 0 auto; display: block; }
+.radar-leyenda {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px;
+}
+.radar-item {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+  cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: background .15s;
+}
+.radar-item:hover, .radar-item.activo { background: var(--marca-suave); }
+.radar-color { width: 10px; height: 10px; border-radius: 50%; }
+
+.ciudades-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+}
+.ciudad-card {
+  background: var(--papel); border: 1px solid var(--linea); border-radius: 14px;
+  padding: 18px 20px; transition: transform .2s ease, box-shadow .2s ease;
+}
+.ciudad-card:hover {
+  transform: translateY(-2px); box-shadow: var(--sombra); border-color: var(--marca);
+}
+.ciudad-cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.ciudad-tit { font-size: 17px; font-weight: 700; color: var(--tinta); }
+.ciudad-pais { font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: .08em; color: var(--gris); }
+.ciudad-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 14px; font-size: 12px; }
+.kpi-b { font-size: 15px; font-weight: 800; color: var(--marca); display: block; }
+.kpi-lbl { color: var(--gris); font-size: 11px; }
+.ciudad-desc { font-size: 13px; color: var(--tinta2); line-height: 1.45; margin-bottom: 14px; }
+
+/* ==========================================================================
+   RECORRIDO GUIADO / SCROLLYTELLING (#pgRecorrido)
+   ========================================================================== */
+.recorrido-hero { margin-bottom: 36px; }
+.recorrido-pasos { display: flex; flex-direction: column; gap: 24px; max-width: 860px; margin: 0 auto; }
+.recorrido-card {
+  display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+  background: var(--papel); border: 1px solid var(--linea); border-radius: 16px;
+  padding: 24px 28px; box-shadow: var(--sombra-sm); transition: transform .2s ease;
+}
+.recorrido-card:hover { transform: translateX(4px); border-color: var(--marca); }
+.paso-num {
+  font-family: var(--serif); font-size: 38px; font-weight: 700; color: var(--marca);
+  line-height: 1; text-align: center; padding-top: 4px;
+}
+.paso-cuerpo h3 { font-size: 20px; margin: 0 0 6px; color: var(--tinta); }
+.paso-cap { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--gris); margin-bottom: 8px; display: block; }
+.paso-desc { font-size: 14.5px; color: var(--tinta2); line-height: 1.55; margin-bottom: 14px; }
+.paso-acc { display: flex; align-items: center; gap: 12px; }
+
+@media (max-width: 900px) {
+  .comparativa-layout { grid-template-columns: 1fr; }
+  .recorrido-card { grid-template-columns: 1fr; gap: 12px; }
+  .paso-num { text-align: left; }
+}
+
+
 
