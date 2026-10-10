@@ -282,48 +282,148 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.pie-plataforma {
-  margin-top: 48px;
-  padding: 28px 24px;
-  border-top: 1px solid var(--linea);
+/* --- Pie de página sofisticado y minimalista (Powered by DevGiz) --- */
+.pie-sitio {
+  margin-top: 56px;
+  padding: 26px 32px;
   background: var(--vidrio);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  text-align: center;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--linea);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
-.pie-plataforma-inner {
+.pie-sitio-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.pie-sitio-izq {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+}
+.pie-marca {
+  display: flex;
   align-items: center;
-  font-size: 13.5px;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--tinta);
+}
+.pie-marca img {
+  border-radius: 6px;
+}
+.pie-meta {
+  font-size: 12.5px;
   color: var(--gris);
 }
-.pie-devgiz {
-  font-size: 14.5px;
-  color: var(--tinta);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
+
+/* El badge DevGiz minimalista y de alta gama */
+.devgiz-badge {
+  display: inline-flex;
   align-items: center;
-}
-.pie-devgiz a {
-  color: var(--marca);
-  font-weight: 700;
+  gap: 12px;
+  padding: 7px 18px 7px 15px;
+  background: #080c14;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 999px;
   text-decoration: none;
+  box-shadow: 0 4px 18px rgba(8, 12, 20, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.pie-devgiz a:hover {
-  text-decoration: underline;
+.devgiz-badge:hover {
+  border-color: rgba(56, 189, 248, 0.65);
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-1.5px);
 }
-.pie-sep {
-  opacity: .4;
+.devgiz-by {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  white-space: nowrap;
 }
+.devgiz-svg {
+  display: block;
+  height: 28px;
+  width: auto;
+}
+
+.pie-sitio-der {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.pie-enlaces {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.pie-enlaces a {
+  color: var(--tinta2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.pie-enlaces a:hover {
+  color: var(--marca);
+}
+.pie-link-ext {
+  color: #0284c7 !important;
+}
+.pie-sub {
+  font-size: 11.5px;
+  color: var(--gris);
+}
+
+/* Pie en el panel lateral del índice */
+.indice-pie {
+  padding: 10px 14px;
+  background: var(--vidrio);
+  border-top: 1px solid var(--linea2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: none;
+}
+.indice-pie-txt {
+  font-size: 9.5px;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+.indice-devgiz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: #080c14;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.indice-devgiz-badge:hover {
+  border-color: rgba(56, 189, 248, 0.6);
+  transform: translateY(-1px);
+}
+.indice-devgiz-badge img {
+  height: 18px;
+  width: auto;
+  display: block;
+}
+
 .tarjeta-devgiz {
   margin: 24px 0 28px;
-  padding: 20px 24px;
-  border-radius: 14px;
+  padding: 22px 26px;
+  border-radius: 16px;
   background: var(--marca-suave);
   border: 1px solid var(--linea);
   display: flex;
@@ -331,6 +431,19 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
   justify-content: space-between;
   gap: 20px;
   box-shadow: var(--sombra-sm);
+}
+.tarjeta-devgiz-logo {
+  display: inline-flex;
+  padding: 8px 16px;
+  background: #080c14;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(8, 12, 20, 0.2);
+}
+.tarjeta-devgiz-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 .tarjeta-devgiz-txt strong {
   display: block;
@@ -344,7 +457,21 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
   color: var(--tinta2);
   line-height: 1.45;
 }
+
+@media (max-width: 900px) {
+  .pie-sitio-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pie-sitio-der {
+    align-items: flex-start;
+  }
+}
 @media (max-width: 680px) {
+  .pie-sitio {
+    padding: 20px 18px;
+    margin-top: 36px;
+  }
   .tarjeta-devgiz {
     flex-direction: column;
     align-items: flex-start;
@@ -353,4 +480,5 @@ body.presenta .panel, body.presenta .panel-abrir { top: 16px; right: 16px; }
     display: none;
   }
 }
+
 

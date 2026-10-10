@@ -1464,6 +1464,41 @@
       </a>`;
   }
 
+  function pieEditorialHtml() {
+    return `
+      <footer class="pie-sitio">
+        <div class="pie-sitio-inner">
+          <div class="pie-sitio-izq">
+            <div class="pie-marca">
+              <img src="logo_aida.svg" alt="" width="22" height="22">
+              <span><strong>GeoInterfaz</strong> · Geovisor de la Tesis Doctoral</span>
+            </div>
+            <div class="pie-meta">
+              <span>Aida del Carmen Palmett Padilla · Universitat Politècnica de Catalunya (UPC)</span>
+            </div>
+          </div>
+
+          <div class="pie-sitio-centro">
+            <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="devgiz-badge" title="Visitar DevGiz · Ingeniería Geoespacial y Software">
+              <span class="devgiz-by">Powered by</span>
+              <img src="img/devgiz_lockup.svg" alt="DevGiz Engineering" class="devgiz-svg" width="94" height="28">
+            </a>
+          </div>
+
+          <div class="pie-sitio-der">
+            <nav class="pie-enlaces" aria-label="Enlaces del pie">
+              <a href="#/datos">Capas y datos</a>
+              <a href="#/acerca">Acerca de</a>
+              <a href="descargas/Atlas_cartografico_GeoInterfaz.docx" download>Atlas (Word)</a>
+              <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="pie-link-ext">devgiz.vercel.app ↗</a>
+            </nav>
+            <div class="pie-sub">Tecnología de Cartografía e Inteligencia Territorial</div>
+          </div>
+        </div>
+      </footer>
+    `;
+  }
+
   function renderInicio() {
     const pg = $('pgInicio');
     if (!pg || pg.children.length > 0) return;
@@ -1528,18 +1563,7 @@
 
         ${muroInst(true)}
 
-        <footer class="pie-plataforma">
-          <div class="pie-plataforma-inner">
-            <div class="pie-devgiz">
-              <span>GeoInterfaz · Plataforma de visualización cartográfica e interactiva</span>
-              <span class="pie-sep">·</span>
-              <span>Desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong> (devgiz.vercel.app)</a></span>
-            </div>
-            <div class="pie-copy">
-              <span>Tesis doctoral · Universitat Politècnica de Catalunya (UPC) · Institut de Sostenibilitat · 2026</span>
-            </div>
-          </div>
-        </footer>
+        ${pieEditorialHtml()}
       </div>
     `;
 
@@ -1673,6 +1697,8 @@
         <div id="tabRep" hidden>
           <div class="arb-rep">${repHtml}</div>
         </div>
+
+        ${pieEditorialHtml()}
       </div>
     `;
 
@@ -1771,6 +1797,9 @@
         </ul>
 
         <div class="tarjeta-devgiz">
+          <div class="tarjeta-devgiz-logo">
+            <img src="img/devgiz_lockup.svg" alt="DevGiz Engineering" width="116" height="34">
+          </div>
           <div class="tarjeta-devgiz-txt">
             <strong>Desarrollado por DevGiz</strong>
             <p>Consultoría y desarrollo de software geoespacial, geovisores avanzados, cartografía digital y analítica territorial.</p>
@@ -1779,6 +1808,8 @@
         </div>
 
         <p>La estructura completa de carpetas y capas de la investigación está en <a href="#/datos">Capas y datos</a>.</p>
+
+        ${pieEditorialHtml()}
       </div>
     `;
   }

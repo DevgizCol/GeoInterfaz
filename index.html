@@ -10,10 +10,10 @@
 <link rel="icon" href="logo_aida.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="stylesheet" href="css/estilo.css?v=3">
-<link rel="stylesheet" href="css/refinado.css?v=4">
+<link rel="stylesheet" href="css/refinado.css?v=5">
 <script>try{var t=localStorage.getItem("gi-tema");if(t)document.documentElement.setAttribute("data-tema",t);}catch(e){}</script>
 </head>
 <body>
@@ -64,6 +64,12 @@
       <input type="search" id="buscar" placeholder="Filtrar el índice…" autocomplete="off" aria-label="Filtrar el índice">
     </div>
     <div class="arbol" id="arbol"></div>
+    <div class="indice-pie">
+      <span class="indice-pie-txt">Powered by</span>
+      <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="indice-devgiz-badge" title="DevGiz · Ingeniería Geoespacial (devgiz.vercel.app)">
+        <img src="img/devgiz_lockup.svg" alt="DevGiz Engineering" width="76" height="18">
+      </a>
+    </div>
   </aside>
 
   <main class="principal" id="principal">
@@ -217,6 +223,6 @@
 <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="js/app.js?v=8"></script>
+<script src="js/app.js?v=9"></script>
 </body>
 </html>
