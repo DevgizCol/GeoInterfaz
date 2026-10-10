@@ -1285,9 +1285,9 @@
   }
 
   const RUTA_ALIAS = {
-    'tabla-74-mapa': 'fig-66',
-    'mapa-ufp': 'fig-66',
-    'ufp': 'fig-66',
+    'tabla-74-mapa': 'fig-70',
+    'mapa-ufp': 'fig-70',
+    'ufp': 'fig-70',
     'densidad': 'mapa-densidad-poblacional',
     'densidad-poblacional': 'mapa-densidad-poblacional',
     'accesibilidad': 'mapa-accesibilidad-puerto',
@@ -1442,10 +1442,10 @@
 
   // ---------------------------------------------------------- inicio
   const IMPRESCINDIBLES = [
-    'atlas-3-14',
-    'atlas-4-1',
-    'atlas-4-2',
-    'atlas-4-3',
+    'fig-40',
+    'fig-41',
+    'fig-42',
+    'fig-43',
     'fig-2',
     'fig-3',
     'fig-4',
@@ -1454,14 +1454,14 @@
     'mapa-densidad-poblacional',
     'atlas-3-12',
     'atlas-3-13',
-    'fig-40',
-    'fig-66',
+    'fig-44',
+    'fig-70',
     'mapa-accesibilidad-puerto',
     'mapa-gradiente-usos',
     'mapa-corredores-mercancias',
-    'fig-52',
     'fig-56',
-    'fig-63'
+    'fig-60',
+    'fig-67'
   ];
 
   function tarjeta(it) {
@@ -1771,10 +1771,10 @@
   // Todo lo que se muestra sale de la tesis o de su SIG: las ventanas son las de las Láminas Atlas 4.1 y 4.2,
   // la superficie de cada franja se lee de la capa de franjas y los títulos se toman del catálogo.
   const CASOS_COMP = [
-    { id: 'barranquilla', nombre: 'Barranquilla', pais: 'Colombia', rol: 'Caso principal', terr: [-74.862, 10.950], det: [-74.842, 11.035], items: ['fig-2', 'fig-3', 'atlas-3-14', 'fig-66'] },
-    { id: 'veracruz', nombre: 'Veracruz', pais: 'México', rol: 'Caso comparado', terr: [-96.130, 19.165], det: [-96.135, 19.228], items: ['fig-40', 'fig-41', 'fig-42'] },
-    { id: 'santos', nombre: 'Santos', pais: 'Brasil', rol: 'Caso comparado', terr: [-46.300, -23.975], det: [-46.315, -23.935], items: ['fig-46', 'fig-47', 'fig-48'] },
-    { id: 'valparaiso', nombre: 'Valparaíso', pais: 'Chile', rol: 'Caso comparado', terr: [-71.510, -33.010], det: [-71.625, -33.045], items: ['fig-43', 'fig-44', 'fig-45'] }
+    { id: 'barranquilla', nombre: 'Barranquilla', pais: 'Colombia', rol: 'Caso principal', terr: [-74.862, 10.950], det: [-74.842, 11.035], items: ['fig-2', 'fig-3', 'fig-40', 'fig-70'] },
+    { id: 'veracruz', nombre: 'Veracruz', pais: 'México', rol: 'Caso comparado', terr: [-96.130, 19.165], det: [-96.135, 19.228], items: ['fig-44', 'fig-45', 'fig-46'] },
+    { id: 'santos', nombre: 'Santos', pais: 'Brasil', rol: 'Caso comparado', terr: [-46.300, -23.975], det: [-46.315, -23.935], items: ['fig-50', 'fig-51', 'fig-52'] },
+    { id: 'valparaiso', nombre: 'Valparaíso', pais: 'Chile', rol: 'Caso comparado', terr: [-71.510, -33.010], det: [-71.625, -33.045], items: ['fig-47', 'fig-48', 'fig-49'] }
   ];
   const COMP = { mapas: [], ventana: 'terr', dz: 0, oblicua: false, listo: false };
   const COMP_KM = { terr: 40, det: 10 };
@@ -1840,7 +1840,7 @@
     if (!pg) return;
     if (pg.children.length > 0) { setTimeout(() => ajustarComparador(false), 60); return; }
 
-    const laminas = ['atlas-4-1', 'atlas-4-2', 'atlas-4-3'].map((id) => ITEMS_MAP.get(id)).filter(Boolean);
+    const laminas = ['fig-41', 'fig-42', 'fig-43'].map((id) => ITEMS_MAP.get(id)).filter(Boolean);
     pg.innerHTML = `
       <div class="ancho">
         <div class="comparativa-hero">
@@ -1936,7 +1936,7 @@
   const HITOS_RECORRIDO = [
     { num: '01', cap: 'Capítulos I y III · Área de estudio', tit: 'El Área Metropolitana de Barranquilla y su franja de interfaz',
       desc: 'El AMB reúne cinco municipios: Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia. En su borde, la tesis delimita una franja de interfaz urbano-rural de 18.587,5 ha, apoyada en el mar, el río, la ciénaga y los arroyos.',
-      enlaces: ['fig-2', 'fig-3', 'atlas-3-14'] },
+      enlaces: ['fig-2', 'fig-3', 'fig-40'] },
     { num: '02', cap: 'Capítulo III · Contenido estructural', tit: 'La Ciénaga de Mallorquín y el borde urbano',
       desc: 'La estructura ecosistémica de la cuenca de la Ciénaga de Mallorquín, la morfología del borde urbano y los conflictos de uso del suelo dentro de la franja.',
       enlaces: ['fig-4', 'atlas-3-9', 'atlas-3-10'] },
@@ -1948,10 +1948,10 @@
       enlaces: ['atlas-3-6', 'atlas-3-7', 'atlas-3-11'] },
     { num: '05', cap: 'Capítulo IV · Estudio comparado', tit: 'Veracruz, Valparaíso y Santos frente a Barranquilla',
       desc: 'Tres ciudades portuarias latinoamericanas comparadas con el caso principal, vistas a la misma escala y con la misma orientación.',
-      enlaces: ['comparativa', 'fig-40', 'fig-43', 'fig-46', 'tabla-69'] },
+      enlaces: ['comparativa', 'fig-44', 'fig-47', 'fig-50', 'tabla-69'] },
     { num: '06', cap: 'Capítulo V · Modelo IOTF-IUR', tit: 'Unidades Funcionales de Planificación, nodos y nuevo puerto interior',
       desc: 'La propuesta organiza la franja en Unidades Funcionales de Planificación (UFP), un sistema de nodos sobre la Circunvalar de la Prosperidad y un nuevo puerto interior.',
-      enlaces: ['fig-56', 'fig-66', 'fig-57', 'fig-61'] }
+      enlaces: ['fig-60', 'fig-70', 'fig-61', 'fig-65'] }
   ];
 
   function renderRecorrido() {
@@ -2479,8 +2479,8 @@
   // ---------------------------------- ir a un lugar (encuadres de la propia tesis)
   const LUGARES = [
     ['Área de estudio', [['Área Metropolitana de Barranquilla', 'fig-2'], ['Franja de interfaz urbano-rural', 'fig-3'], ['Ciénaga de Mallorquín', 'fig-4']]],
-    ['Propuesta', [['Nodo 1 · Puerto Colombia', 'fig-57'], ['Nodo 2 · Galapa', 'fig-58'], ['Nodo 3 · Barranquilla - Galapa', 'fig-59'], ['Nodo 4 · Malambo', 'fig-60'], ['Nuevo puerto interior', 'fig-61']]],
-    ['Casos comparados', [['Veracruz', 'fig-40'], ['Valparaíso', 'fig-43'], ['Santos', 'fig-46']]]
+    ['Propuesta', [['Nodo 1 · Puerto Colombia', 'fig-61'], ['Nodo 2 · Galapa', 'fig-62'], ['Nodo 3 · Barranquilla - Galapa', 'fig-63'], ['Nodo 4 · Malambo', 'fig-64'], ['Nuevo puerto interior', 'fig-65']]],
+    ['Casos comparados', [['Veracruz', 'fig-44'], ['Valparaíso', 'fig-47'], ['Santos', 'fig-50']]]
   ];
 
   function initSaltosRapidos() {
