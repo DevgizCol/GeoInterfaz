@@ -7334,7 +7334,8 @@
         "CAPÍTULO III: ANÁLISIS E INTEGRACIÓN TERRITORIAL DE LA INTERFAZ URBANO-RURAL DEL CASO BARRANQUILLA",
         "Propuestas en Revisión Tutor",
         "Lámina P-1 · Paisaje de la Franja"
-      ]
+      ],
+      "vista": "amb__propuesta_paisaje_franja_ufp"
     },
     {
       "id": "propuesta-ortofotos-territorial",
@@ -7365,7 +7366,8 @@
         "CAPÍTULO IV: ANÁLISIS COMPARATIVO DE LA INTERFAZ URBANO-RURAL EN CIUDADES PUERTO-RÍO",
         "Propuestas en Revisión Tutor",
         "Lámina P-2 · Ortofotos Territoriales (1:200.000)"
-      ]
+      ],
+      "vista": "latam__casos_comparados_franjas_latam"
     },
     {
       "id": "propuesta-ortofotos-detalle",
@@ -7396,7 +7398,8 @@
         "CAPÍTULO IV: ANÁLISIS COMPARATIVO DE LA INTERFAZ URBANO-RURAL EN CIUDADES PUERTO-RÍO",
         "Propuestas en Revisión Tutor",
         "Lámina P-3 · Ortofotos Detalle (1:50.000)"
-      ]
+      ],
+      "vista": "latam__casos_comparados_franjas_latam"
     },
     {
       "id": "propuesta-vistas-oblicuas",
@@ -7427,7 +7430,8 @@
         "CAPÍTULO IV: ANÁLISIS COMPARATIVO DE LA INTERFAZ URBANO-RURAL EN CIUDADES PUERTO-RÍO",
         "Propuestas en Revisión Tutor",
         "Lámina P-4 · Vistas Oblicuas Google Earth 3D"
-      ]
+      ],
+      "vista": "latam__casos_comparados_franjas_latam"
     }
   ],
   "repositorio": [
