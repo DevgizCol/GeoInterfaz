@@ -989,7 +989,7 @@
     let geojson = GEOJSON_CACHE.get(capaObj.capa);
     if (!geojson) {
       try {
-        const resp = await fetch(`data/capas/${capaObj.capa}.geojson`);
+        const resp = await fetch(`data/capas/${capaObj.capa}.geojson`, FRESCO);
         geojson = await resp.json();
         GEOJSON_CACHE.set(capaObj.capa, geojson);
       } catch (err) {
@@ -1382,7 +1382,7 @@
     if (hasTabla) {
       visDoc.innerHTML = '<div class="hoja"><p class="ayuda">Cargando tabla…</p></div>';
       try {
-        const resp = await fetch(`data/${item.tabla}`);
+        const resp = await fetch(`data/${item.tabla}`, FRESCO);
         const tblHtml = await resp.text();
         if (currentItem !== item) return;
         let avisoMapaT73 = '';
@@ -2469,19 +2469,23 @@
     window.addEventListener('resize', () => { if (currentItem) reajustarLienzo(); });
   }
 
+  // Los datos se regeneran con cada versión del manuscrito: el navegador debe comprobar siempre si cambiaron
+  // (si no cambiaron, el servidor responde 304 y se usa la copia local).
+  const FRESCO = { cache: 'no-cache' };
+
   // ------------------------------------------------------------- inicio
   async function initApp() {
     try {
       const [resCat, resVis, resCap] = await Promise.all([
-        fetch('data/catalogo.json'),
-        fetch('data/vistas.json'),
-        fetch('data/capas.json')
+        fetch('data/catalogo.json', FRESCO),
+        fetch('data/vistas.json', FRESCO),
+        fetch('data/capas.json', FRESCO)
       ]);
       CATALOGO = await resCat.json();
       VISTAS = await resVis.json();
       CAPAS = await resCap.json();
       (CATALOGO.items || []).forEach((it) => ITEMS_MAP.set(it.id, it));
-      try { INST = await (await fetch('data/instituciones.json')).json(); } catch (_) { INST = []; }
+      try { INST = await (await fetch('data/instituciones.json', FRESCO)).json(); } catch (_) { INST = []; }
       prepararInst();
 
       renderArbol();
