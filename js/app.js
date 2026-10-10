@@ -1423,6 +1423,10 @@
 
   // ---------------------------------------------------------- inicio
   const IMPRESCINDIBLES = [
+    'propuesta-paisaje-barranquilla',
+    'propuesta-ortofotos-territorial',
+    'propuesta-ortofotos-detalle',
+    'propuesta-vistas-oblicuas',
     'fig-2',
     'fig-3',
     'fig-4',
