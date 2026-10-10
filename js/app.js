@@ -3,6 +3,7 @@
  * "Enfoques y metodologías de planificación territorial local para el desarrollo
  * de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias"
  * Autora: Aida del Carmen Palmett Padilla · Universitat Politècnica de Catalunya (UPC)
+ * Desarrollado por: DevGiz (https://devgiz.vercel.app/)
  *
  * Todo el contenido que se muestra procede del manuscrito y de los proyectos QGIS de la
  * tesis (data/catalogo.json, data/vistas.json, data/capas.json). Este archivo solo lo presenta.
@@ -480,7 +481,10 @@
       });
 
       window._testMap = map;
-      map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
+      map.addControl(new maplibregl.AttributionControl({
+        compact: true,
+        customAttribution: 'Desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong></a>'
+      }), 'bottom-right');
       map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-left');
       map.addControl(new maplibregl.FullscreenControl(), 'top-left');
       map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }), 'bottom-left');
@@ -1487,7 +1491,7 @@
           <div class="sup">${esc(meta.universidad || '')} · ${esc(meta.programa || '')}</div>
           <h1>${esc(meta.titulo || '')}</h1>
           <p class="sub">${esc(meta.subtitulo || '')}</p>
-          <p class="quien"><strong>${esc(meta.autora || '')}</strong><span>Dirección: ${esc(meta.directores || '')}</span></p>
+          <p class="quien"><strong>${esc(meta.autora || '')}</strong><span>Dirección: ${esc(meta.directores || '')}</span><span class="credito-devgiz">· Desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong></a></span></p>
           <div class="hero-acc">
             ${primero ? `<a class="btn pri grande" href="#/${primero.id}">Explorar el área de estudio ${ICO.flecha}</a>` : ''}
             <button class="btn grande claro" id="btnHeroBuscar">Buscar en la tesis</button>
@@ -1523,6 +1527,19 @@
         </section>
 
         ${muroInst(true)}
+
+        <footer class="pie-plataforma">
+          <div class="pie-plataforma-inner">
+            <div class="pie-devgiz">
+              <span>GeoInterfaz · Plataforma de visualización cartográfica e interactiva</span>
+              <span class="pie-sep">·</span>
+              <span>Desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong> (devgiz.vercel.app)</a></span>
+            </div>
+            <div class="pie-copy">
+              <span>Tesis doctoral · Universitat Politècnica de Catalunya (UPC) · Institut de Sostenibilitat · 2026</span>
+            </div>
+          </div>
+        </footer>
       </div>
     `;
 
@@ -1718,6 +1735,7 @@
             <tr><th>Doctoranda</th><td>${esc(meta.autora || '')}</td></tr>
             <tr><th>Dirección</th><td>${esc(meta.directores || '')}</td></tr>
             <tr><th>Programa</th><td>${esc(meta.programa || '')} · ${esc(meta.universidad || '')}</td></tr>
+            <tr><th>Desarrollo de la plataforma</th><td><a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong></a> (<a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer">https://devgiz.vercel.app/</a>)</td></tr>
             <tr><th>Manuscrito de referencia</th><td><code>${esc(meta.manuscrito || '')}</code></td></tr>
             <tr><th>Actualización del geovisor</th><td>${esc(meta.generado || '')}</td></tr>
           </tbody>
@@ -1744,12 +1762,22 @@
           <tbody>${FUENTES.map((f) => `<tr><th>${esc(f[0])}</th><td>${esc(f[1])}</td></tr>`).join('')}</tbody>
         </table>
 
-        <h2>Cómo está hecho</h2>
+        <h2>Cómo está hecho y desarrollo</h2>
+        <p>GeoInterfaz fue concebido y desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong></a> (<a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer">devgiz.vercel.app</a>) para convertir la producción científica, cartográfica y metodológica de la tesis en una plataforma web interactiva de alto rendimiento.</p>
         <ul>
-          <li><strong>QGIS</strong> para el análisis territorial y el diseño de las láminas (MAGNA-SIRGAS 2018 / Origen Nacional, EPSG:9377, para Colombia).</li>
-          <li><strong>Python y GeoPandas</strong> para convertir las capas y la simbología de QGIS a formatos web.</li>
-          <li><strong>MapLibre GL JS</strong> para dibujar los mapas en el navegador. Las coordenadas se muestran también en EPSG:9377.</li>
+          <li><strong>MapLibre GL JS</strong> para la renderización vectorial interactiva en el navegador con soporte de reproyección en vivo (EPSG:9377 / EPSG:4326).</li>
+          <li><strong>QGIS</strong> para el análisis territorial espacial y el diseño cartográfico de las láminas oficiales (MAGNA-SIRGAS 2018 / Origen Nacional, EPSG:9377).</li>
+          <li><strong>Python, GeoPandas y Turf.js</strong> para el procesamiento de datos geográficos, mediciones espaciales y transformación de capas y estilos a especificaciones web.</li>
         </ul>
+
+        <div class="tarjeta-devgiz">
+          <div class="tarjeta-devgiz-txt">
+            <strong>Desarrollado por DevGiz</strong>
+            <p>Consultoría y desarrollo de software geoespacial, geovisores avanzados, cartografía digital y analítica territorial.</p>
+          </div>
+          <a class="btn pri" href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer">Visitar DevGiz ↗</a>
+        </div>
+
         <p>La estructura completa de carpetas y capas de la investigación está en <a href="#/datos">Capas y datos</a>.</p>
       </div>
     `;
