@@ -1442,10 +1442,10 @@
 
   // ---------------------------------------------------------- inicio
   const IMPRESCINDIBLES = [
-    'propuesta-paisaje-barranquilla',
-    'propuesta-ortofotos-territorial',
-    'propuesta-ortofotos-detalle',
-    'propuesta-vistas-oblicuas',
+    'atlas-3-14',
+    'atlas-4-1',
+    'atlas-4-2',
+    'atlas-4-3',
     'fig-2',
     'fig-3',
     'fig-4',
@@ -1503,7 +1503,7 @@
           <div class="pie-sitio-der">
             <nav class="pie-enlaces" aria-label="Enlaces del pie">
               <a href="#/datos">Capas y datos</a>
-              <a href="#/comparativa">Comparativa LATAM</a>
+              <a href="#/comparativa">Casos comparados</a>
               <a href="#/recorrido">Recorrido guiado</a>
               <a href="#/acerca">Acerca de</a>
               <a href="descargas/Atlas_cartografico_GeoInterfaz.docx" download>Atlas (Word)</a>
@@ -1573,13 +1573,13 @@
           <a href="#/recorrido" class="modo-tarjeta">
             <span class="modo-badge">Hitos 01 - 06</span>
             <h3>Recorrido Guiado por la Tesis</h3>
-            <p>Guía pedagógica en 6 hitos cronológicos y metodológicos: del diagnóstico metropolitano a la propuesta de Unidades Funcionales de Paisaje (UFP).</p>
+            <p>Guía pedagógica en 6 hitos cronológicos y metodológicos: del diagnóstico metropolitano a la propuesta de Unidades Funcionales de Planificación (UFP).</p>
             <span class="modo-cta">Iniciar recorrido →</span>
           </a>
           <a href="#/comparativa" class="modo-tarjeta">
-            <span class="modo-badge">Radar Multidimensional</span>
-            <h3>Comparativa de Ciudades Puerto LATAM</h3>
-            <p>Matriz de evaluación y radar interactivo de 5 ejes contrastando a Barranquilla con Veracruz (México), Santos (Brasil) y Valparaíso (Chile).</p>
+            <span class="modo-badge">Misma escala · misma orientación</span>
+            <h3>Los cuatro casos, a la misma escala</h3>
+            <p>Ortofotos y vistas oblicuas sincronizadas de Barranquilla, Veracruz (México), Santos (Brasil) y Valparaíso (Chile), con la misma ventana de terreno.</p>
             <span class="modo-cta">Ver comparativa →</span>
           </a>
         </section>
@@ -1767,287 +1767,191 @@
     });
   }
 
-  // --- PÁGINA: COMPARATIVA LATAM (#pgComparativa) ---
-  const CIUDADES_COMPARATIVA = [
-    {
-      id: 'barranquilla',
-      nombre: 'Barranquilla',
-      pais: 'Colombia',
-      bandera: '🇨🇴',
-      color: '#0284c7',
-      puntuaciones: [72, 88, 65, 78, 85], // [Presión, Sensibilidad, Integración, Instrumentación, Vulnerabilidad]
-      kpis: [
-        { label: 'Longitud de interfaz', val: '142.5 km²' },
-        { label: 'Carga portuaria', val: '12.8 M ton' },
-        { label: 'Humedal clave', val: 'Ciénaga de Mallorquín (RAMSAR)' },
-        { label: 'Marco regulatorio', val: 'PEMOT AMB & POMCA' }
-      ],
-      desc: 'Interfaz fluvial-marítima sobre el delta del río Magdalena. Modelo metropolitano lineal de expansión hacia el mar con alta fragmentación de humedales costeros y manglares bajo régimen de conservación internacional.',
-      enlaces: [
-        { id: 'fig-2', eti: 'Fig. 2', tit: 'Área Metropolitana de Barranquilla' },
-        { id: 'fig-3', eti: 'Fig. 3', tit: 'Franja de Interfaz Urbano-Rural' },
-        { id: 'fig-66', eti: 'Fig. 66', tit: 'Propuesta de Unidades Funcionales (UFP)' }
-      ]
-    },
-    {
-      id: 'veracruz',
-      nombre: 'Veracruz',
-      pais: 'México',
-      bandera: '🇲🇽',
-      color: '#d97706',
-      puntuaciones: [85, 92, 58, 70, 78],
-      kpis: [
-        { label: 'Recinto portuario', val: '32.4 km²' },
-        { label: 'Carga portuaria', val: '34.2 M ton' },
-        { label: 'Ecosistema protegido', val: 'P.N. Arrecifal Veracruzano' },
-        { label: 'Gobernanza', val: 'ASIPONA & PDU Veracruz' }
-      ],
-      desc: 'Histórico puerto enclave del Golfo de México. La ampliación de la Bahía Norte genera una severa barrera física entre el tejido urbano y el litoral, comprometiendo la integridad del Parque Nacional Sistema Arrecifal Veracruzano.',
-      enlaces: [
-        { id: 'fig-40', eti: 'Fig. 40', tit: 'Caso de Estudio: Veracruz' },
-        { id: 'fig-41', eti: 'Fig. 41', tit: 'Dinámica Territorial Veracruz' }
-      ]
-    },
-    {
-      id: 'santos',
-      nombre: 'Santos',
-      pais: 'Brasil',
-      bandera: '🇧🇷',
-      color: '#10b981',
-      puntuaciones: [96, 84, 52, 82, 74],
-      kpis: [
-        { label: 'Complejo portuario', val: '78.1 km²' },
-        { label: 'Carga portuaria', val: '162.4 M ton' },
-        { label: 'Ecosistema crítico', val: 'Manglares Estuario Santos' },
-        { label: 'Instrumento rector', val: 'PDZ Santos & ZEE Litoral' }
-      ],
-      desc: 'El mayor nodo portuario de América Latina. Interfaz estuarina constreñida entre la Serra do Mar y canales de manglar, con intensa segregación socioespacial entre enclaves logísticos industriales y núcleos residenciales.',
-      enlaces: [
-        { id: 'fig-46', eti: 'Fig. 46', tit: 'Caso de Estudio: Santos' },
-        { id: 'fig-47', eti: 'Fig. 47', tit: 'Estructura Portuaria Santos' }
-      ]
-    },
-    {
-      id: 'valparaiso',
-      nombre: 'Valparaíso',
-      pais: 'Chile',
-      bandera: '🇨🇱',
-      color: '#8b5cf6',
-      puntuaciones: [68, 75, 80, 74, 69],
-      kpis: [
-        { label: 'Frente marítimo', val: '18.6 km²' },
-        { label: 'Carga portuaria', val: '11.5 M ton' },
-        { label: 'Borde protegido', val: 'Borde Costero & Acantilados' },
-        { label: 'Planificación', val: 'PREVAL & UNESCO Borde' }
-      ],
-      desc: 'Ciudad-puerto anfiteatro sobre bahía con topografía escarpada. Marcado debate territorial y patrimonial sobre la apertura del borde costero al uso público frente a los requerimientos de ampliación de terminales marítimos.',
-      enlaces: [
-        { id: 'fig-43', eti: 'Fig. 43', tit: 'Caso de Estudio: Valparaíso' },
-        { id: 'fig-44', eti: 'Fig. 44', tit: 'Conflictos de Borde Valparaíso' }
-      ]
-    }
+  // --- PÁGINA: COMPARATIVA DE LOS CUATRO CASOS (#pgComparativa) ---
+  // Todo lo que se muestra sale de la tesis o de su SIG: las ventanas son las de las Láminas Atlas 4.1 y 4.2,
+  // la superficie de cada franja se lee de la capa de franjas y los títulos se toman del catálogo.
+  const CASOS_COMP = [
+    { id: 'barranquilla', nombre: 'Barranquilla', pais: 'Colombia', rol: 'Caso principal', terr: [-74.862, 10.950], det: [-74.842, 11.035], items: ['fig-2', 'fig-3', 'atlas-3-14', 'fig-66'] },
+    { id: 'veracruz', nombre: 'Veracruz', pais: 'México', rol: 'Caso comparado', terr: [-96.130, 19.165], det: [-96.135, 19.228], items: ['fig-40', 'fig-41', 'fig-42'] },
+    { id: 'santos', nombre: 'Santos', pais: 'Brasil', rol: 'Caso comparado', terr: [-46.300, -23.975], det: [-46.315, -23.935], items: ['fig-46', 'fig-47', 'fig-48'] },
+    { id: 'valparaiso', nombre: 'Valparaíso', pais: 'Chile', rol: 'Caso comparado', terr: [-71.510, -33.010], det: [-71.625, -33.045], items: ['fig-43', 'fig-44', 'fig-45'] }
   ];
+  const COMP = { mapas: [], ventana: 'terr', dz: 0, oblicua: false, listo: false };
+  const COMP_KM = { terr: 40, det: 10 };
+
+  function relItem(id) {
+    const it = ITEMS_MAP.get(id);
+    return it ? `<a class="rel" href="#/${esc(id)}"><b>${esc(etiquetaCorta(it))}</b><span>${esc(it.titulo)}</span></a>` : '';
+  }
+
+  // zoom con el que el ancho del recuadro equivale a los mismos kilómetros en cualquier latitud
+  function zoomComparador(mapa, lat) {
+    const px = mapa.getContainer().clientWidth || 400;
+    const km = COMP_KM[COMP.ventana] / Math.pow(2, COMP.dz);
+    return Math.log2(78271.517 * Math.cos(lat * Math.PI / 180) * px / (km * 1000));
+  }
+
+  function ajustarComparador(animar) {
+    if (!COMP.mapas.length) return;
+    COMP.mapas.forEach(({ mapa, caso }) => {
+      mapa.resize();
+      const c = caso[COMP.ventana];
+      const destino = { center: c, zoom: zoomComparador(mapa, c[1]), pitch: COMP.oblicua ? 60 : 0, bearing: 0 };
+      if (animar) mapa.easeTo({ ...destino, duration: 700 }); else mapa.jumpTo(destino);
+    });
+    const km = COMP_KM[COMP.ventana] / Math.pow(2, COMP.dz);
+    const eti = document.getElementById('compEscala');
+    if (eti) eti.textContent = `Ancho de cada ventana: ${km >= 1 ? km.toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' km' : Math.round(km * 1000) + ' m'} · norte arriba · ${COMP.oblicua ? 'vista oblicua a 60°' : 'vista cenital'}`;
+  }
+
+  function crearComparador(franjas) {
+    if (typeof maplibregl === 'undefined') return;
+    CASOS_COMP.forEach((caso) => {
+      const cont = document.getElementById('comp-' + caso.id);
+      if (!cont) return;
+      const mapa = new maplibregl.Map({
+        container: cont, interactive: false, attributionControl: false, maxPitch: 70,
+        style: {
+          version: 8,
+          sources: {
+            sat: { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 18 },
+            relieve: { type: 'raster-dem', tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'], encoding: 'terrarium', tileSize: 256, maxzoom: 14 }
+          },
+          layers: [{ id: 'sat', type: 'raster', source: 'sat' }]
+        },
+        center: caso.terr, zoom: 10
+      });
+      mapa.dragPan.enable();
+      mapa.on('load', () => {
+        if (franjas) {
+          mapa.addSource('franjas', { type: 'geojson', data: franjas });
+          mapa.addLayer({ id: 'franjas-s', type: 'line', source: 'franjas', paint: { 'line-color': '#000', 'line-width': 4, 'line-opacity': 0.45 } });
+          mapa.addLayer({ id: 'franjas', type: 'line', source: 'franjas', paint: { 'line-color': '#fff', 'line-width': 1.8, 'line-dasharray': [3, 2] } });
+        }
+        ajustarComparador(false);
+      });
+      COMP.mapas.push({ mapa, caso });
+    });
+    new ResizeObserver(() => ajustarComparador(false)).observe(document.getElementById('compGrid'));
+  }
 
   function renderComparativa() {
     const pg = document.getElementById('pgComparativa');
-    if (!pg || pg.children.length > 0) return;
+    if (!pg) return;
+    if (pg.children.length > 0) { setTimeout(() => ajustarComparador(false), 60); return; }
 
-    const EJES = [
-      'Presión Portuaria',
-      'Sensibilidad Ecosistémica',
-      'Integración Ciudad-Puerto',
-      'Instrumentación Territorial',
-      'Vulnerabilidad Climática'
-    ];
-
-    const cx = 170;
-    const cy = 160;
-    const rMax = 110;
-    const numEjes = EJES.length;
-
-    // Calcular puntos de polígono para un conjunto de 5 valores (0-100)
-    function calcPuntos(valores) {
-      return valores.map((val, i) => {
-        const ang = (i * 2 * Math.PI / numEjes) - (Math.PI / 2);
-        const r = (val / 100) * rMax;
-        const x = (cx + r * Math.cos(ang)).toFixed(1);
-        const y = (cy + r * Math.sin(ang)).toFixed(1);
-        return `${x},${y}`;
-      }).join(' ');
-    }
-
-    // Anillos concéntricos del radar
-    let anillosSvg = [0.2, 0.4, 0.6, 0.8, 1.0].map((frac) => {
-      const pts = Array.from({ length: numEjes }).map((_, i) => {
-        const ang = (i * 2 * Math.PI / numEjes) - (Math.PI / 2);
-        const r = frac * rMax;
-        return `${(cx + r * Math.cos(ang)).toFixed(1)},${(cy + r * Math.sin(ang)).toFixed(1)}`;
-      }).join(' ');
-      return `<polygon points="${pts}" fill="none" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>`;
-    }).join('');
-
-    // Ejes radiales y etiquetas
-    let ejesSvg = EJES.map((nombre, i) => {
-      const ang = (i * 2 * Math.PI / numEjes) - (Math.PI / 2);
-      const xFin = (cx + rMax * Math.cos(ang)).toFixed(1);
-      const yFin = (cy + rMax * Math.sin(ang)).toFixed(1);
-      const xLbl = (cx + (rMax + 24) * Math.cos(ang)).toFixed(1);
-      const yLbl = (cy + (rMax + 24) * Math.sin(ang)).toFixed(1);
-      const anchor = Math.abs(Math.cos(ang)) < 0.2 ? 'middle' : Math.cos(ang) > 0 ? 'start' : 'end';
-      return `
-        <line x1="${cx}" y1="${cy}" x2="${xFin}" y2="${yFin}" stroke="currentColor" stroke-opacity="0.16" stroke-width="1"/>
-        <text x="${xLbl}" y="${yLbl}" text-anchor="${anchor}" dominant-baseline="middle" font-size="10" font-weight="600" fill="currentColor" fill-opacity="0.7">${nombre}</text>
-      `;
-    }).join('');
-
-    // Polígonos de cada ciudad
-    let ciudadesPoligonos = CIUDADES_COMPARATIVA.map((c) => {
-      const pts = calcPuntos(c.puntuaciones);
-      return `
-        <polygon class="radar-poli radar-poli-${c.id}" points="${pts}" fill="${c.color}" fill-opacity="0.22" stroke="${c.color}" stroke-width="2.5" stroke-linejoin="round" />
-      `;
-    }).join('');
-
-    // Tarjetas de ciudades
-    const tarjetasHtml = CIUDADES_COMPARATIVA.map((c) => `
-      <div class="ciudad-card" data-ciudad="${c.id}">
-        <div class="ciudad-cab">
-          <div>
-            <span class="ciudad-pais">${c.bandera} ${c.pais}</span>
-            <div class="ciudad-tit">${c.nombre}</div>
-          </div>
-          <span class="radar-color" style="background:${c.color};width:14px;height:14px;"></span>
-        </div>
-        <p class="ciudad-desc">${c.desc}</p>
-        <div class="ciudad-kpis">
-          ${c.kpis.map((k) => `<div><span class="kpi-lbl">${k.label}</span><strong class="kpi-b">${k.val}</strong></div>`).join('')}
-        </div>
-        <div class="rels" style="margin-top:12px;">
-          ${c.enlaces.map((e) => `<a class="rel" href="#/${e.id}"><b>${e.eti}</b><span>${e.tit}</span></a>`).join('')}
-        </div>
-      </div>
-    `).join('');
-
+    const laminas = ['atlas-4-1', 'atlas-4-2', 'atlas-4-3'].map((id) => ITEMS_MAP.get(id)).filter(Boolean);
     pg.innerHTML = `
       <div class="ancho">
         <div class="comparativa-hero">
-          <h1>Comparativa de Ciudades Puerto de América Latina</h1>
-          <p class="lead">Marco analítico multidimensional de la interfaz urbano-rural y portuaria aplicado en la investigación doctoral: Barranquilla (Colombia), Veracruz (México), Santos (Brasil) y Valparaíso (Chile).</p>
+          <h1>Los cuatro casos, a la misma escala</h1>
+          <p class="lead">Barranquilla y los tres casos comparados del capítulo IV —Veracruz, Santos y Valparaíso— vistos con la misma ventana de terreno, la misma orientación y la misma inclinación, para leer sus semejanzas y diferencias sobre el paisaje.</p>
         </div>
 
-        <div class="comparativa-layout">
-          <div class="radar-card">
-            <h3>Radar Multidimensional de Interfaz</h3>
-            <svg class="radar-svg" viewBox="0 0 340 330">
-              ${anillosSvg}
-              ${ejesSvg}
-              ${ciudadesPoligonos}
-            </svg>
-            <div class="radar-leyenda">
-              <button class="radar-item activo" data-filtro="todos"><span class="radar-color" style="background:var(--marca);"></span> Todas</button>
-              ${CIUDADES_COMPARATIVA.map((c) => `<button class="radar-item" data-filtro="${c.id}"><span class="radar-color" style="background:${c.color};"></span> ${c.nombre}</button>`).join('')}
-            </div>
-            <p class="ayuda" style="margin-top:14px;font-size:11.5px;color:var(--gris);">Dimensiones normalizadas (escala 0-100) según indicadores de la investigación doctoral.</p>
+        <div class="comp-barra" role="toolbar" aria-label="Controles del comparador">
+          <div class="comp-grupo">
+            <button class="comp-btn on" data-ventana="terr">Escala territorial · 40 km</button>
+            <button class="comp-btn" data-ventana="det">Borde puerto-ciudad · 10 km</button>
           </div>
-
-          <div class="ciudades-grid">
-            ${tarjetasHtml}
+          <div class="comp-grupo">
+            <button class="comp-btn" data-zoom="1" aria-label="Acercar los cuatro">＋</button>
+            <button class="comp-btn" data-zoom="-1" aria-label="Alejar los cuatro">－</button>
           </div>
+          <div class="comp-grupo">
+            <button class="comp-btn on" data-vista="cenital">Ortofoto</button>
+            <button class="comp-btn" data-vista="oblicua">Vista oblicua</button>
+          </div>
+          <span class="comp-escala" id="compEscala"></span>
         </div>
+
+        <div class="comp-grid" id="compGrid">
+          ${CASOS_COMP.map((c) => `
+            <article class="comp-caso">
+              <div class="comp-mapa" id="comp-${c.id}"></div>
+              <div class="comp-rotulo"><strong>${c.nombre}</strong><span>${c.pais} · ${c.rol}</span></div>
+              <div class="comp-ficha" id="comp-ficha-${c.id}"></div>
+              <div class="rels">${c.items.map(relItem).join('')}</div>
+            </article>`).join('')}
+        </div>
+        <p class="ayuda comp-nota">Los cuatro recuadros cambian a la vez: siempre muestran los mismos kilómetros de terreno, con el norte arriba. Puede arrastrar cada uno para recorrer su entorno. Imagen: Esri World Imagery. Relieve de la vista oblicua: teselas de elevación Terrarium. La línea discontinua es el perímetro de la franja de interfaz de cada caso (SIG de la tesis).</p>
+
+        <section class="comp-seccion">
+          <h2>Superficie de la franja de interfaz</h2>
+          <div class="comp-barras" id="compBarras"></div>
+          <p class="ayuda">Superficie del perímetro de franja dibujado para cada caso en el SIG de la tesis.</p>
+        </section>
+
+        ${laminas.length ? `<section class="comp-seccion">
+          <h2>Las láminas de la tesis</h2>
+          <div class="comp-laminas">
+            ${laminas.map((it) => `<a class="comp-lamina" href="#/${esc(it.id)}"><img loading="lazy" src="data/${esc(it.mini || (it.lamina && it.lamina.mini) || '')}" alt=""><b>${esc(etiquetaCorta(it))}</b><span>${esc(it.titulo)}</span></a>`).join('')}
+          </div>
+        </section>` : ''}
+
+        <section class="comp-seccion">
+          <h2>Síntesis comparada en la tesis</h2>
+          <div class="rels">${['tabla-64', 'tabla-69', 'tabla-68'].map(relItem).join('')}</div>
+        </section>
 
         ${pieEditorialHtml()}
       </div>
     `;
 
-    // Interactividad del radar
-    pg.querySelectorAll('.radar-leyenda button').forEach((btn) => {
+    pg.querySelectorAll('.comp-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        pg.querySelectorAll('.radar-leyenda button').forEach((b) => b.classList.remove('activo'));
-        btn.classList.add('activo');
-        const f = btn.getAttribute('data-filtro');
-        pg.querySelectorAll('.radar-poli').forEach((p) => {
-          if (f === 'todos') {
-            p.style.display = '';
-            p.setAttribute('fill-opacity', '0.22');
-            p.setAttribute('stroke-width', '2.5');
-          } else {
-            const coincide = p.classList.contains(`radar-poli-${f}`);
-            p.style.display = coincide ? '' : 'none';
-            if (coincide) {
-              p.setAttribute('fill-opacity', '0.45');
-              p.setAttribute('stroke-width', '3.5');
-            }
-          }
-        });
+        const d = btn.dataset;
+        if (d.ventana) { COMP.ventana = d.ventana; COMP.dz = 0; }
+        if (d.zoom) COMP.dz = Math.max(-2, Math.min(4, COMP.dz + Number(d.zoom)));
+        if (d.vista) {
+          COMP.oblicua = d.vista === 'oblicua';
+          COMP.mapas.forEach(({ mapa }) => { try { mapa.setTerrain(COMP.oblicua ? { source: 'relieve', exaggeration: 1.4 } : null); } catch (_) {} });
+        }
+        if (d.ventana || d.vista) {
+          btn.parentElement.querySelectorAll('.comp-btn').forEach((x) => x.classList.toggle('on', x === btn));
+        }
+        ajustarComparador(true);
       });
+    });
+
+    fetch('data/capas/casos_comparados_franjas_latam.geojson', FRESCO).then((r) => r.json()).catch(() => null).then((franjas) => {
+      if (franjas) {
+        const filas = franjas.features.map((f) => f.properties).filter((x) => x && x.area_ha);
+        const max = Math.max(...filas.map((x) => x.area_ha));
+        const cont = document.getElementById('compBarras');
+        if (cont) cont.innerHTML = filas.map((x) => `
+          <div class="comp-barra-fila"><span>${esc(x.ciudad)}</span>
+            <div class="comp-barra-pista"><i style="width:${(100 * x.area_ha / max).toFixed(1)}%"></i></div>
+            <b>${Math.round(x.area_ha).toLocaleString('es-CO')} ha</b></div>`).join('');
+        CASOS_COMP.forEach((c) => {
+          const x = filas.find((f) => f.ciudad === c.nombre);
+          const el = document.getElementById('comp-ficha-' + c.id);
+          if (x && el) el.innerHTML = `<span>${esc(x.tipo_interfaz || '')}</span><b>Franja: ${Math.round(x.area_ha).toLocaleString('es-CO')} ha</b>`;
+        });
+      }
+      setTimeout(() => crearComparador(franjas), 80);
     });
   }
 
   // --- PÁGINA: RECORRIDO GUIADO (#pgRecorrido) ---
   const HITOS_RECORRIDO = [
-    {
-      num: '01',
-      cap: 'Capítulos I & II · Fundamentación y Delimitación Metodológica',
-      tit: 'El Territorio Metropolitano y la Interfaz Urbano-Rural',
-      desc: 'Delimitación del Área Metropolitana de Barranquilla (AMB) como sistema territorial compuesto por 5 municipios (Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia). La tesis conceptualiza la "franja de interfaz" como el espacio de transición crítica donde colisionan dinámicas urbanas, rurales, logísticas y ecológicas.',
-      enlaces: [
-        { id: 'fig-2', eti: 'Fig. 2', tit: 'Área Metropolitana de Barranquilla' },
-        { id: 'fig-3', eti: 'Fig. 3', tit: 'Franja de Interfaz Urbano-Rural' }
-      ]
-    },
-    {
-      num: '02',
-      cap: 'Capítulo III · Estructura Ecológica Principal y Vulnerabilidad',
-      tit: 'Fragilidad Ecosistémica y la Ciénaga de Mallorquín',
-      desc: 'Caracterización exhaustiva del humedal RAMSAR Ciénaga de Mallorquín y su red de arroyos tributarios. Se cartografía la cobertura de manglares, el gradiente hidrológico y las presiones provocadas por vertimientos, sedimentación y avance urbano-portuario sobre el cuerpo de agua.',
-      enlaces: [
-        { id: 'fig-4', eti: 'Fig. 4', tit: 'Ciénaga de Mallorquín' },
-        { id: 'atlas-3-4', eti: 'Lámina 3.4', tit: 'Hidrografía y Red Hídrica' }
-      ]
-    },
-    {
-      num: '03',
-      cap: 'Capítulo III · Transformaciones Socioespaciales y Usos',
-      tit: 'Presión Antrópica, Densidad Poblacional y Usos del Suelo',
-      desc: 'Análisis espacial de la densidad poblacional a partir de microdatos censales (DANE) y modelado de usos del suelo. Se identifican patrones de conurbación acelerada a lo largo de las vías arteriales (Murillo, Cordialidad, Vía al Mar) y la ocupación espontánea de bordes rururbanos.',
-      enlaces: [
-        { id: 'mapa-densidad-poblacional', eti: 'Mapa', tit: 'Densidad Poblacional Censal' },
-        { id: 'atlas-3-12', eti: 'Lámina 3.12', tit: 'Usos del Suelo del AMB' }
-      ]
-    },
-    {
-      num: '04',
-      cap: 'Capítulo III & IV · Dinámica Logística y Ciudad-Puerto',
-      tit: 'Accesibilidad Portuaria y Corredores de Mercancías',
-      desc: 'Modelado de isocronas de tiempo de viaje hacia las instalaciones portuarias del canal navegable y el puerto marítimo. La investigación demuestra la fricción espacial entre el tráfico pesado intermunicipal de carga y el transporte metropolitano de pasajeros.',
-      enlaces: [
-        { id: 'mapa-accesibilidad-puerto', eti: 'Mapa', tit: 'Accesibilidad al Puerto Fluvial/Marítimo' },
-        { id: 'mapa-corredores-mercancias', eti: 'Mapa', tit: 'Corredores Logísticos de Carga' }
-      ]
-    },
-    {
-      num: '05',
-      cap: 'Capítulo IV · Análisis Comparativo Internacional',
-      tit: 'Benchmark LATAM: Veracruz, Santos y Valparaíso',
-      desc: 'Estudio contrastado con tres de las ciudades portuarias más relevantes de América Latina. Se identifican patrones comunes de fragmentación socioecológica, privatización del borde de agua y debilidad en los instrumentos de coordinación intermunicipal.',
-      enlaces: [
-        { id: 'comparativa', eti: 'Dashboard', tit: 'Comparativa Multidimensional LATAM ↗' },
-        { id: 'fig-40', eti: 'Fig. 40', tit: 'Caso Veracruz (México)' },
-        { id: 'fig-46', eti: 'Fig. 46', tit: 'Caso Santos (Brasil)' },
-        { id: 'fig-43', eti: 'Fig. 43', tit: 'Caso Valparaíso (Chile)' }
-      ]
-    },
-    {
-      num: '06',
-      cap: 'Capítulo V · Síntesis Proyectual y Lineamientos',
-      tit: 'La Propuesta: Unidades Funcionales de Paisaje (UFP)',
-      desc: 'Aporte central de la tesis doctoral: delimitación y zonificación operativa de la franja territorial en Unidades Funcionales de Paisaje (UFP). Define directrices de intervención para 4 Nodos territoriales estratégicos y formula la localización de un Nuevo Puerto Interior sobre el Magdalena.',
-      enlaces: [
-        { id: 'fig-66', eti: 'Fig. 66', tit: 'Mapa Oficial de Propuesta de UFP' },
-        { id: 'fig-57', eti: 'Fig. 57', tit: 'Nodo 1 · Puerto Colombia' },
-        { id: 'fig-61', eti: 'Fig. 61', tit: 'Propuesta de Nuevo Puerto Interior' }
-      ]
-    }
+    { num: '01', cap: 'Capítulos I y III · Área de estudio', tit: 'El Área Metropolitana de Barranquilla y su franja de interfaz',
+      desc: 'El AMB reúne cinco municipios: Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia. En su borde, la tesis delimita una franja de interfaz urbano-rural de 18.587,5 ha, apoyada en el mar, el río, la ciénaga y los arroyos.',
+      enlaces: ['fig-2', 'fig-3', 'atlas-3-14'] },
+    { num: '02', cap: 'Capítulo III · Contenido estructural', tit: 'La Ciénaga de Mallorquín y el borde urbano',
+      desc: 'La estructura ecosistémica de la cuenca de la Ciénaga de Mallorquín, la morfología del borde urbano y los conflictos de uso del suelo dentro de la franja.',
+      enlaces: ['fig-4', 'atlas-3-9', 'atlas-3-10'] },
+    { num: '03', cap: 'Capítulo III · Atlas operativo', tit: 'Densidad, crecimiento y usos del suelo',
+      desc: 'Cómo se ocupa la franja: densidad e intensidad de ocupación, dinámica de crecimiento de la huella urbana y usos del suelo armonizados de los planes municipales.',
+      enlaces: ['atlas-3-4', 'atlas-3-5', 'atlas-3-8', 'atlas-3-12'] },
+    { num: '04', cap: 'Capítulo III · Atlas operativo', tit: 'Corredores, barreras y movilidad',
+      desc: 'Los corredores económicos, la infraestructura vial que actúa como barrera y las rutas de transporte que conectan la franja con el núcleo metropolitano.',
+      enlaces: ['atlas-3-6', 'atlas-3-7', 'atlas-3-11'] },
+    { num: '05', cap: 'Capítulo IV · Estudio comparado', tit: 'Veracruz, Valparaíso y Santos frente a Barranquilla',
+      desc: 'Tres ciudades portuarias latinoamericanas comparadas con el caso principal, vistas a la misma escala y con la misma orientación.',
+      enlaces: ['comparativa', 'fig-40', 'fig-43', 'fig-46', 'tabla-69'] },
+    { num: '06', cap: 'Capítulo V · Modelo IOTF-IUR', tit: 'Unidades Funcionales de Planificación, nodos y nuevo puerto interior',
+      desc: 'La propuesta organiza la franja en Unidades Funcionales de Planificación (UFP), un sistema de nodos sobre la Circunvalar de la Prosperidad y un nuevo puerto interior.',
+      enlaces: ['fig-56', 'fig-66', 'fig-57', 'fig-61'] }
   ];
 
   function renderRecorrido() {
@@ -2062,7 +1966,7 @@
           <h3>${h.tit}</h3>
           <p class="paso-desc">${h.desc}</p>
           <div class="rels">
-            ${h.enlaces.map((e) => `<a class="rel" href="${e.id === 'comparativa' ? '#/comparativa' : '#/' + e.id}"><b>${e.eti}</b><span>${e.tit}</span></a>`).join('')}
+            ${h.enlaces.map((id) => id === 'comparativa' ? '<a class="rel" href="#/comparativa"><b>Comparador</b><span>Los cuatro casos a la misma escala</span></a>' : relItem(id)).join('')}
           </div>
         </div>
       </div>
@@ -2072,7 +1976,7 @@
       <div class="ancho">
         <div class="recorrido-hero">
           <h1>Recorrido Guiado por la Tesis Doctoral</h1>
-          <p class="lead">Síntesis secuencial en 6 hitos para comprender la tesis de principio a fin: desde la delimitación metropolitana y el diagnóstico ecológico hasta la propuesta de Unidades Funcionales de Paisaje (UFP).</p>
+          <p class="lead">Seis hitos para recorrer la tesis de principio a fin: del área de estudio y su diagnóstico al estudio comparado y a la propuesta de Unidades Funcionales de Planificación (UFP).</p>
         </div>
 
         <div class="recorrido-pasos">
@@ -2350,7 +2254,7 @@
     } else if (hash === '#/comparativa') {
       renderComparativa();
       showPage('pgComparativa');
-      document.title = 'Comparativa LATAM · GeoInterfaz';
+      document.title = 'Los cuatro casos a la misma escala · GeoInterfaz';
       currentItem = null;
       limpiar();
     } else if (hash === '#/recorrido') {
@@ -2561,13 +2465,13 @@
           map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
         } catch (_) {}
         map.easeTo({ pitch: 62, bearing: -20, duration: 1000 });
-        mostrarAviso('Relieve 3D DEM activo (1.6x) · Arrastre con botón derecho para orbitar');
+        showToast('Relieve 3D DEM activo (1.6x) · Arrastre con botón derecho para orbitar');
       } else {
         try {
           map.setTerrain(null);
         } catch (_) {}
         map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
-        mostrarAviso('Modo 2D plano restaurado');
+        showToast('Modo 2D plano restaurado');
       }
     });
   }
@@ -2690,7 +2594,7 @@
     const SECCIONES_CMD = [
       { id: 'sec_inicio', hash: '#/', etiqueta: 'Página', titulo: 'Inicio de la investigación doctoral', tipo: 'seccion', clase: 'Página' },
       { id: 'sec_datos', hash: '#/datos', etiqueta: 'Página', titulo: 'Capas y datos del repositorio SIG', tipo: 'seccion', clase: 'Página' },
-      { id: 'sec_comparativa', hash: '#/comparativa', etiqueta: 'Dashboard', titulo: 'Comparativa LATAM · Radar de ciudades puerto', tipo: 'seccion', clase: 'Dashboard' },
+      { id: 'sec_comparativa', hash: '#/comparativa', etiqueta: 'Comparador', titulo: 'Los cuatro casos a la misma escala · comparador de ortofotos', tipo: 'seccion', clase: 'Dashboard' },
       { id: 'sec_recorrido', hash: '#/recorrido', etiqueta: 'Guía', titulo: 'Recorrido guiado en 6 hitos por la tesis', tipo: 'seccion', clase: 'Guía' },
       { id: 'sec_acerca', hash: '#/acerca', etiqueta: 'Página', titulo: 'Acerca de este geovisor y desarrollo DevGiz', tipo: 'seccion', clase: 'Página' }
     ];
@@ -3011,7 +2915,7 @@
         puntosPerfil = [[-74.855, 11.042], [-74.908, 10.895]];
       }
       actualizarPerfilTransecto();
-      mostrarAviso('Corte topográfico transversal activo · Puede hacer clic en el mapa para trazar un nuevo corte');
+      showToast('Corte topográfico transversal activo · Puede hacer clic en el mapa para trazar un nuevo corte');
     } else {
       puntosPerfil = [];
       limpiarPerfilCapas();
@@ -3291,11 +3195,11 @@
       }
       laserPuntoEl.hidden = false;
       window.addEventListener('mousemove', moverLaser);
-      mostrarAviso('Puntero láser digital activo (Tecla L para apagar)');
+      showToast('Puntero láser digital activo (Tecla L para apagar)');
     } else {
       if (laserPuntoEl) laserPuntoEl.hidden = true;
       window.removeEventListener('mousemove', moverLaser);
-      mostrarAviso('Puntero láser desactivado');
+      showToast('Puntero láser desactivado');
     }
   }
 
