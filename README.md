@@ -60,3 +60,10 @@ El sitio se publica en Vercel desde este repositorio, sin paso de compilación (
 ## Créditos
 
 MapLibre GL JS · Turf · Proj4js · qrcode-generator. Fondos: Esri (gris claro, gris oscuro, imagen satelital) y OpenStreetMap. Las fuentes de cada capa se indican en la nota de su mapa.
+
+## Mapas complementarios y documentos descargables
+
+- `construir/06_mapas_derivados.py` crea cuatro mapas con las capas de la tesis (densidad poblacional, accesibilidad al puerto en camión, gradiente rural-periurbano-urbano y corredores de mercancías). Se ejecuta después de `01_capas.py` y antes de `03_catalogo.py`.
+- `construir/07_capturas.py` guarda la imagen de esos mapas (Chrome sin ventana); después hay que volver a ejecutar `03_catalogo.py`.
+- `construir/08_documentos.py` genera `descargas/Atlas_cartografico_GeoInterfaz.docx` (el atlas que se descarga desde la portada y desde «Acerca de») y el listado de revisión del tutor en `00_DOCUMENTOS_TESIS/02_Revisiones_y_Avances/`. Al abrir el atlas en Word, actualizar los campos (Ctrl+E, F9) refresca los números de página del índice.
+- Los datos (`data/*.json`) los escriben estos programas: no deben editarse a mano, porque la siguiente ejecución los sobrescribe.

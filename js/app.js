@@ -185,7 +185,7 @@
       .replace(/^Figura\s+/i, 'Fig. ')
       .replace(/^Esquema\s+/i, 'Esq. ')
       .replace(/^Lámina Atlas\s+/i, 'Atlas ')
-      .replace(/^Lámina complementaria/i, 'Compl.');
+      .replace(/^(Lámina|Mapa) complementari[ao]/i, 'Compl.');
   }
 
   function capDe(it) {
@@ -1487,6 +1487,7 @@
           <div class="hero-acc">
             ${primero ? `<a class="btn pri grande" href="#/${primero.id}">Explorar el área de estudio ${ICO.flecha}</a>` : ''}
             <button class="btn grande claro" id="btnHeroBuscar">Buscar en la tesis</button>
+            <a class="btn grande claro" href="descargas/Atlas_cartografico_GeoInterfaz.docx" download title="Atlas con todos los mapas, por capítulo, tema y subtema (Word)">Descargar el atlas (Word)</a>
           </div>
         </div>
         <div class="cifras">
@@ -1699,7 +1700,7 @@
     const pg = $('pgAcerca');
     if (!pg || pg.children.length > 0) return;
     const meta = CATALOGO.meta || {};
-    const nItems = (CATALOGO.items || []).length;
+    const nItems = (CATALOGO.items || []).filter((i) => !i.complementaria).length;
 
     pg.innerHTML = `
       <div class="ancho angosto">
@@ -1720,7 +1721,14 @@
 
         <h2>Qué contiene</h2>
         <p>Los ${nItems} elementos numerados del manuscrito (figuras, tablas, esquemas y láminas del atlas) conservan aquí su número, su título y su nota. Los mapas se reconstruyen a partir de los proyectos QGIS de la investigación, con la misma simbología y el mismo encuadre de la lámina impresa, y pueden compararse con ella en la pestaña «Lámina».</p>
-        <p>El geovisor no añade interpretaciones ni datos que no estén en la tesis: todo lo que muestra procede del manuscrito y de las capas del sistema de información geográfico.</p>
+        <p>El geovisor no añade interpretaciones ni datos ajenos a la investigación: todo lo que muestra procede del manuscrito y de las capas del sistema de información geográfico. Los elementos rotulados «Mapa complementario» o «Lámina complementaria» no están en el manuscrito; se elaboraron con esas mismas capas y su nota explica cómo.</p>
+
+        <h2 id="descargas">Atlas cartográfico para descargar</h2>
+        <p>Un solo documento con todos los mapas de la tesis, ordenados por capítulo, tema y subtema, cada uno con su imagen, su nota, su origen en QGIS y el enlace a su versión interactiva.</p>
+        <p class="hero-acc">
+          <a class="btn pri" href="descargas/Atlas_cartografico_GeoInterfaz.docx" download>Descargar en Word (.docx)</a>
+          <a class="btn" href="descargas/Atlas_cartografico_GeoInterfaz.pdf" download>Descargar en PDF</a>
+        </p>
 
         <h2>Cómo citar una vista</h2>
         <p>Cada elemento tiene una dirección propia, por ejemplo <code>#/fig-3</code>, <code>#/atlas-3-8</code> o <code>#/tabla-12</code>. El botón <strong>Citar</strong> entrega el enlace permanente, un código QR y un texto breve para añadir a la nota del mapa.</p>
