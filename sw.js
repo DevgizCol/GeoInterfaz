@@ -1,7 +1,7 @@
 // GeoInterfaz · service worker
 // Primero la red: quien tiene conexión ve siempre la última versión publicada.
 // La copia guardada solo se usa cuando no hay conexión.
-const CACHE_NAME = 'geointerfaz-v4';
+const CACHE_NAME = 'geointerfaz-v5';
 
 self.addEventListener('install', () => self.skipWaiting());
 

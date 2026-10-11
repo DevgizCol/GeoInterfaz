@@ -20485,5 +20485,267 @@
         ]
       }
     ]
+  },
+  "equipamientos_y_construcciones_interfaz": {
+    "id": "equipamientos_y_construcciones_interfaz",
+    "nombre": "EQUIPAMIENTOS_Y_CONSTRUCCIONES_INTERFAZ",
+    "archivo": "capas/equipamientos_y_construcciones_interfaz.geojson",
+    "geom": "Point",
+    "n": 209,
+    "bbox": [
+      -74.8953,
+      10.89143,
+      -74.815,
+      11.045
+    ],
+    "crs": "EPSG:9377",
+    "crs_nombre": "MAGNA-SIRGAS 2018 / Origen-Nacional",
+    "fuente": "02_SISTEMA_INFORMACION_GEOGRAFICA_SIG/02_Capas_Vectoriales_AMB / PEMOT AMB / Relevamiento 2026",
+    "subcapa": null,
+    "filtro": null,
+    "recorte": null,
+    "campos": [
+      {
+        "n": "NOMBRE",
+        "t": "texto",
+        "u": 209,
+        "ej": [
+          "Universidad del Norte",
+          "Colegio Alemán",
+          "Ecoparque Ciénaga de Mallorquín",
+          "Zona Franca La Cayena"
+        ]
+      },
+      {
+        "n": "TIPO",
+        "t": "texto",
+        "u": 9,
+        "ej": [
+          "Universidad",
+          "Colegio",
+          "Parque Público",
+          "Industrial / Logístico",
+          "Banco / Comercio",
+          "Salud",
+          "Vivienda / Plan Parcial",
+          "Institucional"
+        ]
+      },
+      {
+        "n": "CATEGORIA",
+        "t": "texto",
+        "u": 42,
+        "ej": [
+          "Educación Superior",
+          "Educación Básica y Media",
+          "Espacio Público",
+          "Complejo Industrial y Logístico",
+          "Servicios Financieros y Comerciales",
+          "Salud"
+        ]
+      },
+      {
+        "n": "SECTOR",
+        "t": "texto",
+        "u": 15,
+        "ej": [
+          "Corredor Universitario",
+          "Mallorquín",
+          "Las Flores",
+          "Circunvalar",
+          "Vía 40"
+        ]
+      },
+      {
+        "n": "MUNICIPIO",
+        "t": "texto",
+        "u": 4,
+        "ej": [
+          "Barranquilla",
+          "Puerto Colombia",
+          "Soledad",
+          "Galapa"
+        ]
+      }
+    ],
+    "kb": 42,
+    "vistas": [
+      "amb__densidad_e_intensidad_de_ocupacion_del_suelo",
+      "deriv__densidad_poblacional"
+    ],
+    "estilo": {
+      "tipo": "categorizado",
+      "campo": "TIPO",
+      "ml": [
+        {
+          "type": "circle",
+          "paint": {
+            "circle-radius": [
+              "match",
+              [
+                "get",
+                "TIPO"
+              ],
+              "Universidad",
+              7.5,
+              "Colegio",
+              6.0,
+              "Industrial / Logístico",
+              6.5,
+              "Banco / Comercio",
+              6.0,
+              "Salud",
+              6.0,
+              "Vivienda / Plan Parcial",
+              7.0,
+              "Vivienda / Residencial",
+              5.5,
+              "Institucional",
+              5.5,
+              "Parque Público",
+              4.5,
+              5.0
+            ],
+            "circle-color": [
+              "match",
+              [
+                "get",
+                "TIPO"
+              ],
+              "Universidad",
+              "#1d4ed8",
+              "Colegio",
+              "#0284c7",
+              "Parque Público",
+              "#16a34a",
+              "Industrial / Logístico",
+              "#7c3aed",
+              "Banco / Comercio",
+              "#d97706",
+              "Salud",
+              "#e11d48",
+              "Vivienda / Plan Parcial",
+              "#ea580c",
+              "Vivienda / Residencial",
+              "#f97316",
+              "Institucional",
+              "#475569",
+              "#64748b"
+            ],
+            "circle-stroke-color": "#ffffff",
+            "circle-stroke-width": 1.5,
+            "circle-opacity": 0.95
+          }
+        }
+      ],
+      "leyenda": [
+        {
+          "etq": "Universidades (Educación Superior)",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#1d4ed8",
+            "linea": "#ffffff",
+            "t": 12.0
+          }
+        },
+        {
+          "etq": "Colegios (Educación Básica y Media)",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#0284c7",
+            "linea": "#ffffff",
+            "t": 10.0
+          }
+        },
+        {
+          "etq": "Parques Públicos y Espacios Abiertos",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#16a34a",
+            "linea": "#ffffff",
+            "t": 8.0
+          }
+        },
+        {
+          "etq": "Complejos Industriales y Logísticos",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#7c3aed",
+            "linea": "#ffffff",
+            "t": 10.0
+          }
+        },
+        {
+          "etq": "Bancos y Centros Financieros / Comerciales",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#d97706",
+            "linea": "#ffffff",
+            "t": 10.0
+          }
+        },
+        {
+          "etq": "Salud y Clínicas",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#e11d48",
+            "linea": "#ffffff",
+            "t": 10.0
+          }
+        },
+        {
+          "etq": "Planes Parciales y Nodos Residenciales",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#ea580c",
+            "linea": "#ffffff",
+            "t": 11.0
+          }
+        },
+        {
+          "etq": "Equipamientos Institucionales / Cívicos",
+          "m": {
+            "g": "Point",
+            "forma": "circle",
+            "fill": "#475569",
+            "linea": "#ffffff",
+            "t": 8.0
+          }
+        }
+      ],
+      "origen": "qgis",
+      "etiqueta": {
+        "texto": [
+          "case",
+          [
+            "!=",
+            [
+              "get",
+              "TIPO"
+            ],
+            "Parque Público"
+          ],
+          [
+            "to-string",
+            [
+              "get",
+              "NOMBRE"
+            ]
+          ],
+          ""
+        ],
+        "color": "#0f172a",
+        "tam": 10.0,
+        "halo": "#ffffff",
+        "negrita": true
+      }
+    }
   }
 }

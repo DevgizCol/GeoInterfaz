@@ -126,6 +126,8 @@
     'Departamentos202305 — Depto Atlantico': 'Departamento del Atlántico',
     EJES_ESTRUCTURANTES: 'Ejes estructurantes',
     EJE_AMBIENTAL: 'Eje ambiental',
+    EQUIPAMIENTOS_Y_CONSTRUCCIONES_INTERFAZ: 'Equipamientos y tipos de construcción en la franja',
+    equipamientos_y_construcciones_interfaz: 'Equipamientos y tipos de construcción en la franja',
     FRANJA_INTERFACE_URBANO_RURAL_AMB: 'Franja de interfaz urbano-rural del AMB',
     FRANJA_INTERFACE_URBANO_RURAL_AMB_INTEGRADA: 'Franja de interfaz urbano-rural (integrada)',
     FRANJA_INTERFACE_URBANO_RURAL_AMB_MPIOS: 'Franja de interfaz por municipio',
@@ -449,7 +451,7 @@
     });
   }
   function tituloElemento(p) {
-    return p.Sector || p.NOMBRE || p.Nombre || p.nombre || p.Name || p.name || p.NAME || p.MpNombre || p.DeNombre || p.NOMBRE_GEO || p.NOMAH || p.UFP || '';
+    return p.NOMBRE || p.Nombre || p.nombre || p.Sector || p.Name || p.name || p.NAME || p.MpNombre || p.DeNombre || p.NOMBRE_GEO || p.NOMAH || p.UFP || '';
   }
 
   function initMap() {
@@ -566,12 +568,16 @@
         const tit = tituloElemento(props);
 
         const ETIQUETAS_CAMPOS = {
+          NOMBRE: 'Nombre',
+          TIPO: 'Tipo de construcción',
+          CATEGORIA: 'Categoría funcional',
           POB_TOT: 'Población total',
           DENSIDAD: 'Densidad',
           HOMOLOGACI: 'Uso distintivo',
           USO_ORIGEN: 'Uso POT original',
           MUNICIPIO: 'Municipio',
           Sector: 'Sector / Barrio',
+          SECTOR: 'Sector / Área',
           RANGO_DENSIDAD: 'Intensidad',
           HOMBRE: 'Hombres',
           MUJER: 'Mujeres',
@@ -594,8 +600,8 @@
 
         let filas = '';
         let n = 0;
-        // Priorizar campos demográficos y de uso si existen
-        const llavesPriorizadas = ['Sector', 'POB_TOT', 'DENSIDAD', 'HOMOLOGACI', 'USO_ORIGEN', 'MUNICIPIO', 'HOMBRE', 'MUJER', 'RANGO_DENSIDAD', 'MANZ_CCNCT', 'AREA_TOT'];
+        // Priorizar campos demográficos, de uso y de equipamientos
+        const llavesPriorizadas = ['NOMBRE', 'TIPO', 'CATEGORIA', 'Sector', 'SECTOR', 'POB_TOT', 'DENSIDAD', 'HOMOLOGACI', 'USO_ORIGEN', 'MUNICIPIO', 'HOMBRE', 'MUJER', 'RANGO_DENSIDAD', 'MANZ_CCNCT', 'AREA_TOT'];
         const claves = Array.from(new Set([...llavesPriorizadas.filter((k) => k in props), ...Object.keys(props)]));
 
         for (const k of claves) {
