@@ -20376,5 +20376,114 @@
         ]
       }
     ]
+  },
+  "densidad_poblacion_manzana_interfaz": {
+    "nombre": "DENSIDAD_POBLACION_MANZANA_INTERFAZ",
+    "archivo": "capas/densidad_poblacion_manzana_interfaz.geojson",
+    "tipo": "poligono",
+    "campos": [
+      {
+        "n": "Sector",
+        "t": "texto",
+        "u": 134,
+        "ej": [
+          "CORREGIMIENTO LA PLAYA",
+          "LAS FLORES",
+          "MUNDO FELIZ",
+          "CORREGIMIENTO JUAN MINA",
+          "INDUPARK"
+        ]
+      },
+      {
+        "n": "POB_TOT",
+        "t": "entero",
+        "u": 332,
+        "min": 0,
+        "max": 1949
+      },
+      {
+        "n": "DENSIDAD",
+        "t": "decimal",
+        "u": 1583,
+        "min": 0.0,
+        "max": 1068.3
+      },
+      {
+        "n": "HOMOLOGACI",
+        "t": "texto",
+        "u": 8,
+        "ej": [
+          "Residencial",
+          "Agrosilvopastoril",
+          "Forestal Protector",
+          "Dotacional",
+          "Uso Mixto Urbano"
+        ]
+      },
+      {
+        "n": "RANGO_DENSIDAD",
+        "t": "texto",
+        "u": 5,
+        "ej": [
+          "Densidad intermedia (150 - 360 hab/ha)",
+          "Baja densidad (1 - 150 hab/ha)",
+          "Sin población (0 hab)",
+          "Densidad concentrada (360 - 1.000 hab/ha)",
+          "Muy concentrada (> 1.000 hab/ha)"
+        ]
+      },
+      {
+        "n": "MUNICIPIO",
+        "t": "texto",
+        "u": 4,
+        "ej": [
+          "BARRANQUILLA",
+          "GALAPA",
+          "PUERTO COLOMBIA",
+          "SOLEDAD"
+        ]
+      },
+      {
+        "n": "USO_ORIGEN",
+        "t": "texto",
+        "u": 18,
+        "ej": [
+          "Actividad Residencial",
+          "Zona  Agropecuarias",
+          "Area de Reserva y Proteccion",
+          "Comercio-Servicios"
+        ]
+      },
+      {
+        "n": "HOMBRE",
+        "t": "entero",
+        "u": 195,
+        "min": 0,
+        "max": 1002
+      },
+      {
+        "n": "MUJER",
+        "t": "entero",
+        "u": 195,
+        "min": 0,
+        "max": 947
+      },
+      {
+        "n": "AREA_TOT",
+        "t": "decimal",
+        "u": 285,
+        "min": 0.0,
+        "max": 1060.28
+      },
+      {
+        "n": "MANZ_CCNCT",
+        "t": "texto",
+        "u": 2384,
+        "ej": [
+          "0800110000000000010302",
+          "0800110000000001010405"
+        ]
+      }
+    ]
   }
 }

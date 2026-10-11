@@ -449,7 +449,7 @@
     });
   }
   function tituloElemento(p) {
-    return p.NOMBRE || p.Nombre || p.nombre || p.Name || p.name || p.NAME || p.MpNombre || p.DeNombre || p.NOMBRE_GEO || p.NOMAH || p.UFP || '';
+    return p.Sector || p.NOMBRE || p.Nombre || p.nombre || p.Name || p.name || p.NAME || p.MpNombre || p.DeNombre || p.NOMBRE_GEO || p.NOMAH || p.UFP || '';
   }
 
   function initMap() {
@@ -565,17 +565,49 @@
         const nomCapa = capaObj ? nombreCapa(capaObj.nombre) : 'Capa';
         const tit = tituloElemento(props);
 
+        const ETIQUETAS_CAMPOS = {
+          POB_TOT: 'Población total',
+          DENSIDAD: 'Densidad',
+          HOMOLOGACI: 'Uso distintivo',
+          USO_ORIGEN: 'Uso POT original',
+          MUNICIPIO: 'Municipio',
+          Sector: 'Sector / Barrio',
+          RANGO_DENSIDAD: 'Intensidad',
+          HOMBRE: 'Hombres',
+          MUJER: 'Mujeres',
+          MANZ_CCNCT: 'Código DANE',
+          AREA_TOT: 'Superficie',
+          DNSDAD_POB: 'Densidad',
+          AREA_Has: 'Superficie'
+        };
+
+        const formatearVal = (k, v) => {
+          if (typeof v === 'number') {
+            const num = v.toLocaleString('es-CO', { maximumFractionDigits: 2 });
+            if (k === 'POB_TOT' || k === 'HOMBRE' || k === 'MUJER') return `${num} hab.`;
+            if (k === 'DENSIDAD' || k === 'DNSDAD_POB') return `${num} hab/ha`;
+            if (k === 'AREA_TOT' || k === 'AREA_Has') return `${num} ha`;
+            return num;
+          }
+          return v;
+        };
+
         let filas = '';
         let n = 0;
-        for (const [k, v] of Object.entries(props)) {
+        // Priorizar campos demográficos y de uso si existen
+        const llavesPriorizadas = ['Sector', 'POB_TOT', 'DENSIDAD', 'HOMOLOGACI', 'USO_ORIGEN', 'MUNICIPIO', 'HOMBRE', 'MUJER', 'RANGO_DENSIDAD', 'MANZ_CCNCT', 'AREA_TOT'];
+        const claves = Array.from(new Set([...llavesPriorizadas.filter((k) => k in props), ...Object.keys(props)]));
+
+        for (const k of claves) {
+          const v = props[k];
           if (v === null || v === undefined || v === '' || v === 'null') continue;
           if (/^(id|fid|objectid|pk_cue|globalid)$/i.test(k) || /^shape_/i.test(k)) continue;
-          if (n++ >= 8) break;
-          const val = typeof v === 'number' ? v.toLocaleString('es-CO', { maximumFractionDigits: 2 }) : v;
-          filas += `<tr><th>${esc(k)}</th><td>${esc(val)}</td></tr>`;
+          if (n++ >= 9) break;
+          const etq = ETIQUETAS_CAMPOS[k] || k;
+          filas += `<tr><th>${esc(etq)}</th><td>${esc(formatearVal(k, v))}</td></tr>`;
         }
 
-        new maplibregl.Popup({ closeButton: true, offset: 10, maxWidth: '300px' })
+        new maplibregl.Popup({ closeButton: true, offset: 10, maxWidth: '320px' })
           .setLngLat(e.lngLat)
           .setHTML(`<div class="pop"><div class="pop-capa">${esc(nomCapa)}</div>${tit ? `<h4>${esc(tit)}</h4>` : ''}<table>${filas}</table></div>`)
           .addTo(map);
