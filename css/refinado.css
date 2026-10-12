@@ -787,3 +787,63 @@ body.laser-activo #mapa { cursor: crosshair; }
 @media (max-width: 760px) { .comp-grid, .comp-laminas { grid-template-columns: 1fr; } .comp-escala { margin-left: 0; width: 100%; } .comp-barra { position: static; } }
 .comp-caso .rel, .comp-seccion .rel, .recorrido-card .rel { grid-template-columns: 84px 1fr; }
 .comp-seccion .rel span, .recorrido-card .rel span { white-space: normal; }
+
+/* ------------------------------------------------ Accesibilidad, foco y toque */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.salto-accesible {
+  position: absolute;
+  top: -9999px;
+  left: 14px;
+  background: var(--solido, #12324f);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13.5px;
+  z-index: 99999;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .35);
+  transition: top .18s cubic-bezier(.2, .8, .2, 1);
+}
+.salto-accesible:focus-visible {
+  top: 14px;
+  outline: 3px solid var(--acento, #e8bb6c);
+}
+
+:focus-visible {
+  outline: 2px solid var(--acento, #e8bb6c);
+  outline-offset: 2px;
+}
+button:focus:not(:focus-visible), a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Indicador activo de puntero láser */
+#btnLaser.on {
+  box-shadow: 0 0 10px rgba(239, 68, 68, .6);
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .ico-btn, .h-btn {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
+
+/* Estilos de impresión limpia para dictámenes y revisión de láminas */
+@media print {
+  .top, .indice, .herr, .panel, .cajon, .medicion-hud, .perfil-hud, .cortina-divisor, .aviso, .laser-punto {
+    display: none !important;
+  }
+  .cuerpo, .principal, .lienzo {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+}

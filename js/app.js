@@ -2773,6 +2773,8 @@
   function setTema(oscuro) {
     document.documentElement.setAttribute('data-tema', oscuro ? 'oscuro' : 'claro');
     try { localStorage.setItem('gi-tema', oscuro ? 'oscuro' : 'claro'); } catch (_) { /* sin almacenamiento */ }
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute('content', oscuro ? '#0e161f' : '#12324f');
     if (map && mapReady && !baseManual && (currentBase === 'claro' || currentBase === 'oscuro')) setBaseMap(oscuro ? 'oscuro' : 'claro');
   }
 

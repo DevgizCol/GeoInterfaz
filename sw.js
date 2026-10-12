@@ -1,7 +1,8 @@
-// GeoInterfaz · service worker
-// Primero la red: quien tiene conexión ve siempre la última versión publicada.
-// La copia guardada solo se usa cuando no hay conexión.
-const CACHE_NAME = 'geointerfaz-v5';
+// GeoInterfaz · service worker (resiliencia offline para sustentación y defensa)
+// Estrategia Network-First: con conexión se obtiene siempre la última versión.
+// Sin conexión, se recurre a la caché local incluyendo librerías del visor.
+const CACHE_NAME = 'geointerfaz-v6';
+const CDN_HOSTS = ['unpkg.com', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', () => self.skipWaiting());
 
@@ -13,7 +14,12 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  const isLocal = url.origin === location.origin;
+  const isWhitelistedCdn = CDN_HOSTS.some((h) => url.hostname.includes(h));
+  if (!isLocal && !isWhitelistedCdn) return;
+
   event.respondWith(
     fetch(req).then((res) => {
       if (res && res.status === 200 && !req.url.includes('/descargas/')) {
@@ -24,3 +30,4 @@ self.addEventListener('fetch', (event) => {
     }).catch(() => caches.match(req))
   );
 });
+
