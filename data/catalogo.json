@@ -2499,6 +2499,44 @@
       ]
     },
     {
+      "id": "tabla-16",
+      "clase": "tabla",
+      "num": "16",
+      "etiqueta": "Tabla 16",
+      "titulo": "Matriz de entrevistas - Densidad de población - Actores locales",
+      "seccion": "s70",
+      "capitulo": "s48",
+      "nota": "Nota. Elaboración propia a partir de entrevistas realizadas a actores locales de la franja de interfaz del AMB (2026).",
+      "imagenes": [],
+      "tabla": "tablas/tabla-16.html",
+      "filas": 3,
+      "cols": 3,
+      "datos": [
+        [
+          "Actores locales",
+          "Evidencia (cita)",
+          "Análisis"
+        ],
+        [
+          "Eliet Acuña Cuadrado Ingeniera Civil – Profesional de Infraestructura COMPAS, Vía 40",
+          "\"Precisamente, esos nuevos proyectos son los que pueden influir con nuestro funcionamiento, porque de pronto se tiene un material que puede generar polución y podríamos tener algunos inconvenientes por ese tipo de polución. También con el transporte, con el descargue de algún producto como el Clinker, también podemos, si tenemos eso, va a crear llamados de atención por el tema de que el Clinker emite mucha polución y si esas áreas se están acercando mucho a nuestra terminal, obviamente se van a ver afectados.\"",
+          "La funcionaria identifica el acercamiento de asentamientos como una amenaza directa a la operación portuaria, especialmente por la incompatibilidad entre la descarga de materiales de alta polución (Clinker) y la proximidad residencial. Esta tensión opera en dos sentidos: los residentes quedan expuestos a la polución industrial, y el puerto queda expuesto a quejas y restricciones regulatorias."
+        ],
+        [
+          "Kevin Armando García Guzmán Ingeniero Industrial – Auxiliar Marítimo COMPAS, Vía 40",
+          "\"Si hemos evidenciado un crecimiento urbano de algunas áreas urbanas, básicamente lo que es la parte zona norte de Barranquilla, que se han acercado a los patios que tenemos acá donde almacenamos el carbón y el coque. Últimamente también el cambio extremo que recibió el acceso a Puerto Mocho. Ya tenemos que entrar a nuevos controles para mitigar esa afectación de acercamiento.\"",
+          "Kevin García precisa la localización del conflicto: los nuevos proyectos residenciales al norte de Barranquilla se acercan específicamente a los patios de carbón y coque, materiales de alto impacto ambiental. La respuesta operativa (nuevos controles de mitigación) es reactiva, no preventiva, lo que confirma la ausencia de planificación territorial anticipatoria en el corredor."
+        ]
+      ],
+      "tipo": "tabla",
+      "ruta": [
+        "CAPÍTULO III: ANÁLISIS E INTEGRACIÓN TERRITORIAL DE LA INTERFAZ URBANO-RURAL DEL CASO BARRANQUILLA",
+        "3.3 Análisis del contenido estructural",
+        "3.3.3 Densidad de población",
+        "3.3.3.3 Análisis cualitativo: actores territoriales locales"
+      ]
+    },
+    {
       "id": "tabla-17",
       "clase": "tabla",
       "num": "17",
