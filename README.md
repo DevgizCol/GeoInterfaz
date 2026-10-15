@@ -1,6 +1,6 @@
 # GeoInterfaz · Geovisor de la tesis doctoral
 
-**Enfoques y metodologías de planificación territorial local para el desarrollo de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias. Barranquilla, ciudad puerto y ciudad río**
+**Enfoques y metodologías de planificación territorial local para el desarrollo de franjas de interfaz rural-urbanas limítrofes en ciudades portuarias. Barranquilla, ciudad puerto, ciudad mar y ciudad río**
 
 - Doctoranda: Aida del Carmen Palmett Padilla
 - Dirección: Dr. Miguel Yury Mayorga Cárdenas · Dr. Julián Galindo
