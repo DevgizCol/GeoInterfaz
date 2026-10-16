@@ -20747,5 +20747,155 @@
         "negrita": true
       }
     }
+  },
+  "macromanzanas_iotf": {
+    "id": "macromanzanas_iotf",
+    "nombre": "Macromanzanas del IOTF-IUR (≥ 25 ha)",
+    "archivo": "capas/macromanzanas_iotf.geojson",
+    "geom": "Polygon",
+    "n": 367,
+    "bbox": [
+      -74.93178,
+      10.84368,
+      -74.79984,
+      11.04668
+    ],
+    "crs": "EPSG:9377",
+    "crs_nombre": "MAGNA-SIRGAS 2018 / Origen-Nacional",
+    "fuente": "02_SISTEMA_INFORMACION_GEOGRAFICA_SIG/13_Macromanzanas_IOTF_IUR/macromanzanas.gpkg (macromanzanas_iotf.py); geometría simplificada a 1 m para la web",
+    "subcapa": null,
+    "filtro": null,
+    "recorte": null,
+    "campos": [
+      {
+        "n": "NOMBRE",
+        "t": "texto",
+        "u": 367
+      },
+      {
+        "n": "Macromanzana",
+        "t": "texto",
+        "u": 367
+      },
+      {
+        "n": "Unidad Funcional de Planificación",
+        "t": "texto",
+        "u": 3
+      },
+      {
+        "n": "VOC",
+        "t": "texto",
+        "u": 7
+      },
+      {
+        "n": "Vocación",
+        "t": "texto",
+        "u": 7
+      },
+      {
+        "n": "Superficie (ha)",
+        "t": "decimal",
+        "u": 247
+      },
+      {
+        "n": "Manzanas catastrales agrupadas",
+        "t": "entero",
+        "u": 51
+      },
+      {
+        "n": "Predios rurales agrupados",
+        "t": "entero",
+        "u": 57
+      },
+      {
+        "n": "IMUS (mezcla de usos, Shannon)",
+        "t": "decimal",
+        "u": 138
+      },
+      {
+        "n": "Construido e impermeable (%)",
+        "t": "decimal",
+        "u": 170
+      },
+      {
+        "n": "Cobertura natural (%)",
+        "t": "decimal",
+        "u": 193
+      },
+      {
+        "n": "Uso a 2035 · tendencial",
+        "t": "texto",
+        "u": 4
+      },
+      {
+        "n": "Uso a 2035 · con IOTF-IUR",
+        "t": "texto",
+        "u": 5
+      },
+      {
+        "n": "Nueva ocupación a 2035 · tendencial (ha)",
+        "t": "decimal",
+        "u": 57
+      },
+      {
+        "n": "Nueva ocupación a 2035 · con IOTF-IUR (ha)",
+        "t": "decimal",
+        "u": 52
+      },
+      {
+        "n": "Ámbito piloto (Figura 77)",
+        "t": "texto",
+        "u": 2
+      }
+    ],
+    "vistas": [
+      "deriv__macromanzanas_vocacion",
+      "deriv__macromanzanas_piloto",
+      "deriv__macromanzanas_2035"
+    ],
+    "derivada": true,
+    "kb": 2046
+  },
+  "macromanzanas_ambito_piloto": {
+    "id": "macromanzanas_ambito_piloto",
+    "nombre": "Ámbito piloto de la Circunvalar",
+    "archivo": "capas/macromanzanas_ambito_piloto.geojson",
+    "geom": "Polygon",
+    "n": 1,
+    "bbox": [
+      -74.91573,
+      10.86812,
+      -74.81403,
+      10.97733
+    ],
+    "crs": "EPSG:9377",
+    "crs_nombre": "MAGNA-SIRGAS 2018 / Origen-Nacional",
+    "fuente": "02_SISTEMA_INFORMACION_GEOGRAFICA_SIG/13_Macromanzanas_IOTF_IUR/macromanzanas.gpkg (macromanzanas_iotf.py); geometría simplificada a 1 m para la web",
+    "subcapa": null,
+    "filtro": null,
+    "recorte": null,
+    "campos": [
+      {
+        "n": "NOMBRE",
+        "t": "texto",
+        "u": 1
+      },
+      {
+        "n": "Macromanzanas",
+        "t": "entero",
+        "u": 1
+      },
+      {
+        "n": "Superficie (ha)",
+        "t": "entero",
+        "u": 1
+      }
+    ],
+    "vistas": [
+      "deriv__macromanzanas_vocacion",
+      "deriv__macromanzanas_piloto"
+    ],
+    "derivada": true,
+    "kb": 94
   }
 }
