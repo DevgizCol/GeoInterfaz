@@ -847,3 +847,30 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible) {
     background: #fff !important;
   }
 }
+
+/* Modo lámina: figura de página para la tesis (?lamina=id) */
+html.lamina,html.lamina body{background:#fff;overflow:visible;height:auto;margin:0}
+html.lamina body>*:not(#hoja){display:none!important}
+#hoja{width:605px;height:813px;overflow:hidden;background:#fff;color:#16202a;font:7pt/1.25 "DejaVu Sans","Helvetica Neue",Arial,sans-serif}
+.lam-marco{position:relative;width:605px;border:.75pt solid #16202a;box-sizing:border-box;overflow:hidden}
+.lam-marco .maplibregl-map{position:absolute!important;inset:0;width:100%!important;height:100%!important}
+.lam-marco .maplibregl-ctrl{display:none}
+#hoja #ptLeyenda{columns:3;column-gap:12px;margin-top:6px;font-size:7pt}
+#hoja .ley-fila{display:flex;gap:5px;align-items:center;break-inside:avoid;padding:.5px 0;line-height:1.2}
+#hoja .ley-fila svg{flex:none;width:16px;height:11px}
+#hoja .ley-grupo{break-inside:avoid;margin-bottom:3px}
+#hoja .ley-tit{font-weight:700;font-size:7pt;margin:2px 0 1px;text-transform:none;letter-spacing:0;color:#16202a}
+#hoja .ley-fuentes{display:none}
+.lam-pie{margin:4px 0 0;font-size:6pt;color:#46525e}
+.lam-escala{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:4px;padding:2px 5px;background:rgba(255,255,255,.85);font-size:7pt;z-index:5}
+.lam-escala b{height:4px;background:linear-gradient(90deg,#16202a 50%,#fff 50%);border:.5pt solid #16202a;box-sizing:border-box}
+.lam-norte{position:absolute;right:10px;top:10px;width:20px;height:30px;z-index:5}
+.lam-norte path{fill:#16202a;stroke:#fff;stroke-width:1}.lam-norte text{font-size:9px;font-weight:700;text-anchor:middle;fill:#16202a;stroke:#fff;stroke-width:2;paint-order:stroke}
+.lam-coord{position:absolute;font:normal 6pt "DejaVu Sans",Arial,sans-serif;color:#16202a;text-shadow:0 0 2px #fff,0 0 2px #fff;z-index:4;pointer-events:none}
+.lam-coord.x{bottom:1px;transform:translateX(-50%)}.lam-coord.y{left:2px;transform:translateY(-50%) rotate(-90deg);transform-origin:left center}
+@media print{@page{size:160mm 215mm;margin:0}html.lamina #hoja{break-after:avoid}}
+#hoja.densa #ptLeyenda{columns:4;font-size:6.5pt}
+.zoom-ayuda{animation:ayuda-sale .4s ease 5s forwards}
+@keyframes ayuda-sale{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.zoom-ayuda{animation:none}}
+#ptLeyenda{padding-bottom:18px}

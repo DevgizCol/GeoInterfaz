@@ -1,7 +1,7 @@
 // GeoInterfaz · service worker (resiliencia offline para sustentación y defensa)
 // Estrategia Network-First: con conexión se obtiene siempre la última versión.
 // Sin conexión, se recurre a la caché local incluyendo librerías del visor.
-const CACHE_NAME = 'geointerfaz-v6';
+const CACHE_NAME = 'geointerfaz-v7';
 const CDN_HOSTS = ['unpkg.com', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', () => self.skipWaiting());

@@ -58,6 +58,23 @@
     nada: null
   };
 
+  // ?lamina=fig-3 pinta el elemento como figura de página (16 × 21,5 cm) para la tesis y para imprimir
+  const LAMINA = new URLSearchParams(window.location.search).get('lamina');
+  if (LAMINA) Object.values(BASES).forEach((b) => { if (b) b.tileSize = 128; }); // mosaicos nítidos a 300 ppp
+  // Láminas de un solo elemento: se encuadra el elemento, no todo el AMB
+  const NODO = (nombre) => ({ capa: 'nodos', nombre, radio: 0.05 });
+  const LAM_ENCUADRE = {
+    'fig-45': { capa: 'terminales_asipona_bahia_norte' },
+    'fig-56': { capa: 'upf_usos_amb_ufp_1' }, 'fig-57': { capa: 'upf_usos_amb_ufp_2' },
+    'fig-58': { capa: 'upf_usos_amb_ufp_3' }, 'fig-59': { capa: 'upf_usos_amb_ufp_4' },
+    'fig-61': NODO('NODO ECOTURISTICO'), 'fig-62': NODO('NODO AGROINDUSTRIAL'), 'fig-63': NODO('NODO CULTURAL'),
+    'fig-64': NODO('NODO INDUSTRIAL LOGISTICO'), 'fig-65': NODO('NUEVO PUERTO INTERIOR'),
+    'comp-articulador': NODO('ARTICULADOR LOGISTICO'),
+    'fig-60': { capa: 'ufps' }, 'fig-67': { capa: 'ufps' }, 'atlas-3-13': { capa: 'ufps' }, 'fig-76': { capa: 'ufps' }
+  };
+  const LAMINA_3D = new URLSearchParams(window.location.search).has('tresd');
+  const LAM_SIN_ROTULOS = ['atlas-3-4', 'atlas-3-9', 'mapa-densidad-poblacional', 'mapa-conflicto-ufp'];
+
   if (window.proj4) {
     proj4.defs(
       'EPSG:9377',
@@ -480,7 +497,8 @@
         center: [-74.8, 10.98],
         zoom: 11,
         attributionControl: false,
-        preserveDrawingBuffer: true
+        preserveDrawingBuffer: true,
+        ...(LAMINA ? { pixelRatio: 3.125 } : {})
       });
 
       window._testMap = map;
@@ -688,7 +706,7 @@
     const w = map.getContainer().clientWidth || window.innerWidth;
     const der = movil || !panelAbierto ? 36 : Math.min(330, Math.floor(w * 0.32));
     map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], {
-      padding: { top: 36, bottom: 40, left: 64, right: der },
+      padding: LAMINA ? 14 : { top: 36, bottom: 40, left: 64, right: der },
       maxZoom: 16,
       duration: instant ? 0 : 600
     });
@@ -818,6 +836,11 @@
         const lyrId = `lyr_${i}_${capaObj.capa}_${subIdx}`;
         const def = { id: lyrId, type: ml.type, source: srcId, layout: Object.assign({}, ml.layout || {}), paint: Object.assign({}, ml.paint || {}) };
         if (ml.filter) def.filter = ml.filter;
+        const grosor = def.paint['line-width'];
+        if (typeof grosor === 'number') {
+          if (LAMINA) def.paint['line-width'] = Math.max(0.5, grosor * 0.5); // a 16 cm las líneas de pantalla pesan el doble
+          else if (grosor > 3) def.paint['line-width'] = 3 + (grosor - 3) * 0.4; // límites gruesos: que no tapen la temática
+        }
         if (capaObj.apagada) def.layout.visibility = 'none';
         if (PROP_OP[ml.type]) OP_ORIG[lyrId] = def.paint[PROP_OP[ml.type]] === undefined ? 1 : def.paint[PROP_OP[ml.type]];
         map.addLayer(def);
@@ -829,6 +852,7 @@
     for (let i = vista.capas.length - 1; i >= 0; i--) {
       const capaObj = vista.capas[i];
       if (!(capaObj.estilo && capaObj.estilo.etiqueta)) continue;
+      if (LAMINA && /nodo/i.test(capaObj.capa) && vista.capas.some((o, j) => j < i && /nodo/i.test(o.capa) && o.estilo && o.estilo.etiqueta)) continue; // la capa destacada repite los rótulos
       const lblId = `lyr_${i}_${capaObj.capa}__label`;
       map.addLayer(capaDeRotulos(capaObj, lblId, `src_${i}_${capaObj.capa}`));
       activeVectorLayerIds.push(lblId);
@@ -1395,6 +1419,7 @@
         <div class="acciones">
           ${relItem ? `<a class="btn" href="#/${relItem.id}" title="${esc(relItem.titulo)}"><i class="pt t-${relItem.tipo}"></i>${esc(relItem.etiqueta)}</a>` : ''}
           <button class="btn" id="btnPresentar" title="Modo presentación (P)">${ICO.pres}<span>Presentar</span></button>
+          ${item.vista ? `<a class="btn" href="?lamina=${esc(item.id)}" target="_blank" rel="noopener" title="Abrir como lámina de página para imprimir o guardar en PDF">${ICO.info}<span>Lámina</span></a>` : ''}
           <button class="btn" id="btnFicha">${ICO.info}<span>Ficha</span></button>
           <button class="btn pri" id="btnCompartir">${ICO.compartir}<span>Citar</span></button>
         </div>
@@ -2310,6 +2335,94 @@
     } else {
       showElement(decodeURIComponent(hash.replace(/^#\//, '')));
     }
+  }
+
+  function medidaRedonda(m) {
+    const e = Math.pow(10, Math.floor(Math.log10(m)));
+    return [5, 2, 1].map((f) => f * e).find((v) => v <= m) || e;
+  }
+  function gradosTexto(v, pos, neg) {
+    const a = Math.abs(v);
+    const g = Math.floor(a + 1e-9);
+    const min = Math.round((a - g) * 60);
+    return `${g}°${min ? String(min).padStart(2, '0') + "'" : ''} ${v < 0 ? neg : pos}`;
+  }
+  function marcasCoordenadas(hoja, cont) {
+    const b = map.getBounds();
+    const paso = (span) => [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50].find((p) => span / p <= 4.5) || 50;
+    const pasoX = paso(b.getEast() - b.getWest());
+    const pasoY = paso(b.getNorth() - b.getSouth());
+    const r = cont.getBoundingClientRect();
+    for (let x = Math.ceil(b.getWest() / pasoX) * pasoX; x < b.getEast(); x += pasoX) {
+      const px = map.project([x, map.getCenter().lat]).x;
+      if (px > 34 && px < r.width - 34) hoja.insertAdjacentHTML('beforeend', `<i class="lam-coord x" style="left:${px}px">${gradosTexto(x, 'E', 'W')}</i>`);
+    }
+    for (let y = Math.ceil(b.getSouth() / pasoY) * pasoY; y < b.getNorth(); y += pasoY) {
+      const py = map.project([map.getCenter().lng, y]).y;
+      if (py > 24 && py < r.height - 24) hoja.insertAdjacentHTML('beforeend', `<i class="lam-coord y" style="top:${py}px">${gradosTexto(y, 'N', 'S')}</i>`);
+    }
+  }
+  function adornosLamina(hoja, cont) {
+    const c = map.getCenter();
+    const p = map.project(c);
+    const mPorPx = map.unproject([p.x + 100, p.y]).distanceTo(c) / 100;
+    const m = medidaRedonda(mPorPx * 120);
+    const px = m / mPorPx;
+    const txt = m >= 1000 ? `${m / 1000} km` : `${m} m`;
+    hoja.insertAdjacentHTML('beforeend', `<div class="lam-escala"><span>0</span><b style="width:${px}px"></b><span>${txt}</span></div>
+      <svg class="lam-norte" viewBox="0 0 24 34" aria-label="Norte"><path d="M12 2 20 30 12 24 4 30Z"/><text x="12" y="34">N</text></svg>`);
+    marcasCoordenadas(hoja, cont);
+  }
+  async function encuadreLamina(conf) {
+    const datos = await (await fetch(`data/capas/${conf.capa}.geojson`)).json();
+    const feats = conf.nombre ? datos.features.filter((f) => f.properties.NOMBRE === conf.nombre) : datos.features;
+    const b = turf.bbox({ type: 'FeatureCollection', features: feats });
+    const m = conf.radio || 0.08 * Math.max(b[2] - b[0], b[3] - b[1]);
+    return [b[0] - m, b[1] - m, b[2] + m, b[3] + m];
+  }
+  async function iniciarLamina(id) {
+    document.documentElement.classList.add('lamina');
+    await showElement(id);
+    if (LAM_ENCUADRE[id]) currentVista.bbox = await encuadreLamina(LAM_ENCUADRE[id]);
+    if (LAM_SIN_ROTULOS.includes(id)) setRotulos(false);
+    const item = ITEMS_MAP.get(id);
+    const cont = map.getContainer();
+    const ley = $('ptLeyenda');
+    const hoja = document.createElement('div');
+    hoja.id = 'hoja';
+    const marco = document.createElement('div');
+    marco.className = 'lam-marco';
+    const b = currentVista.bbox;
+    const asp = (b[3] - b[1]) / (b[2] - b[0]);
+    marco.style.height = `${Math.min(600, Math.max(430, 605 * asp))}px`;
+    marco.append(cont);
+    const filas = [...ley.querySelectorAll(':scope > .ley-fila span')];
+    filas.forEach((s, i) => { if (filas.slice(i + 1).some((o) => o.textContent === s.textContent)) s.textContent += ' (destacado)'; });
+    if (ley.querySelectorAll('.ley-fila').length > 24) hoja.classList.add('densa');
+    hoja.append(marco, ley);
+    const pie = document.createElement('p');
+    pie.className = 'lam-pie';
+    pie.textContent = `${item.etiqueta}. Coordenadas WGS 84. Mapa base: Esri, © OpenStreetMap. Elaboración propia.`;
+    hoja.append(pie);
+    document.body.append(hoja);
+    await new Promise((res) => map.once('idle', res));
+    map.resize();
+    ajustarEncuadreVista(currentVista, true);
+    while (hoja.scrollHeight > 813 && parseFloat(marco.style.height) > 400) {
+      marco.style.height = `${parseFloat(marco.style.height) - 20}px`;
+      map.resize();
+    }
+    ajustarEncuadreVista(currentVista, true);
+    await new Promise((res) => map.once('idle', res));
+    if (LAMINA_3D) {
+      $('btn3D').click();
+      await new Promise((res) => setTimeout(res, 1800));
+      map.jumpTo({ pitch: 48, bearing: -15 });
+      ajustarEncuadreVista(currentVista, true);
+      await new Promise((res) => map.once('idle', res));
+      pie.textContent = `${item.etiqueta}, vista en perspectiva. Figura ilustrativa: relieve exagerado, no apta para medir. Relieve: AWS Terrain Tiles. Elaboración propia.`;
+    } else adornosLamina(marco, cont);
+    window.__lamina = { id, desborde: hoja.scrollHeight - 813, mapa: marco.style.height };
   }
 
   function navigate(hash) {
@@ -3366,8 +3479,10 @@
         navigator.serviceWorker.register('sw.js').catch((err) => console.log('SW no registrado:', err));
       }
 
+      if (LAMINA) { await iniciarLamina(LAMINA); return; }
       window.addEventListener('hashchange', router);
       router();
+      document.querySelectorAll('button[data-tip]:not([aria-label])').forEach((b) => b.setAttribute('aria-label', b.dataset.tip));
     } catch (err) {
       console.error('Error al iniciar el geovisor:', err);
       $('principal').innerHTML = `<div class="error-carga"><h2>No se pudieron cargar los datos del geovisor</h2><p>${esc(err.message)}</p></div>`;
