@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Delphi Internacional · Validación IOTF-IUR (UPC BarcelonaTech)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --upc-navy: #0C2C42;
+      --upc-navy-light: #164263;
+      --upc-teal: #1E5F74;
+      --upc-blue: #0284C7;
+      --upc-accent: #D97706;
+      --upc-gold: #B45309;
+      --slate-50: #F8FAFC;
+      --slate-100: #F1F5F9;
+      --slate-200: #E2E8F0;
+      --slate-300: #CBD5E1;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1E293B;
+      --slate-900: #0F172A;
+      --success-green: #10B981;
+      --warning-amber: #F59E0B;
+      --danger-red: #EF4444;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-serif: 'Merriweather', Georgia, serif;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--slate-50);
+      color: var(--slate-800);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER INSTITUCIONAL */
+    .inst-header {
+      background: linear-gradient(135deg, #081d2c 0%, #0C2C42 60%, #164263 100%);
+      color: #FFFFFF;
+      padding: 24px 20px;
+      border-bottom: 3px solid var(--upc-accent);
+      box-shadow: var(--shadow-md);
+    }
+
+    .inst-container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .inst-title h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #93C5FD;
+      margin-bottom: 4px;
+    }
+
+    .inst-title h2 {
+      font-size: 1.35rem;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .inst-meta {
+      font-size: 0.85rem;
+      color: #CBD5E1;
+      margin-top: 6px;
+    }
+
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: #FFFFFF;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: #FFFFFF;
+      color: var(--upc-navy);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* STICKY STEPPER */
+    .stepper-bar {
+      position: sticky;
+      top: 0;
+      background: #FFFFFF;
+      z-index: 100;
+      border-bottom: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-sm);
+      padding: 10px 20px;
+    }
+
+    .stepper-container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      background: var(--slate-200);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--upc-teal), var(--upc-blue));
+      width: 10%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-info {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--slate-600);
+      white-space: nowrap;
+    }
+
+    .nav-tabs {
+      max-width: 960px;
+      margin: 10px auto 0;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--slate-600);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .nav-tab-btn:hover {
+      background: var(--slate-100);
+      color: var(--upc-navy);
+    }
+
+    .nav-tab-btn.active {
+      background: var(--slate-100);
+      color: var(--upc-navy);
+      border-color: var(--slate-300);
+      font-weight: 700;
+    }
+
+    /* MAIN CONTAINER */
+    .main-wrap {
+      max-width: 960px;
+      margin: 28px auto 60px;
+      padding: 0 20px;
+    }
+
+    /* CARD STYLING */
+    .card {
+      background: #FFFFFF;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--slate-200);
+      padding-bottom: 16px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--upc-blue);
+      background: #E0F2FE;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--upc-navy);
+      line-height: 1.35;
+    }
+
+    .card-desc {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--slate-700);
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+
+    /* INFOGRAPHIC / FIGURE BOX */
+    .figure-box {
+      margin: 20px 0 28px;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-300);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .figure-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: var(--shadow-sm);
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+
+    .figure-img:hover {
+      transform: scale(1.008);
+    }
+
+    .figure-caption {
+      margin-top: 10px;
+      font-size: 0.84rem;
+      font-style: italic;
+      color: var(--slate-600);
+    }
+
+    /* LIKERT MATRIX TABLE */
+    .matrix-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .matrix-table th {
+      background: var(--slate-100);
+      color: var(--slate-800);
+      font-weight: 600;
+      padding: 14px 12px;
+      text-align: center;
+      border-bottom: 2px solid var(--slate-300);
+      font-size: 0.8rem;
+      vertical-align: bottom;
+      line-height: 1.3;
+    }
+
+    .matrix-table th.col-prop {
+      text-align: left;
+      width: 48%;
+      font-size: 0.88rem;
+    }
+
+    .matrix-table td {
+      padding: 16px 12px;
+      border-bottom: 1px solid var(--slate-200);
+      vertical-align: middle;
+    }
+
+    .matrix-table td.col-prop {
+      color: var(--slate-800);
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .matrix-table td.col-radio {
+      text-align: center;
+      width: 10.4%;
+      cursor: pointer;
+    }
+
+    .matrix-table tr:hover td {
+      background: #F8FAFC;
+    }
+
+    .matrix-table tr.answered td {
+      background: #F0FDF4;
+    }
+
+    .matrix-radio {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--upc-navy);
+    }
+
+    /* QUESTION FORMS */
+    .q-group {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--slate-200);
+    }
+
+    .q-group:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .q-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--slate-800);
+      margin-bottom: 8px;
+    }
+
+    .q-desc {
+      font-size: 0.88rem;
+      color: var(--slate-600);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .input-text, .input-textarea, .input-number {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--slate-800);
+      background: #FFFFFF;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .input-text:focus, .input-textarea:focus, .input-number:focus {
+      outline: none;
+      border-color: var(--upc-blue);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .input-number {
+      max-width: 240px;
+    }
+
+    .input-textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    /* E1 MULTICRITERIA CALCULATOR */
+    .calc-container {
+      background: #F8FAFC;
+      border: 1px solid var(--slate-300);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .calc-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .calc-label {
+      flex: 1;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--slate-800);
+      min-width: 240px;
+    }
+
+    .calc-slider {
+      flex: 1;
+      min-width: 160px;
+      accent-color: var(--upc-navy);
+      cursor: pointer;
+    }
+
+    .calc-input {
+      width: 75px;
+      padding: 6px 10px;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 700;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+    }
+
+    .calc-total-bar {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .calc-total-bar.valid {
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+    }
+
+    .calc-total-bar.invalid {
+      background: #FEF2F2;
+      color: #991B1B;
+      border: 1px solid #FECACA;
+    }
+
+    /* ACTION BAR */
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-prev {
+      background: var(--slate-200);
+      color: var(--slate-700);
+    }
+
+    .btn-prev:hover {
+      background: var(--slate-300);
+      color: var(--slate-900);
+    }
+
+    .btn-next {
+      background: var(--upc-navy);
+      color: #FFFFFF;
+      margin-left: auto;
+    }
+
+    .btn-next:hover {
+      background: var(--upc-navy-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary {
+      background: var(--upc-accent);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: #B45309;
+    }
+
+    /* FOOTER */
+    .inst-footer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--slate-200);
+      padding: 32px 20px;
+      color: var(--slate-600);
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: var(--radius);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--slate-600);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .card {
+        padding: 20px 16px;
+      }
+      .inst-title h2 {
+        font-size: 1.15rem;
+      }
+      .matrix-table th, .matrix-table td {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+      }
+      .matrix-radio {
+        width: 18px;
+        height: 18px;
+      }
+      .calc-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER INSTITUCIONAL UPC -->
+  <header class="inst-header">
+    <div class="inst-container">
+      <div class="inst-title">
+        <h1>Universitat Politècnica de Catalunya · BarcelonaTech</h1>
+        <h2>Programa de Doctorat en Sostenibilitat · Tesi Doctoral</h2>
+        <div class="inst-meta">
+          Autora: <strong>Aida del Carmen Palmett Padilla</strong> &nbsp;|&nbsp; 
+          Instrumento: <strong>IOTF-IUR (Franja Urbano-Rural de Barranquilla)</strong>
+        </div>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn active" onclick="cambiarIdioma('ES')">ES</button>
+        <button class="lang-btn" onclick="cambiarIdioma('EN')">EN</button>
+        <button class="lang-btn" onclick="cambiarIdioma('PT')">PT</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- STICKY STEPPER -->
+  <div class="stepper-bar">
+    <div class="stepper-container">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-info" id="progressInfo">Paso 1 de 9</div>
+    </div>
+    <div class="nav-tabs" id="navTabs">
+      <!-- Generado dinámicamente -->
+    </div>
+  </div>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="main-wrap">
+    <div id="stepContainer">
+      <!-- Se inyecta la sección activa -->
+    </div>
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="action-bar">
+      <button class="btn btn-prev" id="btnPrev" onclick="cambiarPaso(-1)">← Anterior</button>
+      <button class="btn btn-next" id="btnNext" onclick="cambiarPaso(1)">Siguiente →</button>
+    </div>
+  </main>
+
+  <!-- MODAL PARA ZOOM DE IMAGEN -->
+  <div class="modal-backdrop" id="imgModal" onclick="cerrarModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="cerrarModal()">&times;</button>
+      <img id="modalImgSrc" src="" style="width: 100%; border-radius: 6px;" alt="Zoom infografía">
+      <p id="modalImgCaption" style="margin-top: 12px; font-size: 0.9rem; color: var(--slate-700); text-align: center;"></p>
+    </div>
+  </div>
+
+  <!-- FOOTER ACADÉMICO -->
+  <footer class="inst-footer">
+    <div class="footer-content">
+      <p><strong>Metodología Delphi Internacional · Ronda 1</strong></p>
+      <p style="margin-top: 6px;">Protocolo ético: anonimato de expertos garantizado · Criterio de consenso: ≥ 75 % en categorías 4-5 con IQR ≤ 1.</p>
+      <p style="margin-top: 6px; font-size: 0.78rem; color: var(--slate-500);">Esta interfaz interactiva complementa y valida el formulario automatizado de Google Forms para la defensa de la tesis doctoral.</p>
+    </div>
+  </footer>
+
+  <script>
+    // DATOS DE LA CONSULTA GENERADOS DESDE PYTHON
+    const DATA = {"titulos": {"ES": "Consulta Delphi internacional · Validación del IOTF-IUR · Ronda 1", "EN": "International Delphi survey · Validation of the IOTF-IUR · Round 1", "PT": "Consulta Delphi internacional · Validação do IOTF-IUR · Rodada 1"}, "textos": {"ES": {"intro": "UNIVERSITAT POLITÈCNICA DE CATALUNYA (UPC) · BARCELONATECH\nPrograma de Doctorado en Sostenibilidad · Tesis Doctoral de Aida del Carmen Palmett Padilla\n\nEstimado/a especialista:\nLe agradecemos dedicar unos 15 a 20 minutos a esta consulta de validación internacional. Forma parte de la investigación doctoral desarrollada en la UPC y tiene por objeto someter a juicio de expertos los parámetros, umbrales e instrumentos del «Instrumento de Ordenamiento Territorial Funcional de Interfaz Urbano-Rural» (IOTF-IUR) para la franja metropolitana de Barranquilla (Colombia), en su triple condición de ciudad río, puerto y mar.\n\n📌 METODOLOGÍA DELPHI:\n• Consulta anónima iterativa (2 a 3 rondas). En la siguiente ronda recibirá la síntesis estadística de las respuestas del panel y podrá mantener o revisar sus valoraciones.\n• Criterio de consenso: se alcanza consenso cuando al menos el 75 % de las valoraciones se sitúan en 4 o 5 (acuerdo o total acuerdo) con un rango intercuartílico (IQR) ≤ 1.\n\n📖 GLOSARIO CONCEPTUAL BÁSICO:\n• IOTF-IUR: Instrumento de Ordenamiento Territorial Funcional de Interfaz Urbano-Rural.\n• UFP: Unidad Funcional de Planificación (escala macro/meso, miles de hectáreas; 4 tipos funcionales).\n• Macromanzana: Unidad intermedia de gestión territorial (≥ 25 ha) que agrupa unidades catastrales oficiales sin subdividirlas.\n• Vocación: Destino territorial principal asignado a cada macromanzana mediante reglas explícitas de decisión.", "pag_consent": "Presentación y consentimiento informado", "consent_ayuda": "La participación es voluntaria y puede retirarse en cualquier momento. Sus respuestas son anónimas para los demás participantes y solo se publicarán de forma agregada; su nombre solo aparecerá en la tesis si usted lo autoriza explícitamente al final. Los datos de contacto se usan únicamente para esta consulta y se eliminan al terminar la tesis. Contacto institucional: %s.", "consent_q": "¿Acepta participar voluntariamente en esta consulta académica?", "si": "Sí, acepto participar (Continuar)", "no": "No deseo participar (Salir)", "codigo": "Código de participante confidencial", "codigo_ayuda": "Figura en el correo de invitación formal (ej. IOTF-07-A3F). Permite enviarle en la ronda 2 su propia respuesta junto a la del grupo, garantizando su anonimato.", "codigo_error": "Escriba el código tal como aparece en la invitación (formato IOTF-00-XXX).", "mapa_titulo": "El ámbito: la franja de interfaz de Barranquilla y sus cuatro unidades funcionales (UFP)", "bajo": "1 · Totalmente en desacuerdo", "alto": "5 · Totalmente de acuerdo", "cols": ["1 · Totalmente en desacuerdo", "2 · En desacuerdo", "3 · Neutral", "4 · De acuerdo", "5 · Totalmente de acuerdo"], "grid_ayuda": "Indique su grado de acuerdo con cada una de las proposiciones del bloque:", "grid_titulos": {"A": "Matriz de valoración · Pertinencia general del modelo (A1 – A3)", "B": "Matriz de valoración · Macromanzana y base catastral (B1 – B5)", "C": "Matriz de valoración · Reglas de asignación de vocación (C1 – C5)", "F": "Matriz de valoración · Umbrales de alerta temprana (F1 – F5)"}, "num_error": "Escriba solo un número dentro del rango indicado.", "num_ayuda": "Número entre %s y %s.", "b7_ayuda": "Escriba 0 si considera que no debería fijarse un máximo.", "e1_titulo": "E1. Distribución de 100 puntos entre los cuatro criterios estratégicos", "e1_ayuda": "Asigne a cada criterio el puntaje relativo que considere más adecuado (la suma de los cuatro valores debe ser exactamente 100):", "coment": "Comentarios y observaciones sobre esta sección (opcional)", "coment_ayuda": "Si desea matizar su valoración, sugerir un valor alternativo o indicar alguna referencia bibliográfica, anótelo aquí.", "ayuda_bloque": {"0": "📋 Caracterización del panel: Estos datos se emplean únicamente para describir la composición estadística del panel de expertos (afiliación, procedencia y trayectoria). No se publican de forma individual.", "A": "📌 Fundamentación del modelo:\nEl IOTF-IUR organiza la franja en cuatro escalas encadenadas (Metropolitana → Unidad Funcional → Macromanzana → Predio). Reconoce el uso logístico-portuario como categoría estructural del borde y propone unidades funcionales que superan los límites municipales tradicionales.\n\nValore la pertinencia de las proposiciones del modelo:", "B": "📌 La macromanzana como unidad intermedia de gestión:\nAgrupa manzanas urbanas y predios rurales del catastro oficial sin subdividir ninguno, hasta alcanzar una superficie mínima de referencia.\n\n• Mediana de planes parciales locales: 48,3 ha.\n• Análisis de sensibilidad del modelo: con 15 ha resultan 490 macromanzanas (mediana de 24,6 ha); con 25 ha, 367 macromanzanas (mediana de 36,1 ha); con 50 ha, 230 macromanzanas (mediana de 70,1 ha).\n• Marco legal colombiano: respeta la Unidad Agrícola Familiar (UAF de 9 a 14 ha en la franja) y el mínimo suburbano (2 ha, Decreto 1077/2015).\n\nValore las proposiciones sobre la escala y delimitación de la macromanzana:", "C": "📌 Asignación secuencial de vocación territorial:\nA cada macromanzana se le asigna una vocación del suelo mediante un árbol de decisión jerárquico secuencial (ver diagrama). La primera regla que se cumple determina la vocación dominante.\n\nValore los umbrales cuantitativos propuestos para cada regla de asignación:", "D": "📌 Coexistencia de usos y franjas de amortiguamiento:\nEn ciudades portuarias, uno de los conflictos más críticos es la fricción espacial entre las terminales logísticas pesadas y los asentamientos residenciales.\n\nEl modelo plantea valores de referencia para la separación espacial y el ancho de la franja verde de amortiguamiento biológico.", "E": "📌 Ponderación multicriterio para el crecimiento:\nLa evaluación multicriterio prioriza las áreas con mayor aptitud para acoger el crecimiento metropolitano.\n\nDistribuya un total de 100 puntos entre los cuatro criterios según su importancia estratégica (la suma de los cuatro valores debe ser exactamente 100):", "F": "📌 Umbrales de alerta temprana para la planificación adaptativa:\nEl IOTF-IUR incorpora un sistema de monitoreo territorial con 8 indicadores clave. Si un indicador supera su umbral crítico, se activa obligatoriamente la revisión y reorientación de la macromanzana afectada.\n\nValore los umbrales de alerta técnica propuestos:", "H": "📌 Síntesis cualitativa y cierre de la consulta:\nSus reflexiones cualitativas abiertas aportarán los insumos esenciales para calibrar el modelo conceptual y estructurar la síntesis de resultados para la Ronda 2."}, "reconoc": "¿Desea que su participación sea reconocida nominalmente en la tesis?", "reconoc_op": ["Sí, autorizo incluir mi nombre e institución en los agradecimientos/anexos de la tesis", "No, solicito que mis aportes se mantengan bajo estricto anonimato"], "colegas": "¿Podría sugerirnos a uno o dos colegas especialistas en la materia para invitar a este panel? (opcional)", "gracias": "Muchas gracias por su valiosa colaboración académica. Recibirá los resultados consolidados de la Ronda 2 en unas dos semanas.", "falta_contacto": "Escriba el correo institucional de contacto en la variable CONTACTO, al principio del script."}, "EN": {"intro": "UNIVERSITAT POLITÈCNICA DE CATALUNYA (UPC) · BARCELONATECH\nPhD Programme in Sustainability · Doctoral Thesis: Aida del Carmen Palmett Padilla\n\nDear Specialist,\nThank you for dedicating approximately 15 to 20 minutes to this international validation survey. It forms part of doctoral research at UPC aimed at submitting to expert judgment the parameters, thresholds, and tools of the «Functional Territorial Planning Instrument for the Rural-Urban Interface» (IOTF-IUR) for the metropolitan fringe of Barranquilla (Colombia), a river, port, and sea city.\n\n📌 DELPHI METHODOLOGY:\n• Iterative anonymous survey (2 to 3 rounds). In the next round you will receive the aggregated statistical results of the panel and may maintain or revise your assessment.\n• Consensus criterion: reached when at least 75 % of ratings fall in 4 or 5 (agree or strongly agree) with an interquartile range (IQR) ≤ 1.\n\n📖 CORE CONCEPTUAL GLOSSARY:\n• IOTF-IUR: Functional Territorial Planning Instrument for the Rural-Urban Interface.\n• FPU: Functional Planning Unit (macro/meso scale, thousands of hectares; 4 functional types).\n• Macro-block: Intermediate management unit (≥ 25 ha) grouping official cadastral units without splitting them.\n• Vocation: Main territorial land-use assigned to each macro-block through explicit decision rules.", "pag_consent": "Introduction and informed consent", "consent_ayuda": "Participation is voluntary and you may withdraw at any time. Your answers are anonymous to other participants and will only be published in aggregate form; your name will only appear in the thesis if you explicitly authorize it at the end. Contact details are used solely for this consultation. Institutional contact: %s.", "consent_q": "Do you agree to voluntarily participate in this academic consultation?", "si": "Yes, I agree to participate (Continue)", "no": "I do not wish to participate (Exit)", "codigo": "Confidential participant code", "codigo_ayuda": "Located in your formal invitation email (e.g. IOTF-07-A3F). Allows linking your response in Round 2 while guaranteeing strict anonymity.", "codigo_error": "Please type the code exactly as shown in the invitation (format IOTF-00-XXX).", "mapa_titulo": "The setting: Barranquilla's interface fringe and its four functional planning units (FPU)", "bajo": "1 · Strongly disagree", "alto": "5 · Strongly agree", "cols": ["1 · Strongly disagree", "2 · Disagree", "3 · Neutral", "4 · Agree", "5 · Strongly agree"], "grid_ayuda": "Please indicate your level of agreement with each statement in this block:", "grid_titulos": {"A": "Rating matrix · Overall model relevance (A1 – A3)", "B": "Rating matrix · Macro-block and cadastral base (B1 – B5)", "C": "Rating matrix · Vocation assignment rules (C1 – C5)", "F": "Rating matrix · Early-warning indicator thresholds (F1 – F5)"}, "num_error": "Please type a number within the range shown.", "num_ayuda": "Number between %s and %s.", "b7_ayuda": "Type 0 if you consider that no maximum should be set.", "e1_titulo": "E1. Distribution of 100 points among the four strategic criteria", "e1_ayuda": "Assign to each criterion the relative score you consider most appropriate (the four values must sum exactly to 100):", "coment": "Comments and observations on this section (optional)", "coment_ayuda": "If you wish to qualify your rating, suggest an alternative value, or provide references, please note it here.", "ayuda_bloque": {"0": "📋 Panel characterisation: These data are used solely to describe the statistical composition of the expert panel (affiliation and background).", "A": "📌 Model rationale:\nThe IOTF-IUR organises the fringe at four nested scales (Metropolitan → Functional Unit → Macro-block → Plot). It recognises logistics and port activity as a structural component of the edge and proposes functional units crossing municipal borders.\n\nPlease rate the relevance of the model propositions:", "B": "📌 The macro-block as an intermediate management unit:\nGroups official cadastral blocks and rural plots without dividing any, reaching a minimum reference area.\n\n• Local partial plans median area: 48.3 ha.\n• Model sensitivity analysis: a 15 ha minimum yields 490 macro-blocks (median 24.6 ha); 25 ha, 367 macro-blocks (median 36.1 ha); 50 ha, 230 macro-blocks (median 70.1 ha).\n• Legal framework: respects the Family Farm Unit (UAF, 9-14 ha) and suburban minimum (2 ha, Decree 1077/2015).\n\nPlease rate the propositions on the macro-block scale and delimitation:", "C": "📌 Sequential land-use vocation assignment:\nEach macro-block is assigned a land-use vocation through a sequential hierarchical decision tree (see diagram). The first rule met determines dominant vocation.\n\nPlease rate the proposed quantitative thresholds for each assignment rule:", "D": "📌 Land-use coexistence and buffer zones:\nIn port cities, one of the sharpest conflicts is spatial friction between heavy logistics terminals and residential settlements.\n\nThe model establishes reference values for spatial separation and green biological buffer widths.", "E": "📌 Multi-criteria weighting for growth:\nMulti-criteria evaluation prioritises areas with highest suitability for metropolitan growth.\n\nDistribute a total of 100 points among the four criteria according to strategic importance (sum must be exactly 100):", "F": "📌 Early-warning thresholds for adaptive planning:\nThe IOTF-IUR incorporates a monitoring system with 8 key indicators. If an indicator breaches its critical threshold, a mandatory review and reorientation of the macro-block is triggered.\n\nPlease rate the proposed technical alert thresholds:", "H": "📌 Qualitative synthesis and survey closure:\nYour open qualitative feedback will provide crucial insights to calibrate the conceptual model and shape Round 2."}, "reconoc": "Would you like your participation to be acknowledged by name in the thesis?", "reconoc_op": ["Yes, I authorise including my name and institution in the acknowledgements/methodological annexes", "No, I request that my contributions remain strictly anonymous"], "colegas": "Could you recommend one or two specialist colleagues to invite to this panel? (optional)", "gracias": "Thank you very much for your valuable academic contribution. You will receive Round 2 consolidated results in about two weeks.", "falta_contacto": "Write the institutional contact email in the CONTACTO variable at the top of the script."}, "PT": {"intro": "UNIVERSITAT POLITÈCNICA DE CATALUNYA (UPC) · BARCELONATECH\nPrograma de Doutorado em Sustentabilidade · Tese de Doutorado: Aida del Carmen Palmett Padilla\n\nPrezado/a especialista:\nAgradecemos dedicar cerca de 15 a 20 minutos a esta consulta de validação internacional. Faz parte da pesquisa de doutorado na UPC e tem por objetivo submeter a julgamento de especialistas os parâmetros, limiares e instrumentos do «Instrumento de Ordenamento Territorial Funcional da Interface Urbano-Rural» (IOTF-IUR) para a franja metropolitana de Barranquilla (Colômbia), cidade rio, porto e mar.\n\n📌 METODOLOGIA DELPHI:\n• Consulta anônima iterativa (2 a 3 rodadas). Na rodada seguinte você receberá os resultados consolidados do painel e poderá manter ou rever suas avaliações.\n• Critério de consenso: alcançado quando pelo menos 75 % das avaliações situam-se em 4 ou 5 (concordo ou concordo totalmente) com intervalo interquartil (IQR) ≤ 1.\n\n📖 GLOSSÁRIO CONCEITUAL:\n• IOTF-IUR: Instrumento de Ordenamento Territorial Funcional da Interface Urbano-Rural.\n• UFP: Unidade Funcional de Planejamento (escala macro/meso, milhares de hectares; 4 tipos funcionais).\n• Macroquadra: Unidade intermediária de gestão territorial (≥ 25 ha) que agrupa unidades cadastrais oficiais sem dividi-las.\n• Vocação: Destino territorial principal atribuído a cada macroquadra através de regras explícitas de decisão.", "pag_consent": "Apresentação e consentimento livre e esclarecido", "consent_ayuda": "A participação é voluntária e pode ser cancelada a qualquer momento. Suas respostas são anônimas para os demais participantes e publicadas apenas de forma agregada; seu nome só constará na tese se você autorizar explicitamente. Contato institucional: %s.", "consent_q": "Aceita participar voluntariamente desta consulta acadêmica?", "si": "Sim, aceito participar (Continuar)", "no": "Não desejo participar (Sair)", "codigo": "Código confidencial de participante", "codigo_ayuda": "Consta no e-mail formal de convite (ex. IOTF-07-A3F). Permite vincular suas respostas na Rodada 2 garantindo estrito anonimato.", "codigo_error": "Escreva o código tal como aparece no convite (formato IOTF-00-XXX).", "mapa_titulo": "O âmbito: a franja de interface de Barranquilla e as suas quatro unidades funcionais (UFP)", "bajo": "1 · Discordo totalmente", "alto": "5 · Concordo totalmente", "cols": ["1 · Discordo totalmente", "2 · Discordo", "3 · Neutro", "4 · Concordo", "5 · Concordo totalmente"], "grid_ayuda": "Indique o seu grau de concordância com cada uma das afirmações deste bloco:", "grid_titulos": {"A": "Matriz de avaliação · Pertinência geral do modelo (A1 – A3)", "B": "Matriz de avaliação · Macroquadra e base cadastral (B1 – B5)", "C": "Matriz de avaliação · Regras de atribuição de vocação (C1 – C5)", "F": "Matriz de avaliação · Limiares de alerta precoce (F1 – F5)"}, "num_error": "Escreva apenas um número dentro do intervalo indicado.", "num_ayuda": "Número entre %s e %s.", "b7_ayuda": "Escreva 0 se considerar que não deveria haver limite máximo.", "e1_titulo": "E1. Distribuição de 100 pontos entre os quatro critérios estratégicos", "e1_ayuda": "Atribua a cada critério a pontuação relativa que considerar mais adequada (a soma dos quatro valores deve ser exatamente 100):", "coment": "Comentários e observações sobre esta seção (opcional)", "coment_ayuda": "Se desejar qualificar sua avaliação, sugerir valor alternativo ou indicar referências, anote aqui.", "ayuda_bloque": {"0": "📋 Caracterização do painel: Estes dados são utilizados apenas para descrever a composição estatística do painel de especialistas.", "A": "📌 Fundamentação do modelo:\nO IOTF-IUR organiza a franja em quatro escalas encadeadas (Metropolitana → Unidade Funcional → Macroquadra → Lote). Reconhece o uso logístico-portuário como estruturador da borda e propõe unidades funcionais intermunicipais.\n\nAvalie a pertinência das proposições do modelo:", "B": "📌 A macroquadra como unidade intermediária de gestão:\nAgrupa quadras urbanas e imóveis rurais do cadastro oficial sem dividi-los, atingindo uma área mínima de referência.\n\n• Mediana de planos parciais locais: 48,3 ha.\n• Análise de sensibilidade do modelo: com 15 ha resultam 490 macroquadras (mediana de 24,6 ha); com 25 ha, 367 macroquadras (mediana de 36,1 ha); com 50 ha, 230 macroquadras (mediana de 70,1 ha).\n• Marco legal: respeita a Fração Mínima de Parcelamento e o mínimo suburbano (2 ha, Decreto 1077/2015).\n\nAvalie as proposições sobre a escala e delimitação da macroquadra:", "C": "📌 Atribuição sequencial de vocação territorial:\nA cada macroquadra atribui-se uma vocação através de uma árvore de decisão hierárquica sequencial (ver diagrama). A primeira regra cumprida define a vocação dominante.\n\nAvalie os limiares quantitativos propostos para cada regra de atribuição:", "D": "📌 Coexistência de usos e faixas de amortecimento:\nNas cidades portuárias, a fricção espacial entre terminais logísticos pesados e assentamentos residenciais é um conflito crítico.\n\nO modelo estabelece valores de referência para afastamento espacial e largura da faixa verde de amortecimento biológico.", "E": "📌 Ponderação multicritério para o crescimento:\nA avaliação multicritério prioriza as áreas com maior aptidão para o crescimento metropolitano.\n\nDistribua um total de 100 pontos entre os quatro critérios segundo a sua importância estratégica (soma deve ser exatamente 100):", "F": "📌 Limiares de alerta precoce para planejamento adaptativo:\nO IOTF-IUR incorpora um sistema de monitoramento territorial com 8 indicadores-chave. Se um indicador ultrapassa o seu limiar crítico, ativa-se a revisão obrigatória da macroquadra.\n\nAvalie os limiares técnicos de alerta propostos:", "H": "📌 Síntese qualitativa e encerramento da consulta:\nSuas reflexões qualitativas abertas fornecerão os subsídios essenciais para calibrar o modelo conceitual e estruturar a Rodada 2."}, "reconoc": "Deseja que a sua participação seja reconhecida nominalmente na tese?", "reconoc_op": ["Sim, autorizo incluir meu nome e instituição nos agradecimentos/anexos da tese", "Não, solicito que minhas contribuições permaneçam sob estrito anonimato"], "colegas": "Poderia sugerir um ou dois colegas especialistas na matéria para convidar a este painel? (opcional)", "gracias": "Muito obrigada pela sua valiosa colaboração acadêmica. Você receberá os resultados consolidados da Rodada 2 em cerca de duas semanas.", "falta_contacto": "Escreva o e-mail institucional de contato na variável CONTACTO, no início do script."}}, "bloques": [{"cod": "0", "nombre": {"ES": "Perfil (no se publica)", "EN": "Profile (not published)", "PT": "Perfil (não publicado)"}, "items": [{"tipo": "P", "num": "P1", "texto": {"ES": "País e institución", "EN": "Country and institution", "PT": "País e instituição"}}, {"tipo": "P", "num": "P2", "texto": {"ES": "Área de formación y años de experiencia", "EN": "Field of training and years of experience", "PT": "Área de formação e anos de experiência"}}, {"tipo": "P", "num": "P3", "texto": {"ES": "Tipo de experiencia: académica, pública o consultoría", "EN": "Type of experience: academic, public sector or consultancy", "PT": "Tipo de experiência: acadêmica, setor público ou consultoria"}}, {"tipo": "L", "num": "P4", "texto": {"ES": "Conozco bien las ciudades portuarias latinoamericanas.", "EN": "I am familiar with Latin American port cities.", "PT": "Conheço bem as cidades portuárias latino-americanas."}}]}, {"cod": "A", "nombre": {"ES": "Pertinencia del modelo", "EN": "Relevance of the model", "PT": "Pertinência do modelo"}, "items": [{"tipo": "L", "num": "A1", "texto": {"ES": "El IOTF-IUR responde a un vacío real en la planificación de la franja de interfaz urbano-rural de las ciudades puerto latinoamericanas.", "EN": "The IOTF-IUR addresses a real gap in planning the rural-urban interface of Latin American port cities.", "PT": "O IOTF-IUR responde a uma lacuna real no planejamento da franja de interface urbano-rural das cidades portuárias latino-americanas."}}, {"tipo": "L", "num": "A2", "texto": {"ES": "Reconocer el uso logístico-portuario como una categoría propia del borde es adecuado.", "EN": "Recognising logistics and port uses as a category of the urban edge is appropriate.", "PT": "Reconhecer o uso logístico-portuário como uma categoria própria da borda é adequado."}}, {"tipo": "L", "num": "A3", "texto": {"ES": "Planificar por unidades funcionales que cruzan límites municipales es viable si se adopta como hecho metropolitano.", "EN": "Planning through functional units that cross municipal boundaries is feasible if adopted as a metropolitan matter.", "PT": "Planejar por unidades funcionais que atravessam limites municipais é viável se adotado como função metropolitana."}}]}, {"cod": "B", "nombre": {"ES": "Macromanzana y base catastral", "EN": "Macro-block and cadastral base", "PT": "Macroquadra e base cadastral"}, "items": [{"tipo": "L", "num": "B1", "texto": {"ES": "Una escala intermedia de gestión entre la unidad funcional (miles de hectáreas) y el predio es necesaria.", "EN": "An intermediate management scale between the functional unit (thousands of hectares) and the plot is necessary.", "PT": "Uma escala intermediária de gestão entre a unidade funcional (milhares de hectares) e o lote é necessária."}}, {"tipo": "L", "num": "B2", "texto": {"ES": "La macromanzana debe formarse agrupando manzanas catastrales existentes, sin partirlas.", "EN": "The macro-block should be formed by grouping existing cadastral blocks, without splitting them.", "PT": "A macroquadra deve ser formada agrupando quadras cadastrais existentes, sem dividi-las."}}, {"tipo": "L", "num": "B3", "texto": {"ES": "En suelo rural, donde el catastro no tiene manzanas, la unidad de agrupación debe ser el predio rural catastral.", "EN": "In rural land, where the cadastre has no blocks, the grouping unit should be the cadastral rural plot.", "PT": "Na zona rural, onde o cadastro não tem quadras, a unidade de agrupamento deve ser o imóvel rural cadastral."}}, {"tipo": "L", "num": "B4", "texto": {"ES": "La macromanzana no debe dividir ningún predio, para respetar las superficies mínimas legales (unidad agrícola familiar y 2 ha en suelo suburbano en Colombia).", "EN": "The macro-block should not divide any plot, so as to respect legal minimum sizes (family farm unit and 2 ha in suburban land in Colombia).", "PT": "A macroquadra não deve dividir nenhum lote, para respeitar as áreas mínimas legais (unidade agrícola familiar e 2 ha em solo suburbano na Colômbia)."}}, {"tipo": "L", "num": "B5", "texto": {"ES": "Una superficie mínima de 25 ha (unas 25 manzanas de 1 ha) es adecuada para la macromanzana.", "EN": "A minimum area of 25 ha (about 25 one-hectare blocks) is appropriate for the macro-block.", "PT": "Uma área mínima de 25 ha (cerca de 25 quadras de 1 ha) é adequada para a macroquadra."}}, {"tipo": "N", "num": "B6", "texto": {"ES": "¿Qué superficie mínima propone? (ha)", "EN": "What minimum area do you propose? (ha)", "PT": "Que área mínima propõe? (ha)"}}, {"tipo": "N", "num": "B7", "texto": {"ES": "¿Debería existir una superficie máxima? Si es así, ¿cuál? (ha)", "EN": "Should there be a maximum area? If so, which? (ha)", "PT": "Deveria haver uma área máxima? Se sim, qual? (ha)"}}, {"tipo": "L", "num": "B8", "texto": {"ES": "Es adecuado adoptar la macromanzana con instrumentos existentes (plan parcial en suelo de expansión; unidad de planificación rural en suelo rural), sin crear una figura legal nueva.", "EN": "It is appropriate to adopt the macro-block through existing instruments (partial plan in urban expansion land; rural planning unit in rural land), without creating a new legal figure.", "PT": "É adequado adotar a macroquadra com instrumentos existentes (plano parcial em solo de expansão; unidade de planejamento rural em solo rural), sem criar uma nova figura legal."}}]}, {"cod": "C", "nombre": {"ES": "Reglas de asignación de vocación", "EN": "Rules for assigning the vocation", "PT": "Regras de atribuição da vocação"}, "items": [{"tipo": "L", "num": "C1", "texto": {"ES": "Conservación y restauración ecológica: ≥ 30 % de agua, humedal o manglar, o ≥ 50 % en zona de protección del plan de cuenca.", "EN": "Ecological conservation and restoration: ≥ 30 % water, wetland or mangrove, or ≥ 50 % within a watershed-plan protection zone.", "PT": "Conservação e restauração ecológica: ≥ 30 % de água, área úmida ou manguezal, ou ≥ 50 % em zona de proteção do plano de bacia."}}, {"tipo": "L", "num": "C2", "texto": {"ES": "Reserva logística del corredor: a ≤ 600 m de la autopista de circunvalación y con < 30 % de superficie construida.", "EN": "Logistics reserve of the corridor: ≤ 600 m from the ring motorway and < 30 % built-up.", "PT": "Reserva logística do corredor: a ≤ 600 m da rodovia perimetral e com < 30 % de área construída."}}, {"tipo": "L", "num": "C3", "texto": {"ES": "Residencial mixta consolidada: ≥ 40 % de superficie construida.", "EN": "Consolidated mixed residential: ≥ 40 % built-up.", "PT": "Residencial misto consolidado: ≥ 40 % de área construída."}}, {"tipo": "L", "num": "C4", "texto": {"ES": "Expansión condicionada por riesgo hídrico: ≥ 30 % del suelo por debajo de 5 m de cota.", "EN": "Expansion conditioned by flood risk: ≥ 30 % of the land below 5 m elevation.", "PT": "Expansão condicionada por risco hídrico: ≥ 30 % do solo abaixo de 5 m de cota."}}, {"tipo": "L", "num": "C5", "texto": {"ES": "Agroindustrial: ≥ 35 % de suelo abierto (pastos, cultivos, matorral).", "EN": "Agro-industrial: ≥ 35 % open land (grassland, crops, shrubland).", "PT": "Agroindustrial: ≥ 35 % de solo aberto (pastagens, cultivos, arbustos)."}}, {"tipo": "A", "num": "C6", "texto": {"ES": "¿Qué umbral cambiaría o qué regla falta?", "EN": "Which threshold would you change, or which rule is missing?", "PT": "Que limiar mudaria ou que regra falta?"}}]}, {"cod": "D", "nombre": {"ES": "Compatibilidad de usos y amortiguamiento", "EN": "Land-use compatibility and buffers", "PT": "Compatibilidade de usos e amortecimento"}, "items": [{"tipo": "L", "num": "D1", "texto": {"ES": "Debe existir una distancia mínima entre vivienda de alta densidad y actividad portuaria de alta intensidad.", "EN": "There should be a minimum distance between high-density housing and high-intensity port activity.", "PT": "Deve existir uma distância mínima entre habitação de alta densidade e atividade portuária de alta intensidade."}}, {"tipo": "N", "num": "D2", "texto": {"ES": "Distancia mínima propuesta (m; valor actual 500 m)", "EN": "Proposed minimum distance (m; current value 500 m)", "PT": "Distância mínima proposta (m; valor atual 500 m)"}}, {"tipo": "N", "num": "D3", "texto": {"ES": "Ancho mínimo de la franja verde de amortiguamiento (m; valor actual 100 m)", "EN": "Minimum width of the green buffer (m; current value 100 m)", "PT": "Largura mínima da faixa verde de amortecimento (m; valor atual 100 m)"}}, {"tipo": "L", "num": "D4", "texto": {"ES": "La vivienda de interés social no debe localizarse en suelo de vocación logística.", "EN": "Social housing should not be located on land with a logistics vocation.", "PT": "A habitação de interesse social não deve localizar-se em solo de vocação logística."}}]}, {"cod": "E", "nombre": {"ES": "Ponderación de la evaluación multicriterio", "EN": "Weighting of the multi-criteria evaluation", "PT": "Ponderação da avaliação multicritério"}, "items": [{"tipo": "N", "num": "E1", "texto": {"ES": "Reparta 100 puntos: (a) accesibilidad e infraestructura · (b) presión urbana · (c) valor estratégico del suelo · (d) vulnerabilidad ambiental, incluido el riesgo hídrico y costero", "EN": "Distribute 100 points: (a) accessibility and infrastructure · (b) urban pressure · (c) strategic value of land · (d) environmental vulnerability, including flood and coastal risk", "PT": "Distribua 100 pontos: (a) acessibilidade e infraestrutura · (b) pressão urbana · (c) valor estratégico do solo · (d) vulnerabilidade ambiental, incluído o risco hídrico e costeiro"}}]}, {"cod": "F", "nombre": {"ES": "Umbrales de alerta de los indicadores", "EN": "Alert thresholds of the indicators", "PT": "Limiares de alerta dos indicadores"}, "items": [{"tipo": "L", "num": "F1", "texto": {"ES": "Mezcla de usos (IMUS, índice de Shannon) > 1,8 en suelo logístico-portuario.", "EN": "Land-use mix (Shannon index) > 1.8 in logistics/port land.", "PT": "Mistura de usos (índice de Shannon) > 1,8 em solo logístico-portuário."}}, {"tipo": "L", "num": "F2", "texto": {"ES": "Presión urbana > 0,6 en suelo de protección o de transición.", "EN": "Urban pressure > 0.6 in protection or transition land.", "PT": "Pressão urbana > 0,6 em solo de proteção ou de transição."}}, {"tipo": "L", "num": "F3", "texto": {"ES": "Impermeabilización > 2 % anual o > 5 % acumulado en tres años.", "EN": "Soil sealing > 2 % per year or > 5 % over three years.", "PT": "Impermeabilização > 2 % ao ano ou > 5 % acumulado em três anos."}}, {"tipo": "L", "num": "F4", "texto": {"ES": "Humedales: índice < 0,6 o pérdida > 5 % de su superficie.", "EN": "Wetlands: index < 0.6 or loss > 5 % of their area.", "PT": "Áreas úmidas: índice < 0,6 ou perda > 5 % da sua superfície."}}, {"tipo": "L", "num": "F5", "texto": {"ES": "Exposición al riesgo hídrico y costero > 30 % en una macromanzana de expansión residencial.", "EN": "Flood and coastal risk exposure > 30 % in a residential expansion macro-block.", "PT": "Exposição ao risco hídrico e costeiro > 30 % em macroquadra de expansão residencial."}}, {"tipo": "A", "num": "F6", "texto": {"ES": "¿Qué indicador o umbral cambiaría?", "EN": "Which indicator or threshold would you change?", "PT": "Que indicador ou limiar mudaria?"}}]}, {"cod": "H", "nombre": {"ES": "Preguntas abiertas", "EN": "Open questions", "PT": "Perguntas abertas"}, "items": [{"tipo": "A", "num": "H1", "texto": {"ES": "¿Qué criterio o variable falta para delimitar o calificar las macromanzanas?", "EN": "Which criterion or variable is missing to delimit or classify the macro-blocks?", "PT": "Que critério ou variável falta para delimitar ou classificar as macroquadras?"}}, {"tipo": "A", "num": "H2", "texto": {"ES": "¿Conoce experiencias comparables (unidades de actuación, supermanzanas, parques agrarios) que convenga considerar?", "EN": "Do you know comparable experiences (development units, superblocks, agrarian parks) worth considering?", "PT": "Conhece experiências comparáveis (unidades de atuação, superquadras, parques agrários) que convenha considerar?"}}, {"tipo": "A", "num": "H3", "texto": {"ES": "¿Qué riesgos ve en aplicar la macromanzana en una franja con alta informalidad?", "EN": "What risks do you see in applying the macro-block in a fringe with high informality?", "PT": "Que riscos vê em aplicar a macroquadra numa franja com alta informalidade?"}}]}], "img_bloques": {"A": [["02_escalas.png", null]], "B": [["03_macromanzanas.png", null]], "C": [["04_reglas.png", null]], "D": [["05_amortiguamiento.png", null]], "E": [["06_criterios.png", null]], "F": [["07_indicadores.png", null]]}, "num_rangos": {"B6": [1, 1000, true], "B7": [0, 5000, false], "D2": [0, 5000, true], "D3": [0, 2000, true]}, "e1_partes": {"ES": ["(a) Accesibilidad e infraestructura", "(b) Presión urbana", "(c) Valor estratégico del suelo", "(d) Vulnerabilidad ambiental, incluido el riesgo hídrico y costero"], "EN": ["(a) Accessibility and infrastructure", "(b) Urban pressure", "(c) Strategic value of land", "(d) Environmental vulnerability, including flood and coastal risk"], "PT": ["(a) Acessibilidade e infraestrutura", "(b) Pressão urbana", "(c) Valor estratégico do solo", "(d) Vulnerabilidade ambiental, incluído o risco hídrico e costeiro"]}};
+
+    let idiomaActual = "ES";
+    let pasoActual = 0; // 0 = Consentimiento, 1 = Perfil, 2 = A, 3 = B, 4 = C, 5 = D, 6 = E, 7 = F, 8 = H (Cierre)
+    let respuestas = {};
+
+    // Cargar pasos disponibles
+    function obtenerListaPasos() {
+      const b = DATA.bloques;
+      return [
+        { cod: "CONSENT", titulo: { ES: "Presentación y Consentimiento", EN: "Introduction & Consent", PT: "Apresentação e Consentimento" } },
+        { cod: "0", titulo: { ES: "0. Perfil del Experto", EN: "0. Expert Profile", PT: "0. Perfil do Especialista" } },
+        { cod: "A", titulo: { ES: "A. Pertinencia del Modelo", EN: "A. Model Relevance", PT: "A. Pertinência do Modelo" } },
+        { cod: "B", titulo: { ES: "B. Macromanzana y Catastro", EN: "B. Macro-block & Cadastre", PT: "B. Macroquadra e Cadastro" } },
+        { cod: "C", titulo: { ES: "C. Reglas de Vocación", EN: "C. Vocation Rules", PT: "C. Regras de Vocação" } },
+        { cod: "D", titulo: { ES: "D. Coexistencia y Amortiguamiento", EN: "D. Buffers & Coexistence", PT: "D. Faixas de Amortecimento" } },
+        { cod: "E", titulo: { ES: "E. Ponderación Multicriterio", EN: "E. Multi-criteria Weighting", PT: "E. Ponderação Multicritério" } },
+        { cod: "F", titulo: { ES: "F. Alertas Tempranas", EN: "F. Early Warnings", PT: "F. Alertas Precoces" } },
+        { cod: "H", titulo: { ES: "H. Síntesis y Cierre", EN: "H. Synthesis & Closure", PT: "H. Síntese e Fechamento" } }
+      ];
+    }
+
+    function cambiarIdioma(nuevo) {
+      idiomaActual = nuevo;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === nuevo);
+      });
+      renderizarTabs();
+      renderizarPaso();
+    }
+
+    function renderizarTabs() {
+      const pasos = obtenerListaPasos();
+      const container = document.getElementById("navTabs");
+      container.innerHTML = "";
+      pasos.forEach((p, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "nav-tab-btn" + (idx === pasoActual ? " active" : "");
+        btn.textContent = p.titulo[idiomaActual];
+        btn.onclick = () => irAlPaso(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function irAlPaso(idx) {
+      pasoActual = idx;
+      renderizarTabs();
+      renderizarPaso();
+      window.scrollTo({ top: 120, behavior: "smooth" });
+    }
+
+    function cambiarPaso(delta) {
+      const total = obtenerListaPasos().length;
+      const nuevo = pasoActual + delta;
+      if (nuevo >= 0 && nuevo < total) {
+        irAlPaso(nuevo);
+      }
+    }
+
+    function renderizarPaso() {
+      const pasos = obtenerListaPasos();
+      const info = document.getElementById("progressInfo");
+      const fill = document.getElementById("progressFill");
+      const btnPrev = document.getElementById("btnPrev");
+      const btnNext = document.getElementById("btnNext");
+      const container = document.getElementById("stepContainer");
+
+      info.textContent = `${idiomaActual === 'ES' ? 'Paso' : idiomaActual === 'EN' ? 'Step' : 'Passo'} ${pasoActual + 1} / ${pasos.length}`;
+      fill.style.width = `${((pasoActual + 1) / pasos.length) * 100}%`;
+
+      btnPrev.style.visibility = pasoActual === 0 ? "hidden" : "visible";
+      btnNext.textContent = pasoActual === pasos.length - 1 ? 
+        (idiomaActual === 'ES' ? 'Finalizar y Ver Resumen' : idiomaActual === 'EN' ? 'Finish & Review' : 'Finalizar e Rever') : 
+        (idiomaActual === 'ES' ? 'Siguiente →' : idiomaActual === 'EN' ? 'Next →' : 'Avançar →');
+
+      const pasoObj = pasos[pasoActual];
+      let html = "";
+
+      if (pasoObj.cod === "CONSENT") {
+        html = renderizarConsentimiento();
+      } else {
+        html = renderizarBloque(pasoObj.cod);
+      }
+
+      container.innerHTML = html;
+      initInteraccionesPaso(pasoObj.cod);
+    }
+
+    function obtenerRutaImagen(nombre) {
+      if (window.location.pathname.indexOf('05_Google_Forms') >= 0) {
+        return 'imagenes_' + idiomaActual + '/' + nombre;
+      }
+      return '../img/delphi_' + idiomaActual + '/' + nombre;
+    }
+
+    function renderizarConsentimiento() {
+      const T = DATA.textos[idiomaActual];
+      return `
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag">${idiomaActual === 'ES' ? 'Presentación Institucional' : idiomaActual === 'EN' ? 'Institutional Presentation' : 'Apresentação Institucional'}</span>
+            <h2 class="card-title">${T.pag_consent}</h2>
+          </div>
+          <div class="card-desc">${T.intro}</div>
+          
+          <div class="figure-box">
+            <img class="figure-img" src="${obtenerRutaImagen('01_barranquilla.png')}" alt="Mapa Franja Barranquilla" onclick="abrirModal(this.src, '${T.mapa_titulo}')">
+            <div class="figure-caption">Figura 1 · ${T.mapa_titulo} (clic para ampliar)</div>
+          </div>
+
+          <div class="q-group" style="margin-top: 28px; background: #F8FAFC; padding: 20px; border-radius: 8px; border: 1px solid var(--slate-300);">
+            <div class="q-title">⚖️ ${T.consent_q}</div>
+            <div class="q-desc">${T.consent_ayuda.replace('%s', 'aida.palmett@estudiantat.upc.edu')}</div>
+            <div style="display: flex; gap: 20px; margin-top: 12px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer;">
+                <input type="radio" name="consent" value="si" checked class="matrix-radio"> ${T.si}
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; color: var(--slate-600);">
+                <input type="radio" name="consent" value="no" class="matrix-radio"> ${T.no}
+              </label>
+            </div>
+          </div>
+
+          <div class="q-group" style="margin-top: 24px;">
+            <div class="q-title">🔑 ${T.codigo}</div>
+            <div class="q-desc">${T.codigo_ayuda}</div>
+            <input type="text" class="input-text" style="max-width: 280px; font-weight: 700; letter-spacing: 0.05em;" placeholder="IOTF-00-XXX" value="${respuestas['codigo'] || ''}" onchange="respuestas['codigo'] = this.value">
+          </div>
+        </div>
+      `;
+    }
+
+    function renderizarBloque(cod) {
+      const T = DATA.textos[idiomaActual];
+      const bloque = DATA.bloques.find(b => b.cod === cod);
+      if (!bloque) return "";
+
+      const tituloSeccion = `${cod}. ${bloque.nombre[idiomaActual]}`;
+      const descSeccion = T.ayuda_bloque[cod] || "";
+
+      let imgHtml = "";
+      const imgs = DATA.img_bloques[cod] || [];
+      imgs.forEach(img => {
+        imgHtml += `
+          <div class="figure-box">
+            <img class="figure-img" src="${obtenerRutaImagen(img[0])}" alt="${img[0]}" onclick="abrirModal(this.src, '${tituloSeccion}')">
+            <div class="figure-caption">📌 Infografía metodológica oficial: ${img[0]} (clic para ampliar en alta resolución)</div>
+          </div>
+        `;
+      });
+
+      let contenidoHtml = "";
+
+      // Separar ítems tipo Likert consecutivos para matriz
+      let idx = 0;
+      const items = bloque.items;
+
+      while (idx < items.length) {
+        const item = items[idx];
+
+        if (item.tipo === "L") {
+          // Agrupar consecutivos
+          let j = idx;
+          while (j < items.length && items[j].tipo === "L") j++;
+          const grupo = items.slice(idx, j);
+
+          if (grupo.length >= 2 && cod !== "0") {
+            // Renderizar Matriz Cuadrícula
+            const cols = T.cols;
+            const titGrid = T.grid_titulos[cod] || "Matriz de Valoración";
+            contenidoHtml += `
+              <div class="q-group">
+                <div class="q-title" style="color: var(--upc-navy);">📊 ${titGrid}</div>
+                <div class="q-desc">${T.grid_ayuda}</div>
+                <div class="matrix-wrap">
+                  <table class="matrix-table">
+                    <thead>
+                      <tr>
+                        <th class="col-prop">${idiomaActual === 'ES' ? 'Proposición a valorar' : idiomaActual === 'EN' ? 'Proposition to rate' : 'Proposição a avaliar'}</th>
+                        ${cols.map(c => `<th>${c}</th>`).join("")}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${grupo.map(g => `
+                        <tr id="row_${g.num}">
+                          <td class="col-prop"><strong>${g.num}</strong>. ${g.texto[idiomaActual]}</td>
+                          ${[1, 2, 3, 4, 5].map(val => `
+                            <td class="col-radio" onclick="seleccionarLikert('${g.num}', ${val})">
+                              <input type="radio" name="likert_${g.num}" value="${val}" class="matrix-radio" ${respuestas[g.num] == val ? 'checked' : ''}>
+                            </td>
+                          `).join("")}
+                        </tr>
+                      `).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+            idx = j;
+            continue;
+          } else {
+            // Escala individual
+            contenidoHtml += `
+              <div class="q-group">
+                <div class="q-title"><strong>${item.num}</strong>. ${item.texto[idiomaActual]}</div>
+                <div style="display: flex; gap: 16px; align-items: center; margin-top: 12px; flex-wrap: wrap;">
+                  <span style="font-size: 0.82rem; color: var(--slate-600);">${T.bajo}</span>
+                  ${[1, 2, 3, 4, 5].map(val => `
+                    <label style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 600;">
+                      <input type="radio" name="likert_${item.num}" value="${val}" class="matrix-radio" ${respuestas[item.num] == val ? 'checked' : ''} onchange="respuestas['${item.num}'] = this.value">
+                      <span style="font-size: 0.85rem;">${val}</span>
+                    </label>
+                  `).join("")}
+                  <span style="font-size: 0.82rem; color: var(--slate-600);">${T.alto}</span>
+                </div>
+              </div>
+            `;
+            idx++;
+            continue;
+          }
+        } else if (item.num === "E1") {
+          // Calculadora multicriterio E1
+          const partes = DATA.e1_partes[idiomaActual];
+          contenidoHtml += `
+            <div class="q-group">
+              <div class="q-title">⚖️ ${T.e1_titulo}</div>
+              <div class="q-desc">${T.e1_ayuda}</div>
+              <div class="calc-container">
+                ${partes.map((p, pIdx) => `
+                  <div class="calc-row">
+                    <div class="calc-label">E1 (${['a', 'b', 'c', 'd'][pIdx]}) ${p}</div>
+                    <input type="range" class="calc-slider" id="slider_e1_${pIdx}" min="0" max="100" value="${respuestas['E1_' + pIdx] !== undefined ? respuestas['E1_' + pIdx] : 25}" oninput="actualizarCalcE1(${pIdx}, this.value)">
+                    <input type="number" class="calc-input" id="num_e1_${pIdx}" min="0" max="100" value="${respuestas['E1_' + pIdx] !== undefined ? respuestas['E1_' + pIdx] : 25}" onchange="actualizarCalcE1(${pIdx}, this.value)">
+                  </div>
+                `).join("")}
+                <div class="calc-total-bar valid" id="calcTotalBar">
+                  <span>Suma Total: <strong id="calcTotalVal">100</strong> / 100 puntos</span>
+                  <span id="calcTotalStatus">✓ Asignación balanceada</span>
+                </div>
+              </div>
+            </div>
+          `;
+          idx++;
+        } else if (item.tipo === "N") {
+          const rango = DATA.num_rangos[item.num];
+          const mn = rango[0], mx = rango[1];
+          const ayuda = item.num === "B7" ? T.b7_ayuda : T.num_ayuda.replace("%s", mn).replace("%s", mx);
+          contenidoHtml += `
+            <div class="q-group">
+              <div class="q-title"><strong>${item.num}</strong>. ${item.texto[idiomaActual]}</div>
+              <div class="q-desc">${ayuda}</div>
+              <input type="number" class="input-number" min="${mn}" max="${mx}" value="${respuestas[item.num] !== undefined ? respuestas[item.num] : ''}" onchange="respuestas['${item.num}'] = this.value">
+            </div>
+          `;
+          idx++;
+        } else if (item.tipo === "P") {
+          contenidoHtml += `
+            <div class="q-group">
+              <div class="q-title"><strong>${item.num}</strong>. ${item.texto[idiomaActual]}</div>
+              <input type="text" class="input-text" value="${respuestas[item.num] || ''}" onchange="respuestas['${item.num}'] = this.value">
+            </div>
+          `;
+          idx++;
+        } else {
+          contenidoHtml += `
+            <div class="q-group">
+              <div class="q-title"><strong>${item.num}</strong>. ${item.texto[idiomaActual]}</div>
+              <textarea class="input-textarea" placeholder="${idiomaActual === 'ES' ? 'Escriba su aporte o propuesta...' : 'Type your comment...'}" onchange="respuestas['${item.num}'] = this.value">${respuestas[item.num] || ''}</textarea>
+            </div>
+          `;
+          idx++;
+        }
+      }
+
+      // Comentario de sección
+      if (cod !== "0" && cod !== "E" && cod !== "H") {
+        contenidoHtml += `
+          <div class="q-group" style="margin-top: 20px; background: #F8FAFC; padding: 18px; border-radius: 8px;">
+            <div class="q-title" style="font-size: 0.95rem;">💬 ${T.coment}</div>
+            <div class="q-desc" style="font-size: 0.85rem;">${T.coment_ayuda}</div>
+            <textarea class="input-textarea" onchange="respuestas['coment_${cod}'] = this.value">${respuestas['coment_' + cod] || ''}</textarea>
+          </div>
+        `;
+      }
+
+      // Cierre ético en bloque H
+      if (cod === "H") {
+        contenidoHtml += `
+          <div class="q-group" style="margin-top: 24px; padding: 20px; background: #EFF6FF; border-radius: 8px; border: 1px solid #BFDBFE;">
+            <div class="q-title">📜 ${T.reconoc}</div>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+              ${T.reconoc_op.map((op, idx) => `
+                <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.9rem; cursor: pointer;">
+                  <input type="radio" name="reconoc" value="${idx}" class="matrix-radio" ${respuestas['reconoc'] == idx ? 'checked' : (idx === 0 ? 'checked' : '')} onchange="respuestas['reconoc'] = this.value">
+                  <span>${op}</span>
+                </label>
+              `).join("")}
+            </div>
+          </div>
+          <div class="q-group">
+            <div class="q-title">🤝 ${T.colegas}</div>
+            <textarea class="input-textarea" placeholder="Nombre, filiación y correo institucional..." onchange="respuestas['colegas'] = this.value">${respuestas['colegas'] || ''}</textarea>
+          </div>
+          <div style="text-align: center; margin-top: 24px;">
+            <button class="btn btn-primary" onclick="mostrarResumenFinal()" style="font-size: 1.05rem; padding: 14px 28px;">
+              📋 ${idiomaActual === 'ES' ? 'Generar Resumen de Respuestas para Revisión' : 'Generate Summary for Review'}
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag">${idiomaActual === 'ES' ? 'Sección Temática' : 'Thematic Section'}</span>
+            <h2 class="card-title">${tituloSeccion}</h2>
+          </div>
+          <div class="card-desc">${descSeccion}</div>
+          ${imgHtml}
+          ${contenidoHtml}
+        </div>
+      `;
+    }
+
+    function initInteraccionesPaso(cod) {
+      if (cod === "E") {
+        recalcularE1();
+      }
+    }
+
+    function seleccionarLikert(itemNum, valor) {
+      respuestas[itemNum] = valor;
+      const row = document.getElementById("row_" + itemNum);
+      if (row) {
+        row.classList.add("answered");
+        const radio = row.querySelector(`input[value="${valor}"]`);
+        if (radio) radio.checked = true;
+      }
+    }
+
+    function actualizarCalcE1(idx, val) {
+      val = parseInt(val) || 0;
+      if (val < 0) val = 0;
+      if (val > 100) val = 100;
+      document.getElementById("slider_e1_" + idx).value = val;
+      document.getElementById("num_e1_" + idx).value = val;
+      respuestas['E1_' + idx] = val;
+      recalcularE1();
+    }
+
+    function recalcularE1() {
+      let total = 0;
+      for (let i = 0; i < 4; i++) {
+        const inp = document.getElementById("num_e1_" + i);
+        if (inp) total += (parseInt(inp.value) || 0);
+      }
+      const bar = document.getElementById("calcTotalBar");
+      const valEl = document.getElementById("calcTotalVal");
+      const statEl = document.getElementById("calcTotalStatus");
+      if (!bar) return;
+
+      valEl.textContent = total;
+      if (total === 100) {
+        bar.className = "calc-total-bar valid";
+        statEl.textContent = "✓ Suma exacta: 100 puntos (Válido)";
+      } else if (total < 100) {
+        bar.className = "calc-total-bar invalid";
+        statEl.textContent = `⚠️ Faltan ${100 - total} puntos por asignar`;
+      } else {
+        bar.className = "calc-total-bar invalid";
+        statEl.textContent = `⚠️ Excede en ${total - 100} puntos (debe ser exactamente 100)`;
+      }
+    }
+
+    function abrirModal(src, caption) {
+      document.getElementById("modalImgSrc").src = src;
+      document.getElementById("modalImgCaption").textContent = caption;
+      document.getElementById("imgModal").classList.add("open");
+    }
+
+    function cerrarModal() {
+      document.getElementById("imgModal").classList.remove("open");
+    }
+
+    function mostrarResumenFinal() {
+      let html = "<h3>Resumen de Valoraciones Registradas</h3><br>";
+      html += "<p><strong>Código de participante:</strong> " + (respuestas['codigo'] || 'No especificado') + "</p><br>";
+      html += "<table style='width: 100%; border-collapse: collapse; font-size: 0.9rem;'>";
+      html += "<tr style='background: #f1f5f9; text-align: left;'><th style='padding: 8px;'>Variable</th><th style='padding: 8px;'>Valoración / Respuesta</th></tr>";
+      for (let k in respuestas) {
+        if (respuestas.hasOwnProperty(k)) {
+          html += `<tr style='border-bottom: 1px solid #e2e8f0;'><td style='padding: 8px;'><strong>${k}</strong></td><td style='padding: 8px;'>${respuestas[k]}</td></tr>`;
+        }
+      }
+      html += "</table>";
+      abrirModal("", "");
+      document.getElementById("modalImgSrc").style.display = "none";
+      const cap = document.getElementById("modalImgCaption");
+      cap.innerHTML = html;
+      cap.style.textAlign = "left";
+    }
+
+    // Iniciar app
+    renderizarTabs();
+    renderizarPaso();
+  </script>
+</body>
+</html>
