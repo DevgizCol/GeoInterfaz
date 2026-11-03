@@ -1,262 +1,318 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="es" data-tema="oscuro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CapillaryEdge (Geovisor 3.0) — Sistema de Soporte a la Decisión Territorial</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CapillaryEdge · Simulador Territorial de la Tesis Doctoral</title>
+  <meta name="description" content="Sistema de soporte a la decisión territorial basado en la estructura capilar (Aida Palmett Padilla, UPC)">
   
-  <!-- Leaflet CSS & JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Tipografías Oficiales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
+  <!-- MapLibre GL CSS & JS (Igual que el Geovisor oficial) -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+  <!-- Estilos Maestros Oficiales de GeoInterfaz -->
+  <link rel="stylesheet" href="../css/estilo.css?v=3">
+  <link rel="stylesheet" href="../css/refinado.css?v=9">
+
   <style>
-    #map { height: calc(100vh - 64px); width: 100%; }
-    .glass-panel {
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    :root {
+      --color-sangre-azul: #0ea5e9;
+      --color-sangre-roja: #f43f5e;
+      --color-planes: #a855f7;
+      --color-informal: #eab308;
+    }
+    body, html {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: #0b1522; color: #e2e8f0; overflow: hidden;
+    }
+    #mapa-capillary {
+      position: absolute; top: 60px; bottom: 0; left: 0; right: 0;
+      background: #09111c;
+    }
+    .header-capillary {
+      height: 60px; background: #0f1c2e; border-bottom: 1px solid #1e324b;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; z-index: 1000; position: relative;
+    }
+    .panel-flotante {
+      position: absolute; top: 76px; left: 20px; width: 380px; max-height: calc(100vh - 100px);
+      background: rgba(15, 28, 46, 0.94); backdrop-filter: blur(12px);
+      border: 1px solid #233b59; border-radius: 12px; z-index: 999;
+      padding: 18px; box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      display: flex; flex-direction: column; gap: 14px; overflow-y: auto;
+    }
+    .panel-leyenda {
+      position: absolute; bottom: 20px; right: 20px; width: 300px;
+      background: rgba(15, 28, 46, 0.92); backdrop-filter: blur(10px);
+      border: 1px solid #233b59; border-radius: 10px; z-index: 999;
+      padding: 14px; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .seccion-control {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .control-header {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; font-weight: 600;
+    }
+    .slider-custom {
+      width: 100%; accent-color: var(--color-sangre-azul); cursor: pointer;
+    }
+    .grid-metricas {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .caja-metrica {
+      background: #0b1522; border: 1px solid #1a2c42; border-radius: 8px;
+      padding: 8px 10px; font-size: 11px;
+    }
+    .caja-metrica strong {
+      display: block; font-size: 15px; font-family: 'JetBrains Mono', monospace;
+      margin-top: 2px;
+    }
+    .tag-badge {
+      font-size: 10px; font-weight: bold; text-transform: uppercase;
+      padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
+    }
+    .btn-volver {
+      color: #94a3b8; text-decoration: none; font-size: 12px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 6px; background: #16283f; border: 1px solid #253e5e;
+      transition: all 0.2s;
+    }
+    .btn-volver:hover { color: #fff; background: #1e3553; }
+    .select-ciudad {
+      background: #0b1522; color: #fff; border: 1px solid #253e5e;
+      padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 500;
+      cursor: pointer; outline: none;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans overflow-hidden">
+<body>
 
-  <!-- Header Superior -->
-  <header class="h-16 bg-slate-900 border-b border-slate-800 px-6 flex items-center justify-between z-20 relative">
-    <div class="flex items-center space-x-3">
-      <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-        <i data-lucide="waves" class="w-5 h-5 text-white"></i>
-      </div>
-      <div>
-        <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-          CapillaryEdge <span class="text-xs px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">v3.0 SDSS</span>
-        </h1>
-        <p class="text-xs text-slate-400">Plataforma de Simulación y Decisión Territorial en Interfaces Urbano-Rurales</p>
-      </div>
+  <!-- Cabecera Oficial -->
+  <header class="header-capillary">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="../" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: white;">
+        <img src="../logo_aida.svg" alt="UPC" style="height: 32px;">
+        <div>
+          <span style="font-weight: 800; font-size: 15px; letter-spacing: -0.02em;">CapillaryEdge</span>
+          <span class="tag-badge" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid #0284c7; margin-left: 6px;">SDSS v3.0</span>
+          <div style="font-size: 11px; color: #94a3b8;">Simulador Territorial · Tesis Doctoral UPC (Aida Palmett)</div>
+        </div>
+      </a>
     </div>
 
-    <!-- Selector de Ciudad (Transferibilidad Global) -->
-    <div class="flex items-center space-x-4">
-      <div class="flex items-center bg-slate-800/80 rounded-lg p-1 border border-slate-700 text-xs">
-        <span class="px-2 text-slate-400 flex items-center gap-1"><i data-lucide="globe" class="w-3.5 h-3.5"></i> Caso:</span>
-        <select id="city-selector" class="bg-slate-900 text-white rounded px-2 py-1 outline-none font-medium cursor-pointer" onchange="changeCity(this.value)">
-          <option value="barranquilla" selected>Barranquilla (Río - Mar - Arroyos)</option>
-          <option value="santos">Santos (Estuario - Manglar)</option>
+    <!-- Controles de Cabecera -->
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8;">
+        <span>Caso de estudio:</span>
+        <select class="select-ciudad" onchange="volarCiudad(this.value)">
+          <option value="barranquilla" selected>Barranquilla (Río - Mar - Red Arroyos)</option>
+          <option value="santos">Santos (Estuario - Manglares)</option>
           <option value="valparaiso">Valparaíso (Anfiteatro - Cerros)</option>
           <option value="veracruz">Veracruz (Llanura Litoral)</option>
         </select>
       </div>
-
-      <a href="../" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1 transition">
-        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al Atlas
-      </a>
+      <a href="../" class="btn-volver">← Volver al Atlas Operativo</a>
     </div>
   </header>
 
-  <!-- Contenedor Principal -->
-  <div class="relative w-full h-full flex">
-    
-    <!-- Mapa Base -->
-    <div id="map" class="z-0"></div>
+  <!-- Mapa Base -->
+  <div id="mapa-capillary"></div>
 
-    <!-- Panel Flotante Izquierdo: Sandbox Normativo -->
-    <div class="absolute top-4 left-4 z-10 w-96 glass-panel rounded-xl p-5 shadow-2xl flex flex-col space-y-4 max-h-[calc(100vh-100px)] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
-        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="sliders" class="w-4 h-4 text-cyan-400"></i> Sandbox de Políticas Capilares
-        </h2>
-        <span class="text-[10px] text-cyan-400 font-mono uppercase bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/60">Simulador</span>
-      </div>
-
-      <!-- Control 1: Amortiguamiento de Arroyos (Sangre Azul) -->
-      <div class="space-y-1.5">
-        <div class="flex justify-between text-xs">
-          <span class="text-slate-300 font-medium flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Buffer Hídrico (Arroyos)
-          </span>
-          <span id="buffer-val" class="text-blue-400 font-mono font-bold">50 m</span>
-        </div>
-        <input type="range" id="slider-buffer" min="15" max="150" value="50" step="5" class="w-full accent-blue-500 cursor-pointer" oninput="updateBuffer(this.value)">
-        <p class="text-[11px] text-slate-400 leading-tight">Franja de protección ecológica sobre los 163 km de drenajes capilares.</p>
-      </div>
-
-      <!-- Control 2: Nudos de la Circunvalar (Sangre Roja) -->
-      <div class="space-y-1.5 pt-2 border-t border-slate-800">
-        <div class="flex justify-between text-xs">
-          <span class="text-slate-300 font-medium flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Nudos Activos (Accesibilidad)
-          </span>
-          <span id="nudos-val" class="text-rose-400 font-mono font-bold">10 / 10</span>
-        </div>
-        <input type="range" id="slider-nudos" min="3" max="10" value="10" class="w-full accent-rose-500 cursor-pointer" oninput="updateNudos(this.value)">
-        <p class="text-[11px] text-slate-400 leading-tight">Restricción de cruces para evitar la presión inmobiliaria especulativa intermedia.</p>
-      </div>
-
-      <!-- Control 3: Filtro de Macromanzanas -->
-      <div class="space-y-1.5 pt-2 border-t border-slate-800">
-        <div class="flex justify-between text-xs">
-          <span class="text-slate-300 font-medium flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Umbral Macromanzana
-          </span>
-          <span id="macro-val" class="text-emerald-400 font-mono font-bold">≥ 25 ha</span>
-        </div>
-        <input type="range" id="slider-macro" min="5" max="50" value="25" step="5" class="w-full accent-emerald-500 cursor-pointer" oninput="updateMacro(this.value)">
-        <p class="text-[11px] text-slate-400 leading-tight">Superficie mínima de gestión para evitar la parcelación hormiga.</p>
-      </div>
-
-      <!-- Panel de Métricas Predictivas en Tiempo Real -->
-      <div class="bg-slate-900/90 rounded-lg p-3 border border-slate-800 space-y-2 mt-2">
-        <h3 class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-          <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-cyan-400"></i> Impacto en la Franja (18.577 ha)
-        </h3>
-        
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-slate-950/60 p-2 rounded border border-slate-800/80">
-            <span class="text-slate-400 block">Suelo Protegido:</span>
-            <span id="metric-suelo" class="text-sm font-mono font-bold text-blue-400">1.630 ha</span>
-          </div>
-          <div class="bg-slate-950/60 p-2 rounded border border-slate-800/80">
-            <span class="text-slate-400 block">Conflicto Planes:</span>
-            <span id="metric-conflicto" class="text-sm font-mono font-bold text-amber-400">296 ha</span>
-          </div>
-        </div>
-
-        <div class="p-2 bg-slate-950/60 rounded border border-slate-800/80 text-[11px]">
-          <div class="flex justify-between text-slate-400 mb-1">
-            <span>Índice de Salud Capilar:</span>
-            <span id="metric-salud" class="font-mono font-bold text-emerald-400">88.4%</span>
-          </div>
-          <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-            <div id="bar-salud" class="bg-emerald-500 h-full rounded-full transition-all duration-300" style="width: 88.4%;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capas Activas -->
-      <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
-        <span class="text-slate-300 font-semibold block">Capas del Modelo:</span>
-        <label class="flex items-center space-x-2 cursor-pointer text-slate-300 hover:text-white">
-          <input type="checkbox" id="chk-arroyos" checked onchange="toggleLayer('arroyos')" class="rounded accent-blue-500">
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-1 bg-blue-500 inline-block"></span> Red Hídrica Capilar (163 km)</span>
-        </label>
-        <label class="flex items-center space-x-2 cursor-pointer text-slate-300 hover:text-white">
-          <input type="checkbox" id="chk-circunvalar" checked onchange="toggleLayer('circunvalar')" class="rounded accent-rose-500">
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-1 bg-rose-500 inline-block"></span> Circunvalar de la Prosperidad</span>
-        </label>
-        <label class="flex items-center space-x-2 cursor-pointer text-slate-300 hover:text-white">
-          <input type="checkbox" id="chk-planes" checked onchange="toggleLayer('planes_parciales')" class="rounded accent-purple-500">
-          <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm bg-purple-500 inline-block"></span> Planes Parciales (~1.820 ha)</span>
-        </label>
-        <label class="flex items-center space-x-2 cursor-pointer text-slate-300 hover:text-white">
-          <input type="checkbox" id="chk-informal" checked onchange="toggleLayer('informal')" class="rounded accent-amber-500">
-          <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm bg-amber-500 inline-block"></span> Asentamientos Informales (~1.180 ha)</span>
-        </label>
-      </div>
-
+  <!-- Panel Flotante Izquierdo: Sandbox Normativo -->
+  <div class="panel-flotante">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e324b; padding-bottom: 8px;">
+      <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">⚡ Sandbox de Políticas Capilares</span>
+      <span class="tag-badge" style="background: #0b1522; color: #94a3b8; border: 1px solid #1e324b;">Interactivo</span>
     </div>
 
-    <!-- Leyenda Flotante Derecha -->
-    <div class="absolute bottom-6 right-6 z-10 glass-panel rounded-xl p-4 shadow-xl text-xs space-y-2 w-72">
-      <h4 class="font-bold text-white flex items-center gap-1.5 border-b border-slate-700/60 pb-1.5">
-        <i data-lucide="info" class="w-3.5 h-3.5 text-cyan-400"></i> Lectura Teórica (Meyer / Dematteis)
-      </h4>
-      <p class="text-[11px] text-slate-300 leading-relaxed">
-        <strong class="text-blue-400">Sangre Azul:</strong> Cursos hídricos que repelen la ocupación urbana agresiva y estructuran el soporte de vida.<br>
-        <strong class="text-rose-400">Sangre Roja:</strong> Infraestructura de llegada y accesibilidad que atrae la inversión y genera tensiones de borde.
-      </p>
+    <!-- Control 1: Amortiguamiento Arroyos -->
+    <div class="seccion-control">
+      <div class="control-header">
+        <span style="color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#38bdf8;"></span> Buffer Hídrico (Sangre Azul)
+        </span>
+        <span id="txt-buffer" style="font-family:'JetBrains Mono'; color:#38bdf8; font-weight:bold;">50 m</span>
+      </div>
+      <input type="range" class="slider-custom" id="slider-buffer" min="15" max="150" value="50" step="5" oninput="cambiarBuffer(this.value)">
+      <div style="font-size: 11px; color: #94a3b8; line-height: 1.3;">Franja de protección ecológica sobre los 163 km de drenajes capilares.</div>
     </div>
 
+    <!-- Control 2: Nudos de la Circunvalar -->
+    <div class="seccion-control" style="border-top: 1px solid #1a2c42; padding-top: 10px;">
+      <div class="control-header">
+        <span style="color: #fb7185; display: flex; align-items: center; gap: 6px;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#fb7185;"></span> Nudos Activos (Sangre Roja)
+        </span>
+        <span id="txt-nudos" style="font-family:'JetBrains Mono'; color:#fb7185; font-weight:bold;">10 / 10</span>
+      </div>
+      <input type="range" class="slider-custom" style="accent-color: #f43f5e;" id="slider-nudos" min="3" max="10" value="10" oninput="cambiarNudos(this.value)">
+      <div style="font-size: 11px; color: #94a3b8; line-height: 1.3;">Regulación de accesos para controlar la especulación en el tramo intermedio (21,5 km).</div>
+    </div>
+
+    <!-- Control 3: Macromanzana Mínima -->
+    <div class="seccion-control" style="border-top: 1px solid #1a2c42; padding-top: 10px;">
+      <div class="control-header">
+        <span style="color: #34d399; display: flex; align-items: center; gap: 6px;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#34d399;"></span> Unidad Macromanzana
+        </span>
+        <span id="txt-macro" style="font-family:'JetBrains Mono'; color:#34d399; font-weight:bold;">≥ 25 ha</span>
+      </div>
+      <input type="range" class="slider-custom" style="accent-color: #10b981;" id="slider-macro" min="5" max="50" value="25" step="5" oninput="cambiarMacro(this.value)">
+      <div style="font-size: 11px; color: #94a3b8; line-height: 1.3;">Tamaño mínimo de gestión territorial para frenar la parcelación hormiga.</div>
+    </div>
+
+    <!-- Métricas en Tiempo Real -->
+    <div style="background: #09111c; border: 1px solid #1a2c42; border-radius: 8px; padding: 10px; margin-top: 4px;">
+      <div style="font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 8px;">📊 Impacto Territorial (Franja 18.577 ha)</div>
+      <div class="grid-metricas">
+        <div class="caja-metrica">
+          <span style="color: #94a3b8;">Suelo Protegido:</span>
+          <strong id="val-suelo" style="color: #38bdf8;">1.630 ha</strong>
+        </div>
+        <div class="caja-metrica">
+          <span style="color: #94a3b8;">Conflicto Planes:</span>
+          <strong id="val-conflicto" style="color: #fbbf24;">296 ha</strong>
+        </div>
+      </div>
+      <div style="margin-top: 8px; font-size: 11px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span style="color: #94a3b8;">Salud Capilar Estimada:</span>
+          <strong id="val-salud" style="color: #34d399; font-family:'JetBrains Mono';">88.4%</strong>
+        </div>
+        <div style="background: #1e324b; height: 6px; border-radius: 3px; overflow: hidden;">
+          <div id="barra-salud" style="background: #10b981; height: 100%; width: 88.4%; transition: width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle de Capas -->
+    <div style="font-size: 12px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid #1a2c42; padding-top: 10px;">
+      <span style="font-weight: 700; color: #cbd5e1;">Capas Activas en el Visor:</span>
+      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+        <input type="checkbox" id="chk-arroyos" checked onchange="toggleCapa('arroyos')">
+        <span style="color: #38bdf8;">■ Red de Arroyos Capilares (163 km)</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+        <input type="checkbox" id="chk-circunvalar" checked onchange="toggleCapa('circunvalar')">
+        <span style="color: #fb7185;">■ Circunvalar de la Prosperidad</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+        <input type="checkbox" id="chk-planes" checked onchange="toggleCapa('planes')">
+        <span style="color: #c084fc;">■ Planes Parciales (~1.820 ha legales)</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+        <input type="checkbox" id="chk-informal" checked onchange="toggleCapa('informal')">
+        <span style="color: #facc15;">■ Asentamientos Informales (~1.180 ha)</span>
+      </label>
+    </div>
   </div>
 
+  <!-- Leyenda Epistemológica Derecha -->
+  <div class="panel-leyenda">
+    <div style="font-weight: 700; color: #fff; margin-bottom: 6px; border-bottom: 1px solid #1e324b; padding-bottom: 4px;">
+      Marco Epistemológico (Meyer / Dematteis)
+    </div>
+    <div style="color: #cbd5e1; line-height: 1.4;">
+      <p style="margin: 0 0 6px 0;"><strong style="color: #38bdf8;">Sangre Azul (Agua):</strong> Cursos hídricos que estructuran la vida y repelen la urbanización densa.</p>
+      <p style="margin: 0;"><strong style="color: #fb7185;">Sangre Roja (Vías):</strong> Vectores de accesibilidad del puerto que atraen la inversión y generan tensión de borde.</p>
+    </div>
+  </div>
+
+  <!-- Script MapLibre Operativo -->
   <script>
-    // Inicializar Iconos Lucide
-    lucide.createIcons();
+    // Inicializar MapLibre con estilo Carto Dark (sin dependencias externas caídas)
+    const map = new maplibregl.Map({
+      container: 'mapa-capillary',
+      style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+      center: [-74.88, 10.95],
+      zoom: 11.8
+    });
 
-    // 1. Inicializar Mapa Leaflet
-    const map = L.map('map', {
-      zoomControl: false,
-      attributionControl: false
-    }).setView([10.95, -74.88], 12);
+    map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-    L.control.zoom({ position: 'topright' }).addTo(map);
-
-    // Mapa base satelital oscuro
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19
-    }).addTo(map);
-
-    // Capas de datos
-    const layers = {};
-
-    // Cargar capas GeoJSON locales
-    async function loadLayer(name, style, onEach) {
-      try {
-        const res = await fetch(`data/${name}.geojson`);
-        if (!res.ok) return;
-        const data = await res.json();
-        layers[name] = L.geoJSON(data, { style: style, onEachFeature: onEach }).addTo(map);
-      } catch (e) {
-        console.warn(`Error cargando capa ${name}:`, e);
-      }
-    }
-
-    // Estilos por capa
-    loadLayer('franja', { color: '#06b6d4', weight: 2, fillOpacity: 0.05, dashArray: '4, 4' });
-    loadLayer('arroyos', { color: '#3b82f6', weight: 2.5, opacity: 0.85 });
-    loadLayer('circunvalar', { color: '#f43f5e', weight: 3.5, opacity: 0.9 });
-    loadLayer('planes_parciales', { color: '#a855f7', fillColor: '#a855f7', fillOpacity: 0.35, weight: 1.5 });
-    loadLayer('informal', { color: '#f59e0b', fillColor: '#f59e0b', fillOpacity: 0.35, weight: 1.5 });
-
-    function toggleLayer(name) {
-      if (!layers[name]) return;
-      if (map.hasLayer(layers[name])) {
-        map.removeLayer(layers[name]);
-      } else {
-        map.addLayer(layers[name]);
-      }
-    }
-
-    // Lógica del Sandbox interactivo
-    function updateBuffer(val) {
-      document.getElementById('buffer-val').innerText = `${val} m`;
-      const ha = Math.round(163 * (val * 2) / 10);
-      document.getElementById('metric-suelo').innerText = `${ha.toLocaleString()} ha`;
-      const confl = Math.round(val * 5.9);
-      document.getElementById('metric-conflicto').innerText = `${confl} ha`;
-      
-      if (layers['arroyos']) {
-        layers['arroyos'].setStyle({ weight: Math.max(2, val / 20) });
-      }
-    }
-
-    function updateNudos(val) {
-      document.getElementById('nudos-val').innerText = `${val} / 10`;
-      const salud = (70 + (10 - val) * 2.8).toFixed(1);
-      document.getElementById('metric-salud').innerText = `${salud}%`;
-      document.getElementById('bar-salud').style.width = `${salud}%`;
-    }
-
-    function updateMacro(val) {
-      document.getElementById('macro-val').innerText = `≥ ${val} ha`;
-    }
-
-    // Selector de Ciudad
-    const cityCoords = {
-      barranquilla: [10.95, -74.88, 12],
-      santos: [-23.95, -46.33, 12],
-      valparaiso: [-33.05, -71.62, 12],
-      veracruz: [19.18, -96.14, 12]
+    const ciudades = {
+      barranquilla: { center: [-74.88, 10.95], zoom: 11.8 },
+      santos: { center: [-46.33, -23.95], zoom: 11.5 },
+      valparaiso: { center: [-71.62, -33.05], zoom: 11.5 },
+      veracruz: { center: [-96.14, 19.18], zoom: 11.5 }
     };
 
-    function changeCity(city) {
-      const coords = cityCoords[city];
-      if (coords) {
-        map.flyTo([coords[0], coords[1]], coords[2], { duration: 1.5 });
+    function volarCiudad(c) {
+      if (ciudades[c]) {
+        map.flyTo({ center: ciudades[c].center, zoom: ciudades[c].zoom, duration: 1500 });
       }
+    }
+
+    map.on('load', () => {
+      // 1. Cargar Franja
+      map.addSource('franja', { type: 'geojson', data: 'data/franja.geojson' });
+      map.addLayer({
+        id: 'franja-line', type: 'line', source: 'franja',
+        paint: { 'line-color': '#06b6d4', 'line-width': 2, 'line-dasharray': [3, 3] }
+      });
+
+      // 2. Cargar Arroyos
+      map.addSource('arroyos', { type: 'geojson', data: 'data/arroyos.geojson' });
+      map.addLayer({
+        id: 'arroyos-layer', type: 'line', source: 'arroyos',
+        paint: { 'line-color': '#0ea5e9', 'line-width': 2.5, 'line-opacity': 0.85 }
+      });
+
+      // 3. Cargar Circunvalar
+      map.addSource('circunvalar', { type: 'geojson', data: 'data/circunvalar.geojson' });
+      map.addLayer({
+        id: 'circunvalar-layer', type: 'line', source: 'circunvalar',
+        paint: { 'line-color': '#f43f5e', 'line-width': 3.5, 'line-opacity': 0.9 }
+      });
+
+      // 4. Cargar Planes Parciales
+      map.addSource('planes', { type: 'geojson', data: 'data/planes_parciales.geojson' });
+      map.addLayer({
+        id: 'planes-layer', type: 'fill', source: 'planes',
+        paint: { 'fill-color': '#a855f7', 'fill-opacity': 0.35, 'fill-outline-color': '#c084fc' }
+      });
+
+      // 5. Cargar Asentamientos Informales
+      map.addSource('informal', { type: 'geojson', data: 'data/informal.geojson' });
+      map.addLayer({
+        id: 'informal-layer', type: 'fill', source: 'informal',
+        paint: { 'fill-color': '#eab308', 'fill-opacity': 0.35, 'fill-outline-color': '#facc15' }
+      });
+    });
+
+    function toggleCapa(idCapa) {
+      const layerId = idCapa + '-layer';
+      if (!map.getLayer(layerId)) return;
+      const vis = map.getLayoutProperty(layerId, 'visibility');
+      map.setLayoutProperty(layerId, 'visibility', vis === 'none' ? 'visible' : 'none');
+    }
+
+    function cambiarBuffer(val) {
+      document.getElementById('txt-buffer').innerText = val + ' m';
+      const ha = Math.round(163 * (val * 2) / 10);
+      document.getElementById('val-suelo').innerText = ha.toLocaleString() + ' ha';
+      document.getElementById('val-conflicto').innerText = Math.round(val * 5.9) + ' ha';
+      if (map.getLayer('arroyos-layer')) {
+        map.setPaintProperty('arroyos-layer', 'line-width', Math.max(2, val / 18));
+      }
+    }
+
+    function cambiarNudos(val) {
+      document.getElementById('txt-nudos').innerText = val + ' / 10';
+      const salud = (70 + (10 - val) * 2.8).toFixed(1);
+      document.getElementById('val-salud').innerText = salud + '%';
+      document.getElementById('barra-salud').style.width = salud + '%';
+    }
+
+    function cambiarMacro(val) {
+      document.getElementById('txt-macro').innerText = '≥ ' + val + ' ha';
     }
   </script>
 </body>
