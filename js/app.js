@@ -1591,40 +1591,42 @@
 
   function pieEditorialHtml() {
     return `
-      <footer class="pie-sitio">
-        <div class="pie-sitio-inner">
-          <div class="pie-sitio-izq">
-            <div class="pie-marca">
-              <img src="logo_aida.svg" alt="" width="22" height="22">
-              <span><strong>GeoInterfaz</strong> · Geovisor de la Tesis Doctoral</span>
-            </div>
-            <div class="pie-meta">
-              <span>Aida del Carmen Palmett Padilla · Universitat Politècnica de Catalunya (UPC)</span>
-            </div>
+      <footer class="pie2">
+        <div class="pie2-sup">
+          <div class="pie2-marca">
+            <a href="#/" class="pie2-logo"><img src="logo_aida.svg" alt="" width="34" height="34"><span>GeoInterfaz</span></a>
+            <p class="pie2-lema">Geovisor de la tesis doctoral sobre la franja de interfaz urbano-rural en ciudades portuarias: Barranquilla, ciudad puerto, ciudad mar y ciudad río.</p>
+            <p class="pie2-autora"><strong>Aida del Carmen Palmett Padilla</strong><br>Doctorado en Sostenibilidad · Universitat Politècnica de Catalunya<br>Dirección: Dr. Miguel Yury Mayorga Cárdenas · Dr. Julián Galindo</p>
           </div>
-
-          <div class="pie-sitio-centro">
-            <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="devgiz-badge" title="Visitar DevGiz · Ingeniería Geoespacial y Software">
-              <span class="devgiz-by">Powered by</span>
-              <img src="img/devgiz_lockup.svg" alt="DevGiz Engineering" class="devgiz-svg" width="94" height="28">
-            </a>
-          </div>
-
-          <div class="pie-sitio-der">
-            <nav class="pie-enlaces" aria-label="Enlaces del pie">
-              <a href="#/datos">Capas y datos</a>
-              <a href="#/comparativa">Casos comparados</a>
-              <a href="#/recorrido">Recorrido guiado</a>
-              <a href="#/acerca">Acerca de</a>
-              <a href="descargas/Atlas_cartografico_GeoInterfaz.docx" download>Atlas (Word)</a>
-              <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="pie-link-ext">devgiz.vercel.app ↗</a>
-            </nav>
-            <div class="pie-sub">Tecnología de Cartografía e Inteligencia Territorial</div>
-          </div>
+          <nav class="pie2-col" aria-label="Explorar">
+            <h3>Explorar</h3>
+            <a href="#/">Inicio</a>
+            <a href="#/maqueta">Maqueta 3D de la propuesta</a>
+            <a href="#/comparativa">Casos comparados</a>
+            <a href="#/recorrido">Recorrido guiado</a>
+          </nav>
+          <nav class="pie2-col" aria-label="Datos y método">
+            <h3>Datos y método</h3>
+            <a href="#/datos">Capas y datos</a>
+            <a href="descargas/Atlas_cartografico_GeoInterfaz.docx" download>Atlas cartográfico (Word)</a>
+            <a href="#/acerca">Acerca del geovisor</a>
+          </nav>
+          <nav class="pie2-col" aria-label="Institución">
+            <h3>Institución</h3>
+            <a href="https://www.upc.edu/es" target="_blank" rel="noopener noreferrer">UPC ↗</a>
+            <a href="https://is.upc.edu/es" target="_blank" rel="noopener noreferrer">Institut de Sostenibilitat ↗</a>
+            <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer">DevGiz ↗</a>
+          </nav>
         </div>
-      </footer>
-    `;
+        <div class="pie2-inf">
+          <span>© 2026 Aida del Carmen Palmett Padilla · Tesis doctoral, UPC</span>
+          <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer" class="pie2-devgiz" title="DevGiz · Ingeniería geoespacial y software">
+            <span>Desarrollado por</span><img src="img/devgiz_lockup.svg" alt="DevGiz Engineering" width="86" height="28">
+          </a>
+        </div>
+      </footer>`;
   }
+
 
   function renderInicio() {
     const pg = $('pgInicio');
@@ -2184,7 +2186,7 @@
 
   // ------------------------------------------------- páginas e índice
   function showPage(pageId) {
-    ['pgInicio', 'pgElemento', 'pgDatos', 'pgComparativa', 'pgRecorrido', 'pgAcerca'].forEach((id) => {
+    ['pgInicio', 'pgElemento', 'pgDatos', 'pgComparativa', 'pgRecorrido', 'pgAcerca', 'pgMaqueta'].forEach((id) => {
       const el = $(id);
       if (el) el.hidden = id !== pageId;
     });
@@ -2193,7 +2195,8 @@
       pgDatos: 'datos',
       pgComparativa: 'comparativa',
       pgRecorrido: 'recorrido',
-      pgAcerca: 'acerca'
+      pgAcerca: 'acerca',
+      pgMaqueta: 'maqueta'
     };
     document.querySelectorAll('.nav a').forEach((a) => a.classList.toggle('on', a.getAttribute('data-nav') === mapaNav[pageId]));
     if (window.innerWidth <= 900) $('indice')?.classList.remove('abierto');
@@ -2374,6 +2377,12 @@
       document.title = 'Recorrido guiado · GeoInterfaz';
       currentItem = null;
       limpiar();
+    } else if (hash === '#/maqueta') {
+      showPage('pgMaqueta');
+      document.title = 'Maqueta 3D de la propuesta · GeoInterfaz';
+      currentItem = null;
+      limpiar();
+      if (window.GI_maqueta) window.GI_maqueta(); else window.addEventListener('load', () => window.GI_maqueta && window.GI_maqueta(), { once: true });
     } else if (hash === '#/acerca') {
       renderAcerca();
       showPage('pgAcerca');
