@@ -1667,6 +1667,7 @@
           <button data-filtro="tabla"><b>${nTablas}</b><span>tablas</span></button>
           <a href="#/datos"><b>${nCapas}</b><span>capas geográficas</span></a>
         </div>
+        <p class="hero-credito">Barranquilla, el río Magdalena y el puente Pumarejo · Foto: <a href="https://commons.wikimedia.org/wiki/File:PuentePumarejoBAQ2020.jpg" target="_blank" rel="noopener">Jeaz0717</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a></p>
       </div>
 
       <div class="inicio-cuerpo">

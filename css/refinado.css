@@ -940,3 +940,26 @@ details.cap[open] .rom { color: var(--acento); }
 /* etiqueta de la cabecera: texto más oscuro que su fondo tintado (AA) */
 .cabecera h1 .eti { color: color-mix(in srgb, var(--c) 62%, #000); }
 :root[data-tema="oscuro"] .cabecera h1 .eti { color: color-mix(in srgb, var(--c) 55%, #fff); }
+
+/* portada: foto aérea real bajo el mismo azul marino (más opaco donde va el texto) */
+.hero {
+  background:
+    linear-gradient(100deg, rgba(15,42,67,.97) 0%, rgba(15,42,67,.9) 36%, rgba(17,48,75,.62) 66%, rgba(17,48,75,.4) 100%),
+    url("../img/hero_barranquilla.webp") 62% 55% / cover no-repeat,
+    linear-gradient(135deg, #0f2a43 0%, #173f61 100%);
+}
+.hero::before { opacity: .35; }
+.cifras > * { background: rgba(15, 42, 67, .42); }
+.hero-credito { position: absolute; right: 16px; bottom: 9px; margin: 0; font-size: 10.5px; color: rgba(255,255,255,.62); z-index: 1; }
+.hero-credito a { color: rgba(255,255,255,.8); text-decoration: underline; text-decoration-color: rgba(255,255,255,.3); }
+.hero-credito a:hover { color: #fff; }
+@media (max-width: 900px) {
+  .hero {
+    background:
+      linear-gradient(180deg, rgba(15,42,67,.86) 0%, rgba(15,42,67,.93) 100%),
+      url("../img/hero_barranquilla_movil.webp") 60% 50% / cover no-repeat,
+      #0f2a43;
+    padding-bottom: 44px;
+  }
+  .hero-credito { left: 20px; right: 20px; }
+}
