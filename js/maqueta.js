@@ -126,6 +126,7 @@
         <div class="mq-pie">
           <div id="mqPuntos" class="mq-puntos">${PASOS.map((p, i) => `<button aria-label="Paso ${i + 1}: ${p.tit}"></button>`).join('')}</div>
           <a id="mqFig" class="mq-fig" href="#/">Ver la lámina de la tesis →</a>
+          <a class="mq-fig" href="#/mundo">Recorrer en el mundo 3D (volar y caminar) →</a>
           <div class="mq-nav"><button id="mqAnt" class="btn">← Anterior</button><button id="mqSig" class="btn pri">Siguiente →</button></div>
         </div>
         <p class="mq-nota">Relieve exagerado 2,5×. UFP y nodos: lineamientos; macromanzanas: propuesta; usos 2035: escenarios hipotéticos. Imagen: Esri World Imagery.</p>

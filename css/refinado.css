@@ -1025,3 +1025,19 @@ details.cap[open] .rom { color: var(--acento); }
   .mq-pie { position: sticky; bottom: -16px; margin: 12px -16px -16px; padding: 10px 16px 14px; background: var(--papel); border-top: 1px solid var(--linea); }  /* navegación siempre a mano */
   .mq-nota { display: none; }
 }
+
+/* Mundo 3D (Cesium) */
+.mu-grupo { margin-top: 14px; display: grid; gap: 6px; }
+.mu-grupo > span { font: 700 10.5px/1 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--gris); }
+.mu-grupo .mq-modos { margin-top: 0; }
+.mu-capas { display: grid; gap: 6px; font-size: 13px; color: var(--tinta2); }
+.mu-capas label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+#pgMundo .cesium-viewer-bottom { left: auto; right: 8px; }
+#pgMundo .cesium-infoBox { top: 20px; right: 20px; }
+.mu-txt { margin: 0; font-size: 14px; line-height: 1.6; color: var(--tinta2); }
+.mu-libre { margin-top: 14px; border-top: 1px solid var(--linea); padding-top: 10px; }
+.mu-libre summary { cursor: pointer; font: 700 11px/1.4 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--marca); list-style: none; }
+.mu-libre summary::-webkit-details-marker { display: none; }
+.mu-libre summary::after { content: " +"; color: var(--acento); }
+.mu-libre[open] summary::after { content: " −"; }
+.mu-pie-nota a { color: var(--marca); font-weight: 600; }

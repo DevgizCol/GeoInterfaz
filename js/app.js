@@ -2186,7 +2186,7 @@
 
   // ------------------------------------------------- páginas e índice
   function showPage(pageId) {
-    ['pgInicio', 'pgElemento', 'pgDatos', 'pgComparativa', 'pgRecorrido', 'pgAcerca', 'pgMaqueta'].forEach((id) => {
+    ['pgInicio', 'pgElemento', 'pgDatos', 'pgComparativa', 'pgRecorrido', 'pgAcerca', 'pgMaqueta', 'pgMundo'].forEach((id) => {
       const el = $(id);
       if (el) el.hidden = id !== pageId;
     });
@@ -2196,7 +2196,8 @@
       pgComparativa: 'comparativa',
       pgRecorrido: 'recorrido',
       pgAcerca: 'acerca',
-      pgMaqueta: 'maqueta'
+      pgMaqueta: 'maqueta',
+      pgMundo: 'maqueta'
     };
     document.querySelectorAll('.nav a').forEach((a) => a.classList.toggle('on', a.getAttribute('data-nav') === mapaNav[pageId]));
     if (window.innerWidth <= 900) $('indice')?.classList.remove('abierto');
@@ -2383,6 +2384,12 @@
       currentItem = null;
       limpiar();
       if (window.GI_maqueta) window.GI_maqueta(); else window.addEventListener('load', () => window.GI_maqueta && window.GI_maqueta(), { once: true });
+    } else if (hash === '#/mundo') {
+      showPage('pgMundo');
+      document.title = 'Mundo 3D · GeoInterfaz';
+      currentItem = null;
+      limpiar();
+      if (window.GI_mundo) window.GI_mundo(); else window.addEventListener('load', () => window.GI_mundo && window.GI_mundo(), { once: true });
     } else if (hash === '#/acerca') {
       renderAcerca();
       showPage('pgAcerca');

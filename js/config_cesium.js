@@ -1,0 +1,3 @@
+// Token público de Cesium ion SOLO de lectura (assets:read, geocode), limitado a geointerfaz.vercel.app y localhost:8765
+// y a los recursos 1 (terreno), 2 (Bing), 96188 (OSM Buildings) y 2275207 (Google 3D). Se gestiona en cesium.com > Access Tokens.
+window.GI_CESIUM_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IlpoVXNsdlRsS0RoQXFKNzIiLCJqdGkiOiJhNDExNGEzMi0wZTU4LTRmNTYtYjcwNC1lODQ1YTEyNGE4NTYiLCJpZCI6NTQyOTcxLCJzdWIiOiJnYXZpcmlheiIsImlzcyI6Imh0dHBzOi8vYXBpLmNlc2l1bS5jb20iLCJhdWQiOiJHZW9JbnRlcmZheiB3ZWIgKHNvbG8gbGVjdHVyYSkiLCJpYXQiOjE3OTM4NTgxMzZ9._moOtOh3h-wZAkV_IvVsXCNqRbuefaq1Yx4bts-S8z0';
