@@ -1076,3 +1076,20 @@ details.cap[open] .rom { color: var(--acento); }
 /* ficha de Cesium con el estilo del sitio */
 #pgMundo .cesium-infoBox { background: var(--papel); color: var(--tinta); border: 1px solid var(--linea); border-radius: 12px; box-shadow: var(--sombra-lg); }
 #pgMundo .cesium-infoBox-title { background: var(--marca); color: #fff; font-weight: 700; }
+
+/* ficha propia del mundo 3D */
+.mu-ficha { position: absolute; right: 20px; top: 20px; z-index: 3; width: 320px; max-height: calc(100% - 40px); overflow: auto;
+  background: color-mix(in srgb, var(--papel) 94%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border: 1px solid var(--linea); border-radius: 16px; box-shadow: var(--sombra-lg); padding: 18px 20px 16px; }
+.mu-ficha .mf-eti { font: 700 10.5px/1.3 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--acento); }
+.mu-ficha h3 { margin: 6px 28px 12px 0; font-family: var(--serif); font-size: 20px; line-height: 1.2; color: var(--tinta); }
+.mu-ficha dl { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--linea); }
+.mf-fila { display: grid; grid-template-columns: 118px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--linea); font-size: 13px; }
+.mf-fila dt { color: var(--gris); }
+.mf-fila dd { margin: 0; color: var(--tinta); font-weight: 600; display: flex; align-items: center; gap: 7px; }
+.mf-chip { flex: none; width: 11px; height: 11px; border-radius: 3px; }
+.mf-nota { margin: 10px 0 0; font-size: 11.5px; color: var(--gris); }
+.mf-cerrar { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border: 0; border-radius: 8px; background: none; color: var(--gris); font-size: 20px; line-height: 1; cursor: pointer; }
+.mf-cerrar:hover { background: var(--linea2); color: var(--tinta); }
+@media (prefers-reduced-motion: no-preference) { .mu-ficha:not([hidden]) { animation: gi-desliza .22s cubic-bezier(.2,.8,.2,1) both; } }
+@media (max-width: 640px) { .mu-ficha { left: 10px; right: 10px; top: 10px; width: auto; max-height: 40%; } }

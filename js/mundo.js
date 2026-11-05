@@ -126,12 +126,19 @@
     orto.contrast = 1.18; orto.saturation = 1.12; orto.brightness = .97; orto.gamma = 1.05;  // el mosaico original sale apagado
     return orto;
   }
+  let esri = null;
+  async function capaEsri() {
+    if (!esri) esri = viewer.imageryLayers.addImageryProvider(await Cs.ArcGisMapServerImageryProvider.fromUrl('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'), 1);
+    return esri;
+  }
   async function ponerCiudad(tipo) {
     if (ciudad) { viewer.scene.primitives.remove(ciudad); ciudad = null; }
     viewer.scene.globe.show = true;
-    capaOrto().show = tipo !== 'google';  // con Google 3D, su propia malla fotorrealista sustituye a la ortoimagen
-    if (tipo === 'igac') {
-      aviso('Ortofoto IGAC 2026 (3 m) sobre el relieve real. Acérquese para ver el detalle de predios, vías y cauces.');
+    capaOrto().show = tipo === 'igac';
+    try { (await capaEsri()).show = tipo === 'esri'; } catch (_) { /* sin Esri queda la imagen base */ }
+    if (tipo === 'igac' || tipo === 'esri') {
+      aviso(tipo === 'igac' ? 'Ortofoto IGAC, enero de 2026: la más reciente, a 3 m por píxel (su resolución real; de cerca se ve suave).'
+        : 'Satélite Esri World Imagery: más nítido (≈0,3–0,5 m), de fecha anterior a 2026.');
       document.querySelectorAll('#muCiudad button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.c === tipo)));
       viewer.scene.requestRender();
       return;
@@ -152,10 +159,40 @@
   const ir = (c, dur = 2.8) => viewer.camera.flyTo({ destination: Cs.Cartesian3.fromDegrees(c[0], c[1], c[2]), orientation: { heading: Cs.Math.toRadians(c[3]), pitch: Cs.Math.toRadians(c[4]), roll: 0 },
     duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : dur });
 
+  // --- ficha propia al tocar un elemento (sustituye al cuadro de Cesium)
+  const fmt = (x, d = 0) => Number(x).toLocaleString('es-CO', { maximumFractionDigits: d });
+  const val = (p, k) => (p && p[k] !== undefined ? p[k].getValue() : undefined);
+  const fila = (k, v) => (v === undefined || v === null || v === '' ? '' : `<div class="mf-fila"><dt>${k}</dt><dd>${v}</dd></div>`);
+  const chip = (c) => `<i class="mf-chip" style="background:${c}"></i>`;
+  const nombrePropio = (t) => String(t).toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
+  function contenido(e) {
+    const g = e.entityCollection && e.entityCollection.owner && e.entityCollection.owner.name, p = e.properties;
+    if (g === 'macro') return { eti: 'Macromanzana · propuesta', tit: val(p, 'id'), cuerpo:
+      fila('Unidad funcional', String(val(p, 'UFP')).replace('_', ' ') + ' (lineamiento)') + fila('Vocación', chip(VOC[val(p, 'vocacion_nombre')] || '#999') + val(p, 'vocacion_nombre')) +
+      fila('Superficie', fmt(val(p, 'ha'), 1) + ' ha') + fila('Construido hoy', fmt(val(p, 'pct_construido'), 1) + ' %') + fila('Natural hoy', fmt(val(p, 'pct_natural'), 1) + ' %') +
+      fila('2035 tendencial', val(p, 'uso_2035_tendencial')) + fila('2035 con IOTF', val(p, 'uso_2035_iotf')), nota: 'Los usos 2035 son escenarios hipotéticos de la tesis.' };
+    if (g === 'unidades' && val(p, 'unidad')) return { eti: 'Unidad de paisaje por subcuenca', tit: val(p, 'unidad'), cuerpo:
+      fila('Superficie', fmt(val(p, 'ha')) + ' ha') + fila('Arroyos', val(p, 'arroyos')), nota: 'Cada unidad agrupa el suelo que drena hacia los mismos arroyos.' };
+    if (g === 'unidades' && val(p, 'orden')) return { eti: 'Cauce', tit: 'Orden de Strahler ' + val(p, 'orden'), cuerpo:
+      fila('Qué significa', val(p, 'orden') == 1 ? 'Cauce de cabecera: donde nace el agua' : 'Nace de la unión de dos cauces de orden ' + (val(p, 'orden') - 1)), nota: '' };
+    if (g === 'ufp' && val(p, 'Categoría')) return { eti: 'Unidad Funcional de Planificación · lineamiento', tit: val(p, 'Categoría'), cuerpo:
+      fila('Superficie de referencia', val(p, 'Superficie total de la UFP (ha, referencia)') ? fmt(val(p, 'Superficie total de la UFP (ha, referencia)')) + ' ha' : ''), nota: '' };
+    if (g === 'ufp' && e.point) return { eti: val(p, 'NODO') ? 'Nodo ' + val(p, 'NODO') + ' · lineamiento' : 'Lugar de articulación · lineamiento', tit: nombrePropio(val(p, 'NOMBRE')), cuerpo: '', nota: '' };
+    if (g === 'ufp') return { eti: 'Corredor', tit: nombrePropio(val(p, 'NOMBRE') || val(p, 'Name') || 'Corredor de la franja'), cuerpo: '', nota: '' };
+    if (g === 'franja') return { eti: 'Objeto de la tesis', tit: 'Franja de interfaz urbano-rural', cuerpo: fila('Superficie', '18.577 ha') + fila('Delimitación', 'Por cuenca: suelo cuya agua escurre hacia la ciénaga y el mar'), nota: '' };
+    return null;
+  }
+  function ficha(e) {
+    const c = e && contenido(e), f = $('muFicha');
+    if (!c) { f.hidden = true; return; }
+    f.innerHTML = `<button class="mf-cerrar" aria-label="Cerrar la ficha">×</button><span class="mf-eti">${c.eti}</span><h3>${c.tit}</h3>${c.cuerpo ? `<dl>${c.cuerpo}</dl>` : ''}${c.nota ? `<p class="mf-nota">${c.nota}</p>` : ''}`;
+    f.hidden = false;
+    f.querySelector('.mf-cerrar').addEventListener('click', () => { f.hidden = true; });
+  }
   function franjaDatos() { for (let i = 0; i < viewer.dataSources.length; i++) { const d = viewer.dataSources.get(i); if (d.name === 'franja') return d; } return null; }
   function irPaso(n) {
     paso = Math.max(0, Math.min(PASOS.length - 1, n));
-    if (viewer) viewer.selectedEntity = undefined;  // cierra la ficha abierta
+    if (viewer && $('muFicha')) $('muFicha').hidden = true;  // cierra la ficha abierta
     const P = PASOS[paso];
     if (modo !== 'volar') ponerModo('volar', true);
     marcarCapas(P.capas);
@@ -205,7 +242,7 @@
   }
   function ponerModo(m, silencio) {
     modo = m;
-    if (viewer) viewer.selectedEntity = undefined;  // cierra la ficha abierta
+    if (viewer && $('muFicha')) $('muFicha').hidden = true;  // cierra la ficha abierta
     const ctl = viewer.scene.screenSpaceCameraController, libre = m === 'volar';
     ctl.enableTranslate = ctl.enableZoom = ctl.enableTilt = ctl.enableRotate = libre;
     ctl.enableLook = true;
@@ -230,6 +267,7 @@
     const pg = $('pgMundo');
     pg.innerHTML = `
       <div id="muMapa" class="mq-mapa"></div>
+      <aside id="muFicha" class="mu-ficha" hidden aria-live="polite"></aside>
       <aside class="mq-panel mu-panel" aria-live="polite">
         <div class="mq-cab"><span class="mq-eti">Mundo 3D de la propuesta</span><span id="muN" class="mq-n"></span><button class="mq-plegar" aria-expanded="true" aria-label="Plegar el panel">▾</button></div>
         <h2 id="muTit">Cargando el mundo 3D…</h2>
@@ -241,7 +279,7 @@
         </div>
         <details class="mu-libre"><summary>Explorar libremente</summary>
           <div class="mu-grupo"><span>Recorrer</span><div id="muModo" class="mq-modos"><button data-m="volar" aria-pressed="true">Volar</button><button data-m="dron">Dron</button><button data-m="caminar">Caminar</button></div></div>
-          <div class="mu-grupo"><span>Ciudad</span><div id="muCiudad" class="mq-modos"><button data-c="igac">Ortofoto IGAC 2026</button><button data-c="google">Google 3D</button><button data-c="osm">Edificios OSM</button></div><p id="muCiudadEstado" class="mq-nota" role="status"></p></div>
+          <div class="mu-grupo"><span>Ciudad</span><div id="muCiudad" class="mq-modos"><button data-c="esri">Satélite nítido</button><button data-c="igac">Ortofoto IGAC 2026</button><button data-c="google">Google 3D</button></div><p id="muCiudadEstado" class="mq-nota" role="status"></p></div>
           <div class="mu-grupo"><span>Capas</span><div class="mu-capas">
             <label><input type="checkbox" data-k="franja"> Franja de interfaz (18.577 ha)</label>
             <label><input type="checkbox" data-k="unidades"> Unidades de paisaje y cauces</label>
@@ -249,14 +287,15 @@
             <label><input type="checkbox" data-k="macro"> Macromanzanas (propuesta)</label></div></div>
           <p id="muAyuda" class="mq-nota"></p>
         </details>
-        <p class="mq-nota mu-pie-nota"><a href="#/maqueta">Versión ligera</a> · Terreno: Cesium World Terrain. Imagen: ortofoto IGAC 2026 (o Google 3D / OpenStreetMap). UFP y nodos: lineamientos; macromanzanas: propuesta; 2035: escenarios hipotéticos.</p>
+        <p class="mq-nota mu-pie-nota"><a href="#/maqueta">Versión ligera</a> · Terreno: Cesium World Terrain. Imagen: Esri World Imagery, ortofoto IGAC 2026 o Google 3D. UFP y nodos: lineamientos; macromanzanas: propuesta; 2035: escenarios hipotéticos.</p>
       </aside>`;
     try { Cs = await cargar(); } catch (e) { $('muTit').textContent = 'El mundo 3D no pudo cargarse'; $('muTxt').innerHTML = e.message + '. <a href="#/maqueta">Abrir la versión ligera</a>.'; return; }
     Cs.Ion.defaultAccessToken = window.GI_CESIUM_TOKEN;
     viewer = new Cs.Viewer('muMapa', { terrain: Cs.Terrain.fromWorldTerrain(), baseLayerPicker: false, geocoder: false, homeButton: false, timeline: false, animation: false,
-      sceneModePicker: false, navigationHelpButton: false, fullscreenButton: false, selectionIndicator: false, infoBox: true,
+      sceneModePicker: false, navigationHelpButton: false, fullscreenButton: false, selectionIndicator: false, infoBox: false,
       requestRenderMode: true, maximumRenderTimeChange: Infinity });  // redibuja solo cuando algo cambia: menos CPU y sin congelamientos
     viewer.scene.globe.depthTestAgainstTerrain = true;
+    viewer.scene.globe.maximumScreenSpaceError = 1.5;  // pide antes las teselas de más detalle (por defecto 2)
     viewer.scene.globe.enableLighting = true;
     viewer.clock.currentTime = Cs.JulianDate.fromIso8601('2026-03-15T15:00:00Z');  // luz de media mañana en Barranquilla
     viewer.scene.fog.density = .00012;
@@ -272,7 +311,7 @@
         orientation: { heading: cam.heading, pitch: Math.min(cam.pitch, Cs.Math.toRadians(-10)), roll: 0 } });
     });
     window.__mundo = viewer;  // para pruebas automáticas
-    await ponerCiudad('igac');  // por defecto la ortoimagen procesada de la tesis
+    await ponerCiudad('esri');  // por defecto la imagen más nítida; la IGAC 2026 queda a un clic
     capas();
     ponerModo('volar', true);
     irPaso(0);
@@ -295,6 +334,8 @@
     // dron y caminar: mientras haya teclas pulsadas se pide un cuadro por fotograma
     const bucle = () => { if (teclas.size && modo !== 'volar') { mover(); viewer.scene.requestRender(); } else ultimo = performance.now(); requestAnimationFrame(bucle); };
     requestAnimationFrame(bucle);
+    new Cs.ScreenSpaceEventHandler(viewer.canvas).setInputAction((ev) => { if (modo === 'volar') { const pk = viewer.scene.pick(ev.position); ficha(pk && pk.id); } }, Cs.ScreenSpaceEventType.LEFT_CLICK);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('muFicha')) $('muFicha').hidden = true; });
     $('muAnt').addEventListener('click', () => irPaso(paso - 1));
     $('muSig').addEventListener('click', () => irPaso(paso + 1));
     document.querySelectorAll('#muPuntos button').forEach((b, i) => b.addEventListener('click', () => irPaso(i)));
