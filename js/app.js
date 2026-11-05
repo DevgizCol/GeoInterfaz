@@ -1683,6 +1683,13 @@
 
         <!-- Modos destacados de la plataforma -->
         <section class="modos-clave">
+          <a href="#/mundo" class="modo-tarjeta modo-3d">
+            <img src="img/render_franja.webp" alt="Vista 3D de la franja de interfaz urbano-rural de Barranquilla sobre el relieve, desde el mar" loading="lazy" width="1400" height="614">
+            <span class="modo-badge">Nuevo · Mundo 3D</span>
+            <h3>La propuesta en tres dimensiones</h3>
+            <p>Vuele sobre el relieve real y la ortoimagen de 2026, recorra la franja en dron o a pie, y vea en cinco pasos las unidades de paisaje, los lineamientos y las macromanzanas.</p>
+            <span class="modo-cta">Entrar al mundo 3D →</span>
+          </a>
           <a href="#/recorrido" class="modo-tarjeta">
             <span class="modo-badge">Hitos 01 - 06</span>
             <h3>Recorrido Guiado por la Tesis</h3>

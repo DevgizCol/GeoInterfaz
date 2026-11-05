@@ -1056,3 +1056,12 @@ details.cap[open] .rom { color: var(--acento); }
   .nav { -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
   .mu-libre[open] { max-height: 34vh; overflow: auto; }
 }
+
+/* tarjeta del mundo 3D: ocupa todo el ancho, con el render arriba */
+.modo-tarjeta.modo-3d { grid-column: 1 / -1; padding: 0; overflow: hidden; }
+.modo-3d img { display: block; width: 100%; height: auto; aspect-ratio: 1400 / 614; object-fit: cover; transition: transform .5s ease; }
+.modo-3d:hover img { transform: scale(1.02); }
+.modo-3d > :not(img) { margin-left: 26px; margin-right: 26px; }
+.modo-3d .modo-badge { margin-top: 20px; }
+.modo-3d .modo-cta { margin-bottom: 22px; }
+@media (prefers-reduced-motion: reduce) { .modo-3d img { transition: none; } }
