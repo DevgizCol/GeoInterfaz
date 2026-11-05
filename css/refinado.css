@@ -1032,7 +1032,7 @@ details.cap[open] .rom { color: var(--acento); }
 .mu-grupo .mq-modos { margin-top: 0; }
 .mu-capas { display: grid; gap: 6px; font-size: 13px; color: var(--tinta2); }
 .mu-capas label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
-#pgMundo .cesium-viewer-bottom { left: auto; right: 8px; }
+#pgMundo .cesium-viewer-bottom, #pgMundo .cesium-widget-credits { left: auto !important; right: 10px !important; }  /* créditos de Google y Cesium siempre visibles */
 #pgMundo .cesium-infoBox { top: 20px; right: 20px; }
 .mu-txt { margin: 0; font-size: 14px; line-height: 1.6; color: var(--tinta2); }
 .mu-libre { margin-top: 14px; border-top: 1px solid var(--linea); padding-top: 10px; }
@@ -1041,3 +1041,18 @@ details.cap[open] .rom { color: var(--acento); }
 .mu-libre summary::after { content: " +"; color: var(--acento); }
 .mu-libre[open] summary::after { content: " −"; }
 .mu-pie-nota a { color: var(--marca); font-weight: 600; }
+
+/* paneles 3D: plegables; vista centrada en la zona libre; índice oculto en 3D */
+.mq-cab { gap: 10px; }
+.mq-plegar { margin-left: auto; border: 0; background: none; color: var(--gris); font-size: 14px; cursor: pointer; padding: 2px 4px; line-height: 1; }
+.mq-panel.plegado > :not(.mq-cab):not(.mq-pie) { display: none; }
+.mq-panel.plegado .mq-pie > :not(.mq-nav) { display: none; }
+@media (min-width: 901px) {
+  .ruta-3d .indice { display: none; }
+  #pgMundo .mq-mapa { left: -380px; }  /* el centro de la vista cae en la zona no tapada por el panel */
+}
+@media (max-width: 640px) {
+  #pgMundo .mq-mapa { top: -38vh; }
+  .nav { -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+  .mu-libre[open] { max-height: 34vh; overflow: auto; }
+}

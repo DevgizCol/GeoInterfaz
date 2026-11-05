@@ -6,13 +6,13 @@
   const C = 'data/capas/';
   const ROJO = '#c0271d', ORO = '#f0c987';
   const VOCACION = {
-    'Conservación y restauración ecológica': '#3f8f4f', 'Agroforestal de transición': '#9bbf5a', 'Agroindustrial': '#d9b44a',
-    'Residencial mixta consolidada': '#c76b4a', 'Residencial mixta de expansión': '#e39a6f',
-    'Reserva logística del corredor Circunvalar': '#7d6bb0', 'Logística y retroportuaria': '#4b5d8c'
+    'Conservación y restauración ecológica': '#3f8f4f', 'Agroforestal de transición': '#9bbf5a', 'Agroindustrial': '#f2a93b',
+    'Residencial mixta consolidada': '#c0392b', 'Residencial mixta de expansión': '#f9a3a3',
+    'Reserva logística del corredor Circunvalar': '#cdb4ea', 'Logística y retroportuaria': '#9b3fc0'
   };
   const USO2035 = {
-    'Protección ecológica': '#3f8f4f', 'Rural y natural': '#9bbf5a', 'Rural y natural sin regulación específica': '#c9c39a',
-    'Agroindustrial y rural productivo': '#d9b44a', 'Residencial y mixto': '#d8784f', 'Logística e industria': '#5a5f9a'
+    'Protección ecológica': '#3f8f4f', 'Rural y natural': '#9bbf5a', 'Rural y natural sin regulación específica': '#d9d2bf',
+    'Agroindustrial y rural productivo': '#f2a93b', 'Residencial y mixto': '#c0392b', 'Logística e industria': '#a03fc0'
   };
   const UFP = { 'UFP 1': '#8e44ad', 'UFP 2': '#d9332b', 'UFP 3': '#e6a817', 'UFP 4': '#2e9d4b' };
   const match = (campo, tabla, otro) => ['match', ['get', campo], ...Object.entries(tabla).flat(), otro];
@@ -29,11 +29,11 @@
       txt: 'La franja se divide en cuatro unidades según hacia qué arroyo drena cada terreno: el agua es la protagonista. Las líneas azules son los cauces, más gruesas cuanto mayor es su orden de Strahler; casi la mitad de la red son cabeceras.',
       capas: ['unidades', 'cauces', 'franjaLinea'], ley: [], leyCampo: 'unidades', fig: 'atlas-3-25' },
     { tit: 'Los lineamientos: UFP, nodos y corredores', cam: { center: [-74.875, 10.97], zoom: 11.2, pitch: 55, bearing: 210 },
-      txt: 'Sobre esa base, la tesis propone como lineamientos cuatro Unidades Funcionales de Planificación (UFP), seis nodos que articulan la franja y los corredores que la conectan con la ciudad y el puerto, con la Circunvalar de la Prosperidad como eje.',
+      txt: 'Sobre esa base, la tesis propone como lineamientos cuatro Unidades Funcionales de Planificación (UFP), los nodos que articulan la franja y los corredores que la conectan con la ciudad y el puerto, con la Circunvalar de la Prosperidad como eje.',
       capas: ['ufp', 'corredores', 'circunvalar', 'nodos', 'franjaLinea'],
       ley: [...leyendaDe(UFP).map((x) => ({ c: x.c, t: x.t + ' (lineamiento)' })), { c: '#111', t: 'Corredores económicos' }, { c: '#5b2a86', t: 'Circunvalar de la Prosperidad' }, { c: ROJO, t: 'Nodos', punto: true }], fig: 'fig-70' },
     { tit: 'La propuesta: macromanzanas', cam: { center: [-74.865, 10.975], zoom: 12.2, pitch: 64, bearing: 220 },
-      txt: 'La escala de gestión que propone la tesis: 367 macromanzanas que agrupan manzanas y predios, cada una con una vocación. La altura indica el porcentaje de suelo construido hoy (exagerada). Compare los dos escenarios hipotéticos para 2035.',
+      txt: 'La escala de gestión que propone la tesis: 367 macromanzanas (18.537 ha, ajustadas a las UFP 1 a 3; la UFP 4 de protección no se divide) que agrupan manzanas y predios, cada una con una vocación. La altura indica el porcentaje de suelo construido hoy (exagerada). Compare los dos escenarios hipotéticos para 2035.',
       capas: ['macro', 'franjaLinea'], ley: leyendaDe(VOCACION), fig: 'fig-76', modos: true }
   ];
 
@@ -82,7 +82,9 @@
   function pintarModo() {
     const campo = modo === 'vocacion' ? 'vocacion_nombre' : modo === 'tendencial' ? 'uso_2035_tendencial' : 'uso_2035_iotf';
     mapa.setPaintProperty('macro', 'fill-extrusion-color', match(campo, modo === 'vocacion' ? VOCACION : USO2035, '#999'));
-    pintarLeyenda(modo === 'vocacion' ? leyendaDe(VOCACION) : leyendaDe(USO2035));
+    const tabla = modo === 'vocacion' ? VOCACION : USO2035;
+    const presentes = new Set((mapa.querySourceFeatures('macro') || []).map((f) => f.properties[campo]));
+    pintarLeyenda(leyendaDe(tabla).filter((x) => !presentes.size || presentes.has(x.t)));  // solo las categorías que usa ese escenario
     document.querySelectorAll('#mqModos button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === modo)));
   }
 
@@ -116,7 +118,7 @@
     pg.innerHTML = `
       <div id="mqMapa" class="mq-mapa" role="region" aria-label="Maqueta 3D de la franja de interfaz urbano-rural"></div>
       <aside class="mq-panel" aria-live="polite">
-        <div class="mq-cab"><span class="mq-eti">Maqueta 3D de la propuesta</span><span id="mqN" class="mq-n"></span></div>
+        <div class="mq-cab"><span class="mq-eti">Maqueta 3D de la propuesta</span><span id="mqN" class="mq-n"></span><button class="mq-plegar" aria-expanded="true" aria-label="Plegar el panel">▾</button></div>
         <h2 id="mqTit"></h2>
         <p id="mqTxt"></p>
         <div id="mqModos" class="mq-modos" role="group" aria-label="Qué colorear" hidden>
@@ -145,6 +147,8 @@
       mapa.setTerrain({ source: 'dem', exaggeration: 2.5 });
       capas(); listo = true; ir(0);
     });
+    const pl = pg.querySelector('.mq-plegar');
+    pl.addEventListener('click', () => { const p = pg.querySelector('.mq-panel'); const ok = p.classList.toggle('plegado'); pl.setAttribute('aria-expanded', String(!ok)); pl.textContent = ok ? '▸' : '▾'; });
     $('mqAnt').addEventListener('click', () => ir(paso - 1));
     $('mqSig').addEventListener('click', () => ir(paso + 1));
     document.querySelectorAll('#mqPuntos button').forEach((b, i) => b.addEventListener('click', () => ir(i)));

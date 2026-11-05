@@ -2186,6 +2186,7 @@
 
   // ------------------------------------------------- páginas e índice
   function showPage(pageId) {
+    document.body.classList.toggle('ruta-3d', pageId === 'pgMaqueta' || pageId === 'pgMundo');  // en 3D el índice de la tesis se oculta para ganar pantalla
     ['pgInicio', 'pgElemento', 'pgDatos', 'pgComparativa', 'pgRecorrido', 'pgAcerca', 'pgMaqueta', 'pgMundo'].forEach((id) => {
       const el = $(id);
       if (el) el.hidden = id !== pageId;

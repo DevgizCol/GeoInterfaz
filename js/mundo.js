@@ -10,20 +10,20 @@
   let viewer = null, Cs = null, ciudad = null, modo = 'volar', paso = 0, dronAlt = 45;
   const $ = (id) => document.getElementById(id);
   const UFP = { 'UFP 1': '#8e44ad', 'UFP 2': '#d9332b', 'UFP 3': '#e6a817', 'UFP 4': '#2e9d4b' };
-  const VOC = { 'Conservación y restauración ecológica': '#3f8f4f', 'Agroforestal de transición': '#9bbf5a', 'Agroindustrial': '#d9b44a', 'Residencial mixta consolidada': '#c76b4a',
-    'Residencial mixta de expansión': '#e39a6f', 'Reserva logística del corredor Circunvalar': '#7d6bb0', 'Logística y retroportuaria': '#4b5d8c' };
+  const VOC = { 'Conservación y restauración ecológica': '#3f8f4f', 'Agroforestal de transición': '#9bbf5a', 'Agroindustrial': '#f2a93b', 'Residencial mixta consolidada': '#c0392b',
+    'Residencial mixta de expansión': '#f9a3a3', 'Reserva logística del corredor Circunvalar': '#cdb4ea', 'Logística y retroportuaria': '#9b3fc0' };
 
   const PASOS = [
-    { tit: 'El territorio', cam: [-74.86, 10.84, 16000, 350, -24], capas: [],
+    { tit: 'El territorio', cam: [-74.99, 10.9, 15000, 70, -30], capas: [],
       txt: 'Barranquilla entre el mar Caribe, el río Magdalena y la ciénaga de Mallorquín. Al occidente, los cerros desde donde baja el agua hacia la ciénaga y el mar.' },
-    { tit: 'La franja de interfaz urbano-rural', cam: [-74.885, 10.87, 10000, 350, -30], capas: ['franja'],
+    { tit: 'La franja de interfaz urbano-rural', cam: [-74.885, 10.87, 10000, 350, -30], encuadre: [350, -38], capas: ['franja'],
       txt: 'El objeto de la tesis: 18.577 ha entre la ciudad construida y el campo, delimitadas por cuenca, es decir, por el suelo cuya agua escurre hacia la ciénaga y el mar.' },
-    { tit: 'Las unidades de paisaje', cam: [-74.9, 10.885, 8500, 10, -34], capas: ['franja', 'unidades'],
+    { tit: 'Las unidades de paisaje', cam: [-74.9, 10.885, 8500, 10, -34], encuadre: [10, -42], capas: ['franja', 'unidades'],
       txt: 'Cuatro unidades según hacia qué arroyo drena cada terreno: el agua es la protagonista. Las líneas azules son los cauces, más gruesas cuanto mayor es su orden de Strahler.' },
-    { tit: 'Los lineamientos: UFP, nodos y corredores', cam: [-74.885, 10.88, 9000, 345, -32], capas: ['franja', 'ufp'],
-      txt: 'La tesis propone como lineamientos cuatro Unidades Funcionales de Planificación (UFP), seis nodos que articulan la franja y los corredores que la conectan, con la Circunvalar de la Prosperidad como eje.' },
+    { tit: 'Los lineamientos: UFP, nodos y corredores', cam: [-74.885, 10.80, 23000, 0, -52], encuadre: [0, -55], capas: ['franja', 'ufp'],
+      txt: 'La tesis propone como lineamientos cuatro Unidades Funcionales de Planificación (UFP), los nodos que articulan la franja y los corredores que la conectan, con la Circunvalar de la Prosperidad como eje.' },
     { tit: 'La propuesta: macromanzanas', cam: [-74.875, 10.925, 3800, 330, -28], capas: ['franja', 'macro'],
-      txt: '367 macromanzanas que agrupan manzanas y predios, cada una con una vocación; la altura indica el porcentaje de suelo construido hoy. Toque una para ver sus escenarios 2035 (hipotéticos).' }
+      txt: '367 macromanzanas (18.537 ha, ajustadas a las UFP 1 a 3; la UFP 4 de protección no se divide) que agrupan manzanas y predios, cada una pintada con su vocación sobre el terreno real. Toque una para ver su superficie, lo construido hoy y sus escenarios 2035 (hipotéticos).' }
   ];
 
   const cargar = () => new Promise((ok, ko) => {
@@ -89,22 +89,17 @@
     grupo(no, 'ufp');
   };
   CREA.macro = async () => {
-    const mm = await Cs.GeoJsonDataSource.load(C + 'maqueta_macromanzanas.geojson');
+    const mm = await geo('maqueta_macromanzanas.geojson');  // apoyadas: se pintan sobre el terreno y sobre la malla 3D de la ciudad
     mm.entities.values.forEach((e) => {
       if (!e.polygon) return;
       const p = e.properties;
-      e.polygon.material = color(VOC[p.vocacion_nombre.getValue()] || '#999', .9);
-      e._alto = 8 + 2 * (p.pct_construido.getValue() || 0);
+      e.polygon.material = color(VOC[p.vocacion_nombre.getValue()] || '#999', .62);
       e.polygon.outline = false;
+      e.polygon.classificationType = Cs.ClassificationType.BOTH;
+      e.name = p.id.getValue();  // título de la ficha
       e.description = `<p><b>${p.id.getValue()}</b> · ${p.UFP.getValue().replace('_', ' ')}<br>${p.vocacion_nombre.getValue()}<br>${Number(p.ha.getValue()).toLocaleString('es-CO')} ha · ${p.pct_construido.getValue()} % construido hoy<br>` +
         `2035 tendencial: ${p.uso_2035_tendencial.getValue()}<br>2035 IOTF: ${p.uso_2035_iotf.getValue()} (escenarios hipotéticos)</p>`;
     });
-    // altura del terreno en el centro de cada macromanzana: una sola consulta asíncrona para las 367 (no congela)
-    const ents = mm.entities.values.filter((e) => e.polygon);
-    const centros = ents.map((e) => Cs.Cartographic.fromCartesian(Cs.BoundingSphere.fromPoints(e.polygon.hierarchy.getValue().positions).center));
-    try { await Cs.sampleTerrainMostDetailed(viewer.terrainProvider, centros); } catch (_) { centros.forEach((c) => { c.height = 20; }); }
-    // shortcut: un solo nivel de base por macromanzana (su centro); en laderas fuertes un borde puede quedar algo por encima o por debajo
-    ents.forEach((e, i) => { const z = centros[i].height || 0; e.polygon.height = z; e.polygon.extrudedHeight = z + e._alto; });
     grupo(mm, 'macro');
   };
   }
@@ -127,23 +122,40 @@
       if (tipo === 'google') viewer.scene.globe.show = false;  // la malla de Google ya trae el terreno
     } catch (e) {
       console.warn('Ciudad 3D no disponible:', e.message);
-      if (tipo === 'google') return ponerCiudad('osm');  // sin cuota o sin red de Google: edificios de OpenStreetMap
+      if (tipo === 'google') { aviso('Google 3D no está disponible ahora; se muestran los edificios de OpenStreetMap.'); return ponerCiudad('osm'); }
     }
+    aviso(tipo === 'google' ? 'Ciudad: Google 3D. Acérquese a menos de 1 km para ver edificios y árboles en volumen.' : 'Ciudad: edificios de OpenStreetMap (volúmenes simplificados).');
     document.querySelectorAll('#muCiudad button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.c === tipo)));
   }
 
+  const aviso = (t) => { const a = $('muCiudadEstado'); if (a) a.textContent = t; };
   const ir = (c, dur = 2.8) => viewer.camera.flyTo({ destination: Cs.Cartesian3.fromDegrees(c[0], c[1], c[2]), orientation: { heading: Cs.Math.toRadians(c[3]), pitch: Cs.Math.toRadians(c[4]), roll: 0 },
     duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : dur });
 
+  function franjaDatos() { for (let i = 0; i < viewer.dataSources.length; i++) { const d = viewer.dataSources.get(i); if (d.name === 'franja') return d; } return null; }
   function irPaso(n) {
     paso = Math.max(0, Math.min(PASOS.length - 1, n));
     const P = PASOS[paso];
     if (modo !== 'volar') ponerModo('volar', true);
     marcarCapas(P.capas);
-    ir(P.cam);
+    // pasos con encuadre: la cámara abarca la franja completa con ese rumbo e inclinación (rango calculado por Cesium)
+    const fr = P.encuadre && franjaDatos();
+    if (fr) viewer.flyTo(fr, { duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2.8,
+      offset: new Cs.HeadingPitchRange(Cs.Math.toRadians(P.encuadre[0]), Cs.Math.toRadians(P.encuadre[1]), 0) });
+    else ir(P.cam);
     $('muN').textContent = `${paso + 1} / ${PASOS.length}`; $('muTit').textContent = P.tit; $('muTxt').textContent = P.txt;
     document.querySelectorAll('#muPuntos button').forEach((b, i) => b.setAttribute('aria-current', String(i === paso)));
     $('muAnt').disabled = paso === 0; $('muSig').disabled = paso === PASOS.length - 1;
+    leyenda(P.capas);
+  }
+  const UNIDADES = [['Vertiente directa de la ciénaga', '#3f93bd'], ['Arroyo Sierra Palma', '#c9673f'], ['Arroyo Grande', '#d9a441'], ['Cabeceras del sur', '#6f9c57']];
+  function leyenda(lista) {
+    const it = [];
+    if (lista.includes('franja')) it.push(['#c0271d', 'Franja de interfaz urbano-rural (18.577 ha)']);
+    if (lista.includes('unidades')) it.push(...UNIDADES.map(([t, c]) => [c, t]), ['#7fd3ff', 'Cauces (más gruesos: mayor orden de Strahler)']);
+    if (lista.includes('ufp')) it.push(...Object.entries(UFP).map(([k, c]) => [c, k + ' (lineamiento)']), ['#111111', 'Corredores económicos'], ['#5b2a86', 'Circunvalar de la Prosperidad'], ['#c0271d', 'Nodos', true]);
+    if (lista.includes('macro')) it.push(...Object.entries(VOC).map(([t, c]) => [c, t]));
+    $('muLey').innerHTML = it.map(([c, t, pt]) => `<li><i style="background:${c}" class="${pt ? 'pt' : ''}"></i>${t}</li>`).join('');
   }
 
   // --- dron y caminar: la cámara sigue el terreno a una altura fija; W A S D / flechas mueven, ratón mira
@@ -154,31 +166,42 @@
     if (modo === 'volar') return;
     const cam = viewer.camera, rapido = teclas.has('ShiftLeft') || teclas.has('ShiftRight');
     const v = (modo === 'dron' ? (rapido ? 160 : 45) : (rapido ? 60 : 15)) * dt;  // m/s
-    if (teclas.has('KeyW') || teclas.has('ArrowUp')) cam.moveForward(v);
-    if (teclas.has('KeyS') || teclas.has('ArrowDown')) cam.moveBackward(v);
-    if (teclas.has('KeyA') || teclas.has('ArrowLeft')) cam.moveLeft(v);
-    if (teclas.has('KeyD') || teclas.has('ArrowRight')) cam.moveRight(v);
+    // el avance va en la dirección de la mirada pero en horizontal, para no hundirse ni despegar al mirar abajo o arriba
+    const adelante = Cs.Cartesian3.normalize(Cs.Cartesian3.cross(cam.right, Cs.Ellipsoid.WGS84.geodeticSurfaceNormal(cam.position, new Cs.Cartesian3()), new Cs.Cartesian3()), new Cs.Cartesian3());
+    const paso = (dir, d) => cam.move(dir, d);
+    if (teclas.has('KeyW') || teclas.has('ArrowUp')) paso(adelante, -v);
+    if (teclas.has('KeyS') || teclas.has('ArrowDown')) paso(adelante, v);
+    if (teclas.has('KeyA')) cam.moveLeft(v);
+    if (teclas.has('KeyD')) cam.moveRight(v);
+    let rumbo = cam.heading;  // ← → giran la vista
+    if (teclas.has('ArrowLeft')) rumbo -= 1.2 * dt;
+    if (teclas.has('ArrowRight')) rumbo += 1.2 * dt;
     if (modo === 'dron' && teclas.has('KeyE')) dronAlt = Math.min(400, dronAlt + 40 * dt);
     if (modo === 'dron' && teclas.has('KeyQ')) dronAlt = Math.max(12, dronAlt - 40 * dt);
     const c = Cs.Cartographic.fromCartesian(cam.position);
     const suelo = viewer.scene.globe.show ? viewer.scene.globe.getHeight(c) : viewer.scene.sampleHeight(c, [], 1);
-    if (suelo !== undefined) cam.setView({ destination: Cs.Cartesian3.fromRadians(c.longitude, c.latitude, suelo + (modo === 'dron' ? dronAlt : 1.7)), orientation: { heading: cam.heading, pitch: cam.pitch, roll: 0 } });
+    if (suelo !== undefined) cam.setView({ destination: Cs.Cartesian3.fromRadians(c.longitude, c.latitude, suelo + (modo === 'dron' ? dronAlt : 1.7)), orientation: { heading: rumbo, pitch: cam.pitch, roll: 0 } });
   }
   function ponerModo(m, silencio) {
     modo = m;
     const ctl = viewer.scene.screenSpaceCameraController, libre = m === 'volar';
     ctl.enableTranslate = ctl.enableZoom = ctl.enableTilt = ctl.enableRotate = libre;
     ctl.enableLook = true;
+    // en dron y a pie, arrastrar mira alrededor (sin tener que sostener Mayús, que aquí acelera)
+    ctl.enableLook = libre;  // en dron y a pie la mirada la lleva arrastrar() con sentido natural
+    // la distancia mínima al suelo (80 m) es solo para volar; en dron y a pie la altura la fija mover()
+    ctl.minimumZoomDistance = libre ? 80 : 1;
+    ctl.enableCollisionDetection = libre;
     // a baja altura los volúmenes de las macromanzanas tapan la vista: se ocultan
-    if (!libre) capa('macro', false);
+    if (!libre) { capa('macro', false); const i = $('pgMundo').querySelector('[data-k="macro"]'); if (i) i.checked = false; }
     if (!silencio && !libre) {
       const lon = -74.905, lat = 10.965, h = (viewer.scene.globe.getHeight(Cs.Cartographic.fromDegrees(lon, lat)) || 40) + (m === 'dron' ? dronAlt : 1.7);
       viewer.camera.flyTo({ destination: Cs.Cartesian3.fromDegrees(lon, lat, h), orientation: { heading: Cs.Math.toRadians(20), pitch: Cs.Math.toRadians(m === 'dron' ? -15 : -4), roll: 0 }, duration: 2.5 });
     }
     document.querySelectorAll('#muModo button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
     $('muAyuda').textContent = { volar: 'Arrastre para girar, rueda para acercarse, Ctrl + arrastrar para inclinar.',
-      dron: 'Dron a ' + Math.round(dronAlt) + ' m: W A S D o flechas para avanzar, Q / E para bajar o subir, Mayús para ir rápido; arrastre para mirar.',
-      caminar: 'A pie (1,7 m): W A S D o flechas, Mayús para correr; arrastre para mirar.' }[m];
+      dron: 'Dron a ' + Math.round(dronAlt) + ' m · arrastre para mirar · ← → girar · W S o ↑ ↓ avanzar · A D de lado · Q E bajar o subir · Mayús rápido.',
+      caminar: 'A pie (1,7 m) · arrastre para mirar · ← → girar · W S o ↑ ↓ avanzar · A D de lado · Mayús correr.' }[m];
   }
 
   async function montar() {
@@ -186,16 +209,17 @@
     pg.innerHTML = `
       <div id="muMapa" class="mq-mapa"></div>
       <aside class="mq-panel mu-panel" aria-live="polite">
-        <div class="mq-cab"><span class="mq-eti">Mundo 3D de la propuesta</span><span id="muN" class="mq-n"></span></div>
+        <div class="mq-cab"><span class="mq-eti">Mundo 3D de la propuesta</span><span id="muN" class="mq-n"></span><button class="mq-plegar" aria-expanded="true" aria-label="Plegar el panel">▾</button></div>
         <h2 id="muTit">Cargando el mundo 3D…</h2>
         <p id="muTxt" class="mu-txt">Terreno, ciudad y capas de la tesis.</p>
         <div class="mq-pie">
+          <ul id="muLey" class="mq-ley"></ul>
           <div id="muPuntos" class="mq-puntos">${PASOS.map((p, i) => `<button aria-label="Paso ${i + 1}: ${p.tit}"></button>`).join('')}</div>
           <div class="mq-nav"><button id="muAnt" class="btn">← Anterior</button><button id="muSig" class="btn pri">Siguiente →</button></div>
         </div>
         <details class="mu-libre"><summary>Explorar libremente</summary>
           <div class="mu-grupo"><span>Recorrer</span><div id="muModo" class="mq-modos"><button data-m="volar" aria-pressed="true">Volar</button><button data-m="dron">Dron</button><button data-m="caminar">Caminar</button></div></div>
-          <div class="mu-grupo"><span>Ciudad</span><div id="muCiudad" class="mq-modos"><button data-c="google">Google 3D</button><button data-c="osm">Edificios OSM</button></div></div>
+          <div class="mu-grupo"><span>Ciudad</span><div id="muCiudad" class="mq-modos"><button data-c="google">Google 3D</button><button data-c="osm">Edificios OSM</button></div><p id="muCiudadEstado" class="mq-nota" role="status"></p></div>
           <div class="mu-grupo"><span>Capas</span><div class="mu-capas">
             <label><input type="checkbox" data-k="franja"> Franja de interfaz (18.577 ha)</label>
             <label><input type="checkbox" data-k="unidades"> Unidades de paisaje y cauces</label>
@@ -203,7 +227,7 @@
             <label><input type="checkbox" data-k="macro"> Macromanzanas (propuesta)</label></div></div>
           <p id="muAyuda" class="mq-nota"></p>
         </details>
-        <p class="mq-nota mu-pie-nota"><a href="#/maqueta">Versión ligera</a> · Terreno: Cesium World Terrain. Ciudad: Google / OpenStreetMap. UFP y nodos: lineamientos; macromanzanas: propuesta; 2035: escenarios hipotéticos.</p>
+        <p class="mq-nota mu-pie-nota"><a href="#/maqueta">Versión ligera</a> · Terreno: Cesium World Terrain. Ciudad: Google / OpenStreetMap (acérquese para ver los edificios). UFP y nodos: lineamientos; macromanzanas: propuesta; 2035: escenarios hipotéticos.</p>
       </aside>`;
     try { Cs = await cargar(); } catch (e) { $('muTit').textContent = 'El mundo 3D no pudo cargarse'; $('muTxt').innerHTML = e.message + '. <a href="#/maqueta">Abrir la versión ligera</a>.'; return; }
     Cs.Ion.defaultAccessToken = window.GI_CESIUM_TOKEN;
@@ -214,11 +238,38 @@
     viewer.scene.globe.enableLighting = true;
     viewer.clock.currentTime = Cs.JulianDate.fromIso8601('2026-03-15T15:00:00Z');  // luz de media mañana en Barranquilla
     viewer.scene.fog.density = .00012;
+    const ctl = viewer.scene.screenSpaceCameraController;
+    ctl.minimumZoomDistance = 80; ctl.maximumZoomDistance = 60000;
+    // sin terreno de Cesium (modo Google) la cámara no detecta el suelo: se impide que baje de 80 m o mire hacia arriba al volar
+    viewer.scene.postRender.addEventListener(() => {
+      if (modo !== 'volar' || !viewer.camera) return;
+      const cam = viewer.camera, c = Cs.Cartographic.fromCartesian(cam.position);
+      const suelo = viewer.scene.globe.show ? viewer.scene.globe.getHeight(c) : viewer.scene.sampleHeight(c, [], 1);
+      const bajo = suelo !== undefined && c.height < suelo + 80, arriba = cam.pitch > Cs.Math.toRadians(-10);
+      if (bajo || arriba) cam.setView({ destination: Cs.Cartesian3.fromRadians(c.longitude, c.latitude, bajo ? suelo + 80 : c.height),
+        orientation: { heading: cam.heading, pitch: Math.min(cam.pitch, Cs.Math.toRadians(-10)), roll: 0 } });
+    });
     window.__mundo = viewer;  // para pruebas automáticas
     await ponerCiudad('google');
     capas();
     ponerModo('volar', true);
     irPaso(0);
+    // arrastrar para mirar en dron y a pie: derecha gira a la derecha, arriba mira arriba (0,25°/px y 0,2°/px)
+    let arr = null;
+    const lienzo = viewer.canvas;
+    lienzo.addEventListener('pointerdown', (e) => { if (modo !== 'volar') { arr = { x: e.clientX, y: e.clientY }; lienzo.setPointerCapture(e.pointerId); } });
+    lienzo.addEventListener('pointermove', (e) => {
+      if (!arr || modo === 'volar') return;
+      const cam = viewer.camera, dx = e.clientX - arr.x, dy = e.clientY - arr.y; arr = { x: e.clientX, y: e.clientY };
+      const cab = Math.max(Cs.Math.toRadians(-80), Math.min(Cs.Math.toRadians(35), cam.pitch - Cs.Math.toRadians(dy * .2)));
+      cam.setView({ orientation: { heading: cam.heading + Cs.Math.toRadians(dx * .25), pitch: cab, roll: 0 } });
+      viewer.scene.requestRender();
+    });
+    const suelta = () => { arr = null; };
+    lienzo.addEventListener('pointerup', suelta); lienzo.addEventListener('pointercancel', suelta);
+    // plegar el panel
+    const pl = pg.querySelector('.mq-plegar');
+    pl.addEventListener('click', () => { const p = pg.querySelector('.mq-panel'); const ok = p.classList.toggle('plegado'); pl.setAttribute('aria-expanded', String(!ok)); pl.textContent = ok ? '▸' : '▾'; });
     // dron y caminar: mientras haya teclas pulsadas se pide un cuadro por fotograma
     const bucle = () => { if (teclas.size && modo !== 'volar') { mover(); viewer.scene.requestRender(); } else ultimo = performance.now(); requestAnimationFrame(bucle); };
     requestAnimationFrame(bucle);
