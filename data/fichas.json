@@ -1,0 +1,1478 @@
+{
+ "fig-1": {
+  "muestra": "Muestra la localización de ciudades portuarias latinoamericanas agrupadas como Ciudad Mar y Ciudad Río, delimitando el caso de estudio de Barranquilla.",
+  "porque": "Permite fijar las posiciones territoriales de Barranquilla, Veracruz, Santos y Valparaíso antes de compararlas en el contexto continental dentro del apartado 1.6.1.",
+  "como": "Cartografía base de localización de ciudades portuarias latinoamericanas con capas mundiales de países y fronteras.",
+  "leer": [
+   "Localice y compare la posición marítima o fluvial que ocupa cada puerto en el continente.",
+   "Identifique a Barranquilla como caso de estudio frente a los puertos de Veracruz, Santos y Valparaíso."
+  ],
+  "relacion": []
+ },
+ "fig-2": {
+  "muestra": "Presenta los límites político-administrativos del Área Metropolitana de Barranquilla (AMB) y la distribución territorial de sus municipios.",
+  "porque": "Permite ver las distintas jurisdicciones que cruza la franja de interfaz urbano-rural, apoyando la delimitación territorial en el CAPÍTULO I (1.6.1 Delimitación espacial).",
+  "como": "Elaboración propia con base en la cartografía del IGAC y los POT municipales del AMB.",
+  "leer": [
+   "Observe los límites de competencia y autonomía propios de cada municipio integrante.",
+   "Note cómo el territorio de la franja se reparte entre varias entidades administrativas."
+  ],
+  "relacion": []
+ },
+ "esq-1": {
+  "muestra": "Presenta la evolución conceptual de la franja de interfaz urbano-rural entre 1887 y 2025.",
+  "porque": "Sustenta el paso de la dicotomía o división tradicional en dos partes hacia el continuum urbano-rural, entendido como una transición territorial continua y sin cortes (apartado 2.1.2).",
+  "como": "Elaboración propia a partir de los autores citados en los apartados 2.1 a 2.3.",
+  "leer": [
+   "Siga el eje cronológico de 1887 a 2025 para observar el cambio temporal de los enfoques teóricos.",
+   "Identifique el punto de quiebre donde se pasa de la separación estricta campo-ciudad a una lectura continua del espacio."
+  ],
+  "relacion": []
+ },
+ "esq-2": {
+  "muestra": "Expone las dimensiones morfológica, funcional, institucional y ecológica de la franja de interfaz urbano-rural.",
+  "porque": "Anticipa las cuatro dimensiones con las que la investigación analiza la franja, que se definen operativamente en el apartado 2.5.",
+  "como": "Elaboración propia a partir de la definición operativa del apartado 2.5.",
+  "leer": [
+   "Examine cómo interactúan las cuatro dimensiones como partes complementarias de una misma franja.",
+   "Tenga presente que las pautas metodológicas de cada dimensión se desarrollan de forma operativa en el apartado 2.5."
+  ],
+  "relacion": []
+ },
+ "esq-3": {
+  "muestra": "Presenta el gradiente urbano-rural, entendido como la variación progresiva del territorio, sus franjas de transición y componentes adaptados al contexto metropolitano del Sur Global.",
+  "porque": "Aporta a la crítica al urbano-centrismo y a la revalorización de la ruralidad reuniendo el modelo de Pryor (1968) y los apartados 2.5.1 y 2.5.2.",
+  "como": "Elaboración propia a partir de Pryor (1968) y los componentes estructurales y funcionales de los apartados 2.5.1 y 2.5.2.",
+  "leer": [
+   "Observe la transición gradual del gradiente que va transformando el espacio urbano en rural.",
+   "Distinga las adaptaciones incorporadas al esquema de 1968 para responder a las dinámicas del Sur Global."
+  ],
+  "relacion": []
+ },
+ "esq-4": {
+  "muestra": "Ilustra los vectores territorial, funcional y transicional de la expansión urbana contemporánea y su paralelo con las dimensiones de análisis de Pryor.",
+  "porque": "Sustenta la discusión teórica sobre transformaciones contemporáneas en el marco del apartado 2.3.2.",
+  "como": "Elaboración propia a partir de Follmann (2022) y Pryor (1968).",
+  "leer": [
+   "Compare directamente cada uno de los tres vectores con la dimensión analítica correspondiente de Pryor.",
+   "Diferencie la expresión espacial del vector territorial frente a los flujos del vector funcional y el cambio del vector transicional."
+  ],
+  "relacion": []
+ },
+ "fig-3": {
+  "muestra": "Muestra la delimitación territorial de la franja de interfaz urbano-rural en cinco pasos y placas a igual escala. Representa el cruce entre la cuenca —territorio cuyas aguas van a un mismo punto natural— de la ciénaga de Mallorquín y el Área Metropolitana de Barranquilla (AMB).",
+  "porque": "Sustenta la definición espacial del área de estudio en el apartado 3.1.1 (Localización territorial de la franja urbano-rural) del Capítulo III.",
+  "como": "Elaboración propia con base en el plan de ordenación de cuencas POMCA del ministerio ambiental MADS, el instituto geográfico IGAC y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Compara las 21.092 ha del cruce inicial frente a las 18.577 ha de la franja resultante.",
+   "Observa la resta de 2.515 ha correspondientes a suelo urbano de Barranquilla (1.262 ha), ciénaga (806 ha) y tramos de Puerto Colombia (unas 440 ha).",
+   "Verifica que el límite noroccidental y suroccidental del distrito define el espacio de transición hacia municipios como Tubará, Baranoa o Polonuevo."
+  ],
+  "relacion": [
+   "fig-70"
+  ]
+ },
+ "fig-4": {
+  "muestra": "Representa la forma del borde urbano, la zonificación ambiental del plan de cuencas POMCA, la red de drenaje pluvial que vierte aguas lluvias en la Ciénaga de Mallorquín y la presión de la expansión urbana sobre el ecosistema de manglar.",
+  "porque": "Evidencia el agua como estructura del borde urbano y la presión sobre el manglar en el apartado 3.1.2 (Características espaciales del borde urbano) del Capítulo III.",
+  "como": "Elaboración propia a partir de cartografía base de la entidad metropolitana AMB, la autoridad ambiental C.R.A. y datos de campo (2026).",
+  "leer": [
+   "Rastrea primero los drenajes pluviales para ver cómo conducen el agua lluvia directamente hacia la ciénaga.",
+   "Compara la proximidad de las capas de asentamientos y desarrollos inmobiliarios frente al área de manglar.",
+   "Superpón las capas de inundación y vertimientos para ubicar las zonas críticas de presión ambiental."
+  ],
+  "relacion": []
+ },
+ "atlas-3-4": {
+  "muestra": "Muestra los ejes viales y las infraestructuras que actúan como barrera física y fragmentan la franja de interfaz urbano-rural, analizando la capilaridad o grado de conexión de caminos y pasos locales.",
+  "porque": "Comprueba sobre el plano cómo vías como la Vía al Mar y la Circunvalar de la Prosperidad dividen el territorio en el apartado 3.1.5 del Capítulo III.",
+  "como": "Elaboración propia con base en cartografía de la entidad metropolitana AMB y planes de ordenamiento territorial (POT) municipales bajo el sistema MAGNA-SIRGAS 2018 (EPSG:9377).",
+  "leer": [
+   "Ubica los trazados de la Vía al Mar y la Circunvalar de la Prosperidad para identificar los cortes físicos continuos.",
+   "Examina en qué sectores los caminos locales logran cruzar o conectar y en cuáles quedan interrumpidos por la calzada principal.",
+   "Compara la red de vías frente a la capa de drenajes sencillos y ríos para detectar interferencias con el paso del agua."
+  ],
+  "relacion": []
+ },
+ "fig-5": {
+  "muestra": "Muestra la distribución de personas encuestadas según el entorno que rodea su sector: mezcla de elementos (36,3 %), ciudad consolidada (28,3 %), áreas naturales (18,1 %), infraestructura industrial o logística (12,9 %) y zonas agrícolas (4,4 %).",
+  "porque": "Evidencia la hibridación o mezcla de usos en el borde y la huella del corredor portuario del río Magdalena en el apartado 3.2 (Relación ciudad-puerto-río) del Capítulo III.",
+  "como": "Elaboración propia a partir de encuestas aplicadas a habitantes del territorio.",
+  "leer": [
+   "Observa que el grupo mayoritario (36,3 %) habita en sectores donde conviven elementos urbanos, naturales y productivos mezclados.",
+   "Compara el peso del entorno industrial y logístico (12,9 %) frente al uso agrícola (4,4 %) como efecto del corredor portuario del río.",
+   "Contrasta el 28,3 % que se percibe en ciudad consolidada frente al 18,1 % rodeado por áreas naturales."
+  ],
+  "relacion": []
+ },
+ "fig-6": {
+  "muestra": "Sitúa el área de estudio en el Área Metropolitana de Barranquilla, su relación con el río Magdalena, la red vial principal y los límites territoriales.",
+  "porque": "Permite analizar la conectividad regional y la articulación funcional de la franja en el apartado 3.3.1 del Capítulo III.",
+  "como": "Se elaboró tomando como base la encuesta aplicada (n = 706) y entrevistas.",
+  "leer": [
+   "Examina la articulación del área con el núcleo urbano y con el hinterland (territorio de influencia) rural.",
+   "Observa la conectividad regional apoyada en el corredor fluvial y la red de vías principales.",
+   "Los datos provienen de un tamaño muestral de n = 706 encuestas junto con entrevistas."
+  ],
+  "relacion": []
+ },
+ "fig-7": {
+  "muestra": "Presenta la distribución de 704 personas encuestadas según cómo perciben su sector en cinco categorías territoriales: urbano consolidado, mezcla urbano-rural, expansión urbana hacia los bordes, zonas en crecimiento y ruralidad cercana.",
+  "porque": "Evidencia la ausencia de una identidad territorial única y dominante, reflejando dinámicas de transición en el apartado 3.3.1.1 del Capítulo III.",
+  "como": "Elaboración propia a partir de 704 encuestas de autopercepción aplicadas a residentes.",
+  "leer": [
+   "Observa que solo un tercio de las respuestas (33,4 %) percibe su entorno como suelo urbano plenamente consolidado.",
+   "Suma el 66,6 % restante para comprobar la fragmentación en cuatro visiones distintas de mezcla, bordes, expansión y campo cercano.",
+   "Ten en cuenta que la coexistencia de estas cinco percepciones confirma que el sector carece de una identidad homogénea."
+  ],
+  "relacion": []
+ },
+ "fig-8": {
+  "muestra": "Expone las respuestas de 706 residentes encuestados sobre el nivel de conexión física entre su sector y la ciudad consolidada.",
+  "porque": "Sustenta en el apartado 3.3.1.1 que la densa red de caminos convierte la franja de interfaz urbano-rural en una extensión operativa metropolitana que acelera la urbanización.",
+  "como": "",
+  "leer": [
+   "Compruebe que el 83,4 % de las personas declara una conexión física total o parcial con el núcleo metropolitano.",
+   "Tenga presente la advertencia de la investigación: una alta conectividad física no asegura un acceso equivalente a servicios públicos ni a presencia institucional."
+  ],
+  "relacion": []
+ },
+ "fig-9": {
+  "muestra": "Presenta las respuestas de 703 residentes sobre la categoría administrativa a la que consideran que pertenece su sector.",
+  "porque": "Demuestra en el apartado 3.3.2.1 que la superposición de límites entre jurisdicciones y la falta de un marco normativo reconocido debilitan la identidad territorial en la franja de interfaz urbano-rural.",
+  "como": "",
+  "leer": [
+   "Observe primero que casi un tercio de la muestra (29,6 %) declara no saber a qué categoría administrativa pertenece su sector.",
+   "Advierta que esta incertidumbre refleja un déficit de comunicación de las instituciones y la ausencia de una pertenencia territorial clara para los habitantes."
+  ],
+  "relacion": []
+ },
+ "fig-10": {
+  "muestra": "Recoge las respuestas de 706 habitantes sobre el grado de claridad respecto a cuál entidad administra su sector.",
+  "porque": "Evidencia en el apartado 3.3.2.1 que la falta de reglas claras y la división dispersa de competencias institucionales en la vida diaria limitan la eficacia del control sobre las construcciones.",
+  "como": "",
+  "leer": [
+   "Examine que el 41,6 % de los encuestados afirma que no está claro qué entidad gestiona y administra su territorio.",
+   "Relacione esta falta de visibilidad de la autoridad con la debilidad institucional que favorece la ocupación y uso informal del suelo en la franja de interfaz urbano-rural."
+  ],
+  "relacion": []
+ },
+ "fig-11": {
+  "muestra": "Contiene la valoración de 707 residentes sobre la intensidad de presencia activa de la autoridad local en su sector.",
+  "porque": "Fundamenta en el apartado 3.3.2.1 la existencia de un vacío de control en la franja de interfaz urbano-rural y la necesidad de aplicar mecanismos diferenciados de vigilancia del suelo.",
+  "como": "",
+  "leer": [
+   "Mire prioritariamente que el 78,6 % de los consultados (casi cuatro de cada cinco) califica la presencia de la autoridad como media o baja.",
+   "Advierta que la falta de un control constante del suelo por parte de las entidades públicas favorece el avance de ocupaciones no planificadas en la zona."
+  ],
+  "relacion": []
+ },
+ "atlas-3-5": {
+  "muestra": "Presenta la densidad de población calculada en habitantes por hectárea dentro de los planes parciales de la franja de interfaz urbano-rural, macroproyectos residenciales y equipamientos clasificados.",
+  "porque": "Sustenta en el apartado 3.3.3.1 la concentración urbana y la coexistencia de construcciones dispares frente a la pérdida de beneficios naturales en la cuenca o territorio de drenaje de aguas.",
+  "como": "Elaboración propia con base en cartografía del Área Metropolitana de Barranquilla (AMB), DANE y planes de ordenamiento territorial municipales (MAGNA-SIRGAS 2018, EPSG:9377).",
+  "leer": [
+   "Localice y compare los macroproyectos residenciales en planes parciales como Ciudad Mallorquín, Alameda del Río, El Genovés y Villas de San Pablo frente a los sectores industriales sobre la Vía 40 y la Circunvalar.",
+   "Tenga en cuenta que esta lámina analiza la densidad en planes parciales, mientras que la densidad poblacional desagregada por manzana se presenta de forma complementaria en la Lámina Atlas 3.12.",
+   "Advierta el riesgo señalado por la tesis: la alta densificación habitacional reduce las zonas verdes y la absorción de agua de lluvia en el suelo, comprometiendo la estabilidad hídrica del área."
+  ],
+  "relacion": []
+ },
+ "fig-12": {
+  "muestra": "Registra la percepción de 706 residentes acerca de la concentración de viviendas en su sector.",
+  "porque": "Explica en el apartado 3.3.3.1 la intensidad de ocupación en un territorio de borde, demostrando que la franja de interfaz urbano-rural se densifica por compresión física y no por planificación.",
+  "como": "",
+  "leer": [
+   "Observe que el 87,5 % de las personas encuestadas identifica la concentración de viviendas entre niveles intermedios y muy concentrados.",
+   "Compare cómo esta alta densidad percibida choca con la condición de borde del territorio y anticipa dinámicas de crecimiento con ocupación informal."
+  ],
+  "relacion": []
+ },
+ "fig-13": {
+  "muestra": "Expone la percepción ciudadana sobre el ritmo de crecimiento del sector en los últimos diez años, donde el 81,1 % identifica un aumento significativo.",
+  "porque": "Comprueba con datos de encuesta en el apartado 3.3.3.1 que la franja es un territorio dinámico y sustenta que los instrumentos de control deben actuar de forma preventiva ante la urbanización expansiva.",
+  "como": "",
+  "leer": [
+   "Examinar el 81,1 % que percibe un crecimiento significativo frente al porcentaje restante de respuestas.",
+   "Advertencia de la tesis: el crecimiento acelerado percibido evidencia la urgencia de aplicar instrumentos de control preventivo antes del avance urbano expansivo."
+  ],
+  "relacion": []
+ },
+ "fig-14": {
+  "muestra": "Muestra la percepción sobre construcciones sin planificación o subdivisiones informales: el 65,4 % identifica su presencia (45,5 % «Algunas» y 19,9 % «Muchas»), el 12,5 % señala que no existen y el 22,1 % manifiesta no tener conocimiento.",
+  "porque": "Sustenta en el apartado 3.3.4.1 el examen de la relación entre lo formal y lo informal en la franja, evidenciando que una parte importante del suelo se ocupa al margen de la planificación territorial.",
+  "como": "",
+  "leer": [
+   "Sumar las barras de «Algunas» (45,5 %) y «Muchas» (19,9 %) para dimensionar el 65,4 % que reconoce ocupaciones fuera de la norma.",
+   "Comparar la proporción que percibe construcciones sin planificar frente al 22,1 % de residentes que declara no tener conocimiento de estas situaciones."
+  ],
+  "relacion": []
+ },
+ "fig-15": {
+  "muestra": "Ilustra la percepción del nivel de control del ordenamiento territorial que ejercen las autoridades, donde el 80,1 % de los encuestados lo califica entre moderado y bajo.",
+  "porque": "Sustenta en el apartado 3.3.4.1 el contraste entre la norma escrita y su aplicación real en territorios de transición, concluyendo que la regulación no logra conducir el crecimiento de la franja.",
+  "como": "",
+  "leer": [
+   "Observar la concentración del 80,1 % que evalúa la vigilancia institucional únicamente entre niveles moderado y bajo.",
+   "Advertencia de la tesis: cuatro de cada cinco encuestados perciben debilidad en el control, lo que confirma la brecha entre la norma escrita y su cumplimiento efectivo."
+  ],
+  "relacion": []
+ },
+ "atlas-3-6": {
+  "muestra": "Presenta sobre el plano la evolución histórica de la huella urbana metropolitana organizada por periodos de fundación barrial y su avance sobre la franja de interfaz urbano-rural.",
+  "porque": "Permite responder en el apartado 3.3.5.1 cómo se ha ocupado la franja en el tiempo, identificando la dirección del crecimiento urbano hacia la interfaz.",
+  "como": "Elaboración propia con base en cartografía del Área Metropolitana de Barranquilla (AMB) y los POT municipales (MAGNA-SIRGAS 2018, EPSG:9377).",
+  "leer": [
+   "Muestra la expansión física histórica según las fechas de fundación de los barrios.",
+   "Permite ubicar espacialmente qué áreas urbanas consolidadas alcanzaron la franja de interfaz urbano-rural."
+  ],
+  "relacion": []
+ },
+ "fig-16": {
+  "muestra": "Presenta la distribución del tiempo de residencia en el sector, destacando que el 52,9 % de los encuestados habita en el territorio desde hace menos de diez años.",
+  "porque": "Aporta en el apartado 3.3.5.1 la dimensión temporal del poblamiento para entender la presión reciente sobre el borde de la ciénaga y los retos de gestión pública ambiental derivados de la alta rotación poblacional.",
+  "como": "",
+  "leer": [
+   "Mirar el 52,9 % que acumula menos de diez años para dimensionar la magnitud del poblamiento reciente en el sector.",
+   "Advertencia de la tesis: la llegada mayoritaria de habitantes recientes suele asociarse con un menor arraigo o vínculo con los ecosistemas locales, lo que dificulta los acuerdos ambientales comunitarios."
+  ],
+  "relacion": []
+ },
+ "fig-17": {
+  "muestra": "Detalla la distribución de la antigüedad de construcción de las viviendas informada por los residentes, destacando que el 43,7 % tiene menos de diez años frente a un 30,1 % con más de veinte años.",
+  "porque": "Aporta en el apartado 3.3.5.1 un indicador material del tejido construido para evidenciar que la coexistencia de construcciones históricas y recientes genera heterogeneidad morfológica —formas y tipologías de edificación dispares— y dificulta aplicar normas urbanas uniformes.",
+  "como": "",
+  "leer": [
+   "Comparar la proporción de viviendas recientes de menos de una década (43,7 %) con el bloque consolidado de más de veinte años (30,1 %).",
+   "Advertencia de la tesis: la mezcla de épocas constructivas en un mismo sector impide aplicar reglamentaciones edilicias homogéneas."
+  ],
+  "relacion": []
+ },
+ "fig-18": {
+  "muestra": "Presenta el tipo de vivienda predominante según los residentes, donde destaca una combinación de diversas formas constructivas.",
+  "porque": "En el apartado 3.3.5.1, sustenta que no hay un modelo de ocupación planificado y uniforme, mostrando la coexistencia de distintas generaciones de asentamiento en el mismo espacio.",
+  "como": "Elaborada a partir de la percepción de los habitantes encuestados (n=705).",
+  "leer": [
+   "Mirar primero el 58,7 % que identifica una mezcla de tipologías frente a modelos homogéneos.",
+   "Comparar cómo la percepción habitante sobre las formas construidas evidencia la falta de un patrón planificado.",
+   "Comprobar la coexistencia física de varias etapas o generaciones de asentamiento en una misma zona."
+  ],
+  "relacion": []
+ },
+ "fig-19": {
+  "muestra": "Expone el incremento porcentual estimado de la superficie de suelo ocupada por edificaciones (huella urbana) en los municipios del AMB (Área Metropolitana de Barranquilla) para 2015–2020 y 2020–2025.",
+  "porque": "En el apartado 3.3.6.1, sustenta el desplazamiento de la expansión urbana hacia la franja de interfaz urbano-rural en escala metropolitana.",
+  "como": "Elaboración propia con base en el DANE (entidad estadística nacional), el IGAC (instituto geográfico y catastral) y los POT (planes de ordenamiento territorial) municipales.",
+  "leer": [
+   "Comparar las barras de Galapa, Malambo y Puerto Colombia frente a la de Barranquilla.",
+   "Notar que los municipios del borde metropolitano crecen a tasas dos o tres veces mayores que el municipio central.",
+   "Contrastar la variación del ritmo de expansión urbana entre el quinquenio 2015–2020 y el de 2020–2025."
+  ],
+  "relacion": []
+ },
+ "fig-20": {
+  "muestra": "Muestra la evolución y proyección de la población total en los cinco municipios del AMB para 2020–2030.",
+  "porque": "En el apartado 3.3.6.1, anticipa dónde habrá mayor demanda de suelo y mayor presión sobre la franja de interfaz urbano-rural.",
+  "como": "Elaboración propia con base en proyecciones DANE PostCOVID-19.",
+  "leer": [
+   "Barranquilla muestra una tendencia hacia la estabilización poblacional.",
+   "Soledad y Galapa concentran el mayor volumen de crecimiento proyectado.",
+   "Cubre el horizonte temporal comprendido entre 2020 y 2030."
+  ],
+  "relacion": []
+ },
+ "fig-21": {
+  "muestra": "Expone una tabla organizada (matriz) con las facultades legales y de gestión (competencias) de seis entidades estatales que coinciden sobre la franja de interfaz del AMB (Área Metropolitana de Barranquilla).",
+  "porque": "En el apartado 3.3.6.2, explica el vacío de control institucional derivado de la falta de articulación y la división de funciones entre autoridades.",
+  "como": "Elaboración propia a partir de entrevistas y del marco normativo vigente.",
+  "leer": [
+   "Examinar las seis autoridades concurrentes que intervienen sobre un mismo territorio sin actuar de forma coordinada.",
+   "Verificar que cada entidad posee facultades limitadas o parciales sobre el área.",
+   "Comprobar la casilla de integración para notar que ninguna entidad reúne a la vez la planificación, el control y la gestión del medio ambiente."
+  ],
+  "relacion": []
+ },
+ "fig-22": {
+  "muestra": "Muestra la comparación entre la densidad de viviendas y el ritmo de crecimiento percibidos por los habitantes del sector.",
+  "porque": "En el apartado 3.3.6.3, sustenta que los sectores de incorporación más reciente concentran la mayor presión de ocupación territorial.",
+  "como": "Elaborada con datos de las preguntas Q10 (n=706) y Q11 (n=705) de la encuesta 2026.",
+  "leer": [
+   "El 87,5% de los residentes percibe una alta densificación.",
+   "El 81,1% señala un crecimiento acelerado en su sector.",
+   "Integra en una sola lectura la densidad y el crecimiento."
+  ],
+  "relacion": []
+ },
+ "fig-23": {
+  "muestra": "Compara el tiempo de residencia con la antigüedad de la construcción de las viviendas entre los encuestados.",
+  "porque": "Apoya el análisis del crecimiento reciente en el apartado 3.3.6.5, demostrando que tres generaciones de ocupación coexisten en el territorio.",
+  "como": "Se elaboró con datos de la Encuesta franja interfaz AMB (2026), aplicada a n = 705 encuestados.",
+  "leer": [
+   "Compara directamente los años que lleva viviendo el residente frente a la edad de su vivienda.",
+   "Identifica tres etapas históricas distintas de ocupación que conviven en un mismo sector.",
+   "Justifica el uso de instrumentos de planificación diferenciados según el grado de consolidación del asentamiento."
+  ],
+  "relacion": []
+ },
+ "fig-24": {
+  "muestra": "Muestra la proporción de residentes que perciben coexistencia de actividades urbanas y rurales en su sector.",
+  "porque": "Comprueba en el apartado 3.4.1.1 la hipótesis de una interfaz activa donde más de la mitad del territorio combina lógicas distintas.",
+  "como": "Se obtuvo mediante encuesta aplicada a n = 705 residentes.",
+  "leer": [
+   "Compara la proporción afirmativa frente a la negativa: el 62,7 % confirma que sí coexisten ambas actividades en su sector.",
+   "Identifica en el dato la convivencia de dinámicas de campo y ciudad en más de la mitad de la franja.",
+   "Considera la advertencia de la tesis sobre requerir instrumentos de zonificación de uso mixto."
+  ],
+  "relacion": []
+ },
+ "fig-25": {
+  "muestra": "Distribuye las actividades predominantes percibidas por los residentes en el entorno inmediato de su sector.",
+  "porque": "Permite ver en el apartado 3.4.1.1 la superposición de funciones sin un ordenamiento efectivo en la franja urbano-rural del área metropolitana.",
+  "como": "Se construyó a partir de respuestas de n = 706 residentes sobre su entorno inmediato.",
+  "leer": [
+   "Suma primero el uso residencial y el mixto, que concentran juntos el 74,6 % de las respuestas.",
+   "Examina la predominancia del uso mixto frente a las demás actividades reportadas.",
+   "Interpreta la superposición de funciones como reflejo de la falta de una zonificación efectiva."
+  ],
+  "relacion": []
+ },
+ "fig-26": {
+  "muestra": "Distribuye la principal actividad laboral del hogar según los residentes encuestados.",
+  "porque": "Aporta en el apartado 3.4.2.1 la dimensión económica que vincula el sector al núcleo metropolitano sin darle autonomía funcional.",
+  "como": "Se calculó a partir de declaraciones de n = 703 hogares encuestados.",
+  "leer": [
+   "Compara las dos categorías mayoritarias: el comercio con 36,8 % y el trabajo en otra zona de la ciudad con 26,6 %.",
+   "Verifica que ambas actividades suman el 63,4 % de la ocupación declarada.",
+   "Interpreta el peso del empleo en la ciudad consolidada y el comercio local como señal de dependencia económica dual."
+  ],
+  "relacion": []
+ },
+ "fig-27": {
+  "muestra": "Indica la distribución geográfica del lugar de trabajo de los residentes.",
+  "porque": "Permite ver en el apartado 3.4.2.1 los desplazamientos hacia el núcleo urbano que dan a la franja carácter de barrio dormitorio.",
+  "como": "Se levantó mediante encuesta aplicada a n = 701 residentes.",
+  "leer": [
+   "Compara los que laboran en la zona urbana consolidada (44,7 %) con los que trabajan dentro del propio sector (38,4 %).",
+   "Constata la primacía del desplazamiento hacia el núcleo urbano sobre el empleo local.",
+   "Toma en cuenta la justificación de la tesis de formular estrategias de proximidad laboral para reducir la dependencia funcional."
+  ],
+  "relacion": []
+ },
+ "fig-28": {
+  "muestra": "Recoge la percepción de los residentes sobre la llegada de nuevos vecinos al sector en los últimos años.",
+  "porque": "Mide en el apartado 3.4.3.1 el flujo poblacional para evaluar la hipótesis de expansión por desborde y la presión sobre servicios y estructura ecológica.",
+  "como": "Se obtuvo mediante encuesta aplicada a n = 705 residentes.",
+  "leer": [
+   "Comprueba la percepción casi unánime: el 93,2 % de los encuestados confirma la llegada de vecinos.",
+   "Observa que el 50,2 % califica esa llegada específicamente como masiva.",
+   "Atiende la advertencia de la tesis sobre la presión que estos flujos ejercen sobre los servicios y la estructura de soporte natural."
+  ],
+  "relacion": []
+ },
+ "fig-29": {
+  "muestra": "Presenta el tipo de cobertura de servicios públicos declarado por los residentes en sus viviendas.",
+  "porque": "Permite examinar en el apartado 3.4.4.1 una cobertura incompleta donde la red prioriza el acceso sobre el saneamiento.",
+  "como": "Se basó en respuestas de n = 704 residentes en sus viviendas.",
+  "leer": [
+   "Revisa la proporción con carencias: el 37,1 % de los residentes reporta déficit parcial o total de servicios.",
+   "Identifica el alcantarillado como la brecha o carencia más crítica del sistema básico.",
+   "Compara el avance de las redes de acceso frente al rezago en saneamiento."
+  ],
+  "relacion": []
+ },
+ "fig-30": {
+  "muestra": "Expone la evaluación de los residentes sobre la calidad de los servicios públicos disponibles en su sector.",
+  "porque": "En «3.4.4 Servicios públicos», sustenta que la cobertura formal no asegura estándares adecuados de prestación en la franja de interfaz urbano-rural.",
+  "como": "Se elaboró a partir del análisis cuantitativo de encuestas aplicadas a residentes.",
+  "leer": [
+   "Compara el 52 % que califica la prestación como regular frente al 38,8 % que la juzga buena.",
+   "Observa que la suma de valoraciones regular y deficiente alcanza el 61,2 % del total.",
+   "Ten en cuenta que los datos provienen de una muestra de 706 residentes encuestados."
+  ],
+  "relacion": []
+ },
+ "fig-31": {
+  "muestra": "Indica el destino principal de los desplazamientos de los residentes para acceder a salud, educación y abastecimiento.",
+  "porque": "En «3.4.4 Servicios públicos», comprueba la insuficiencia de equipamientos locales y la condición de barrio dormitorio dependiente del núcleo urbano.",
+  "como": "Se construyó mediante el análisis cuantitativo de encuestas aplicadas a residentes.",
+  "leer": [
+   "Constata que el 58,5 % de los residentes acude a la ciudad consolidada para satisfacer sus necesidades básicas.",
+   "Identifica la brecha de autonomía funcional que refleja la baja provisión de servicios sociales en el sector.",
+   "Considera que el universo analizado corresponde a 704 respuestas de residentes."
+  ],
+  "relacion": []
+ },
+ "fig-32": {
+  "muestra": "Recoge la autopercepción de los residentes sobre su modo de vida predominante entre el estilo urbano y el combinado.",
+  "porque": "En «3.4.5 Orientación social campo-ciudad», evidencia la integración simbólica con el núcleo metropolitano pese a la desigualdad en el acceso a servicios.",
+  "como": "Procede del análisis cuantitativo de encuestas de autopercepción aplicadas a residentes.",
+  "leer": [
+   "Contrasta el predominio del estilo de vida urbano con 58,9 % frente al estilo combinado con 31,2 %.",
+   "Examina cómo la identificación con la dinámica urbana prevalece ampliamente en este borde territorial.",
+   "Verifica que las proporciones se calculan sobre una base de 705 residentes consultados."
+  ],
+  "relacion": []
+ },
+ "fig-33": {
+  "muestra": "Registra las transformaciones territoriales observadas por los residentes durante los últimos diez años.",
+  "porque": "En «3.4.6 Dinamismo territorial», ilustra la expansión construida sobre la matriz biofísica y la primacía inmobiliaria frente a la preservación ambiental.",
+  "como": "Se estructuró con base en el análisis cuantitativo de encuestas sobre transformaciones observadas.",
+  "leer": [
+   "Verifica que nuevas viviendas con 33,5 % y nueva infraestructura con 21,1 % concentran el 54,6 % de menciones.",
+   "Contrasta ese volumen edificado frente a solo un 13,7 % de reportes asociados a pérdida de áreas naturales.",
+   "Ten presente que las observaciones corresponden a 707 residentes del sector de Mallorquín."
+  ],
+  "relacion": []
+ },
+ "fig-34": {
+  "muestra": "Presenta las expectativas de transformación futura del sector reportadas por los residentes.",
+  "porque": "En «3.4.6 Dinamismo territorial», constata la naturalización de la expansión urbana y la ausencia de un horizonte alternativo de desarrollo sostenible.",
+  "como": "Se obtuvo del análisis cuantitativo de encuestas de expectativas aplicadas a residentes.",
+  "leer": [
+   "Compara el 72,6 % que prevé mayor urbanización o industrialización frente a solo el 10,5 % que anticipa protección ambiental.",
+   "Advierte la marcada brecha entre el avance constructivo esperado y las expectativas de conservación ecológica.",
+   "Nota que los porcentajes reflejan la percepción directa de 705 residentes y no metas normativas."
+  ],
+  "relacion": []
+ },
+ "fig-35": {
+  "muestra": "Estima la especialización económica por corredor en la franja de interfaz urbano-rural del área metropolitana.",
+  "porque": "En «3.4.7.1 Estructura económica territorial», demuestra que la interfaz no es homogénea sino un mosaico de vocaciones que exige instrumentos diferenciados.",
+  "como": "Se elaboró triangulando la pregunta Q22, 16 entrevistas institucionales y los instrumentos municipales de ordenamiento territorial vigentes en 2026.",
+  "leer": [
+   "Compara la especialización en servicios del sector norte frente al perfil logístico del sector sur.",
+   "Interpreta las proporciones como un mosaico de vocaciones territoriales y no como una franja funcionalmente uniforme.",
+   "Ten en cuenta que las cifras representan estimaciones derivadas de triangulación metodológica y no un censo censal directo."
+  ],
+  "relacion": []
+ },
+ "fig-36": {
+  "muestra": "Expone mediante una representación combinada circular y de barras la procedencia de los nuevos residentes, donde el 56,7% proviene de contextos urbanos, sea de la ciudad o de municipios vecinos.",
+  "porque": "En el apartado 3.4.7.2 Dinámica demográfica, apoya la tesis de que el crecimiento poblacional responde a una expansión urbana por desborde y no a un éxodo rural tradicional.",
+  "como": "Se elaboró a partir de 705 encuestados mediante la pregunta Q25.",
+  "leer": [
+   "Comprueba en la gráfica circular y de barras que el 56,7% agrupa tanto a la ciudad central como a municipios vecinos frente a la migración del campo.",
+   "Ten en cuenta la advertencia de la tesis: el crecimiento demográfico de la franja responde a un desborde urbano y no a un éxodo campesino tradicional."
+  ],
+  "relacion": []
+ },
+ "fig-37": {
+  "muestra": "Ilustra las brechas en servicios públicos: un 37,1% presenta déficit parcial o total y el 61,2% califica la calidad como regular o deficiente.",
+  "porque": "En el apartado 3.4.7.3 Desigualdad en el acceso a servicios urbanos, cuantifica el rezago de infraestructura ambiental frente al crecimiento urbano acelerado en la franja de interfaz del AMB.",
+  "como": "Se elaboró cruzando las preguntas Q26 sobre disponibilidad (n=704) y Q27 sobre calidad percibida (n=706) en 2026.",
+  "leer": [
+   "Distingue disponibilidad (déficit del 37,1%) de percepción cualitativa (calidad regular o deficiente del 61,2%).",
+   "Las muestras difieren levemente entre disponibilidad (n=704) y calidad percibida (n=706).",
+   "Los datos corresponden al año 2026 en el AMB."
+  ],
+  "relacion": []
+ },
+ "fig-38": {
+  "muestra": "Cruza el lugar de trabajo con el destino para acceder a servicios: el 44,7% labora en la zona urbana consolidada, el 38,4% dentro del sector y el 58,5% acude a la ciudad consolidada por servicios.",
+  "porque": "En el apartado 3.4.7.4 Relaciones funcionales campo-ciudad, sustenta una marcada dependencia funcional cotidiana entre los habitantes de la interfaz del AMB y el núcleo metropolitano.",
+  "como": "Se construyó cruzando las respuestas sobre lugar de trabajo (Q23, n=701) y desplazamiento para servicios (Q28, n=704).",
+  "leer": [
+   "Compara el porcentaje de empleo fuera del sector (44,7% en la ciudad consolidada) frente a la ocupación interna (38,4%).",
+   "Fíjate en el 58,5% que viaja a la ciudad consolidada: la dependencia hacia el núcleo urbano es mayor en servicios que en empleo.",
+   "Advierte que el tamaño de muestra varía según la variable analizada: n=701 para trabajo y n=704 para servicios."
+  ],
+  "relacion": []
+ },
+ "fig-39": {
+  "muestra": "Combina los cambios territoriales observados en los últimos diez años con las expectativas de transformación futura hacia usos urbanos e industriales.",
+  "porque": "En el apartado 3.4.7.5 Dinamismo territorial, confirma una trayectoria de transformación difícil de revertir si no media una intervención planificatoria.",
+  "como": "Se elaboró cruzando las respuestas a la pregunta Q30 sobre cambios en los últimos diez años (n=707) y Q31 sobre expectativas futuras (n=705).",
+  "leer": [
+   "Contrasta en el gráfico cómo los cambios registrados en la última década y las proyecciones a futuro coinciden en el avance urbano e industrial.",
+   "Atiende a la advertencia central de la tesis: el dinamismo territorial muestra una trayectoria irreversible si no existe intervención de planificación.",
+   "Ten en cuenta que la muestra difiere según el periodo consultado: n=707 para cambios pasados y n=705 para expectativas futuras."
+  ],
+  "relacion": []
+ },
+ "atlas-3-8": {
+  "muestra": "Muestra la distribución de diez clases de uso del suelo, las vías y los límites municipales en el área metropolitana y la franja de interfaz urbano-rural.",
+  "porque": "En el apartado 3.5 del Capítulo III, sirve para leer cómo se reparte el suelo metropolitano antes de analizar la franja.",
+  "como": "Compilación y armonización sobre 32.639 ha a partir de los POT de Barranquilla, Soledad, Malambo, Galapa y Puerto Colombia.",
+  "leer": [
+   "El ámbito compilado de 32.639 ha excede la superficie de la franja.",
+   "La franja de interfaz urbano-rural abarca 18.577 ha.",
+   "Integra diez categorías de uso del suelo provenientes de cinco municipios."
+  ],
+  "relacion": []
+ },
+ "atlas-3-9": {
+  "muestra": "Representa los niveles de conflicto ambiental (muy alto, alto y medio) y áreas de sobreutilización donde el uso presiona el ambiente.",
+  "porque": "En el apartado 3.5 del Capítulo III, permite ubicar los tramos de mayor tensión ambiental y compararlos con el diagnóstico.",
+  "como": "Elaboración propia con base en información de la CRA y el POMCA Mallorquín.",
+  "leer": [
+   "Distingue tres niveles de conflicto ambiental: muy alto, alto y medio.",
+   "Identifica zonas de sobreutilización del suelo en la franja de interfaz urbano-rural.",
+   "Sirve de base comparativa frente a otras láminas temáticas del diagnóstico."
+  ],
+  "relacion": []
+ },
+ "atlas-3-10": {
+  "muestra": "Muestra la capacidad de uso y vocación agrológica de las tierras rurales en clases III a VIII dentro de la franja de interfaz.",
+  "porque": "En el apartado 3.5 del Capítulo III, ofrece una lectura del suelo rural como soporte natural previa a su ocupación para contrastar lo que admite con los usos asignados.",
+  "como": "Elaboración propia con base en estudios agrológicos de la entidad geográfica IGAC y cartografía del plan de cuenca POMCA Mallorquín.",
+  "leer": [
+   "Identifique primero las clases agrológicas de las tierras rurales, restringidas en esta lámina entre la III y la VIII.",
+   "Compare la vocación biofísica natural del suelo frente a las áreas con desarrollos inmobiliarios asignados.",
+   "Observe la distribución de drenajes sencillos y ciénaga como condicionantes previos del soporte natural."
+  ],
+  "relacion": []
+ },
+ "atlas-3-11": {
+  "muestra": "Muestra los trazados de las rutas de transporte público en la franja de interfaz urbano-rural y en el Área Metropolitana de Barranquilla (AMB).",
+  "porque": "En el apartado 3.5 del Capítulo III, responde a la capilaridad de los caminos —es decir, la densidad y penetración de la red vial local— que conecta el borde con el núcleo.",
+  "como": "Elaboración propia con base en datos del Área Metropolitana de Barranquilla (AMB).",
+  "leer": [
+   "Examine primero sobre qué vías metropolitanas circulan las rutas para constatar la conexión física entre el borde y el núcleo.",
+   "Compare qué sectores de la franja de interfaz urbano-rural tienen cobertura del servicio y cuáles quedan sin servicio.",
+   "Cruce el trazado de las rutas con las áreas de desarrollos urbanos para verificar su nivel de atención vial."
+  ],
+  "relacion": []
+ },
+ "atlas-3-12": {
+  "muestra": "Representa la densidad neta de población calculada por manzana censal para evidenciar la intensidad de ocupación en el territorio.",
+  "porque": "En el apartado 3.5 del Capítulo III, explica cómo se ocupa la franja de interfaz urbano-rural y dónde se concentra la población.",
+  "como": "Elaboración propia con datos del censo DANE 2018.",
+  "leer": [
+   "La densidad de población está calculada a escala de manzana censal con datos de 2018.",
+   "Permite comparar la intensidad de ocupación entre distintos sectores del borde.",
+   "Se relaciona analíticamente con las láminas de crecimiento y de infraestructura."
+  ],
+  "relacion": []
+ },
+ "atlas-3-13": {
+  "muestra": "Presenta las Unidades Funcionales de Planificación (UFP), centroides, nodos y ejes estructurantes del modelo operativo en la franja de interfaz.",
+  "porque": "En el apartado 3.5 del Capítulo III, resume la síntesis territorial para pasar de la lectura del territorio a los lineamientos del capítulo 5 y ver la agrupación de piezas.",
+  "como": "Elaboración propia.",
+  "leer": [
+   "Advierta que las Unidades Funcionales de Planificación desbordan y se extienden más allá de las 18.577 ha de la franja de interfaz.",
+   "Identifique cómo los nodos y centroides organizan y articulan la agrupación de piezas territoriales.",
+   "Siga los ejes estructurantes para reconocer las directrices que conectan los municipios metropolitanos con el modelo operativo."
+  ],
+  "relacion": []
+ },
+ "fig-40": {
+  "muestra": "Muestra el relieve sombreado, altitud, arroyos, manglar, la Ciénaga de Mallorquín, el río Magdalena y las Unidades Funcionales de Planificación (UFP) en la franja de interfaz.",
+  "porque": "En el apartado 3.5 del Capítulo III, muestra el soporte paisajístico de 18.577 ha y permite ver cómo el agua y el relieve estructuran el territorio antes de cualquier lectura de usos.",
+  "como": "Elaboración propia con base en Esri World Imagery, modelo digital de elevación de 30 m y cartografía del sistema de información geográfica (SIG) de la investigación.",
+  "leer": [
+   "Observe primero cómo la altitud y el relieve sombreado guían la red de arroyos y drenajes hacia el río Magdalena y la ciénaga.",
+   "Examine la base biofísica natural previa a la zonificación delimitada por las Unidades Funcionales de Planificación.",
+   "Advierta la escala espacial del soporte paisajístico que abarca exactamente las 18.577 ha de la franja."
+  ],
+  "relacion": []
+ },
+ "atlas-3-14": {
+  "muestra": "Presenta el contexto regional a escala macro mediante límites de departamentos, municipios, la red troncal, el ferrocarril y los núcleos urbanos.",
+  "porque": "Sirve para situar las relaciones estáticas y dinámicas regionales en el apartado 3.6 Lectura multiescalar de la franja de interfaz: escalas Macro, Meso y Micro.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el SIG de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Representa el primer nivel macro de aproximación territorial de la serie multiescalar.",
+   "Sus problemas y potencialidades territoriales se cruzan posteriormente en la Lámina Atlas 3.21.",
+   "Identifique la articulación entre las vías troncales y los diferentes núcleos urbanos regionales."
+  ],
+  "relacion": []
+ },
+ "atlas-3-15": {
+  "muestra": "Expone capas temáticas del territorio de borde: coberturas vegetal arbórea y húmeda, uso agrícola, agua, áreas construidas, vías, ferrocarril y relieve sobre el área de estudio.",
+  "porque": "Aporta la descomposición analítica por capas a escala macro para el apartado 3.6 Lectura multiescalar (a distintos niveles de acercamiento territorial) de la franja de interfaz: escalas Macro, Meso y Micro.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Examine primero la superposición entre la franja de interfaz urbano-rural y la red vial frente a los cursos de ríos y ciénagas.",
+   "Distinga las áreas construidas respecto a las coberturas de uso agrícola y vegetación arbórea en el borde.",
+   "Observe cómo el relieve y el agua condicionan los corredores de conectividad territorial entre municipios."
+  ],
+  "relacion": []
+ },
+ "atlas-3-16": {
+  "muestra": "Muestra el borde urbano según la cobertura exterior en 300 m, fricción vial sobre parches naturales, cotas bajas menores a 5 m, pendientes y gradiente (variación gradual) de continuidad natural.",
+  "porque": "Identifica riesgos, fracturas y continuidades a escala macro dentro del apartado 3.6 Lectura multiescalar (a distintos niveles de acercamiento territorial) de la franja de interfaz: escalas Macro, Meso y Micro.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Mire primero las cotas bajas (< 5 m) del modelo de elevación, advirtiendo que no son la zonificación de amenaza adoptada por la autoridad competente.",
+   "Revise los parches naturales donde la red de vías genera fricción o ruptura del corredor ambiental.",
+   "Compare los 300 m exteriores del borde urbano para detectar dónde se interrumpen las coberturas naturales frente a los drenajes y la zona de POMCA."
+  ],
+  "relacion": []
+ },
+ "atlas-3-17": {
+  "muestra": "Presenta el área de estudio y su área de influencia a escala meso, incluyendo coberturas, red vial principal, drenajes sencillos, terrenos de Galapa y unidades territoriales UFPs.",
+  "porque": "Desarrolla los niveles 2 y 3 del análisis territorial en el apartado 3.6 Lectura multiescalar (a distintos niveles de acercamiento territorial) de la franja de interfaz: escalas Macro, Meso y Micro.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Identifique primero el límite del área de estudio frente al polígono envolvente de su área de influencia inmediata.",
+   "Verifique la relación de trazado entre las vías principales metropolitanas y la red de drenajes sencillos de agua.",
+   "Localice las unidades territoriales UFPs sobre los municipios y los terrenos rurales de Galapa."
+  ],
+  "relacion": []
+ },
+ "atlas-3-18": {
+  "muestra": "Muestra un ámbito de 3 por 2 km con alta diversidad de situaciones de borde, señalando centroides, nodos, ejes estructurantes, unidades UFPs y escenarios de borde caracterizados.",
+  "porque": "Sustenta la delimitación del ámbito representativo a escala meso en el apartado 3.6 Lectura multiescalar (a distintos niveles de acercamiento territorial) de la franja de interfaz: escalas Macro, Meso y Micro.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Examine el rectángulo delimitador de 3 × 2 km definido por la mayor concurrencia numérica de tipologías de borde.",
+   "Localice los nodos y centroides para identificar los puntos focales de convergencia en la franja de interfaz.",
+   "Siga la dirección de los ejes estructurantes y observe cómo cruzan los límites de las unidades UFPs y municipios."
+  ],
+  "relacion": []
+ },
+ "atlas-3-19": {
+  "muestra": "Muestra un área de intervención de 1,2 × 0,8 km sobre ortofoto, delimitando transectos (líneas de muestreo transversal), curvas de nivel maestras y bordes por categoría.",
+  "porque": "En el apartado 3.6 sirve para analizar el nivel Micro de la franja de interfaz urbano-rural, contrastándolo con el trabajo de campo (encuestas y entrevistas del capítulo 3).",
+  "como": "Elaborado sobre ortofoto con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Identifique primero las líneas de los transectos sobre la imagen ortofotográfica para ubicar los recorridos de muestreo.",
+   "Compare la distribución de las categorías de borde respecto al relieve marcado por las curvas de nivel maestras cada 25 m.",
+   "Tenga presente que el trazado microterritorial se contrasta con las entrevistas y encuestas de campo de la investigación."
+  ],
+  "relacion": []
+ },
+ "atlas-3-20": {
+  "muestra": "Presenta perfiles transversales al borde que ilustran el relieve y las coberturas del suelo para cada escenario del área de intervención.",
+  "porque": "En el apartado 3.6 apoya la lectura a escala Micro, comparando las secciones tipo de borde con el trabajo de campo de la investigación.",
+  "como": "Se elaboró con relieve de Copernicus DEM GLO-30, coberturas de ESA WorldCover 2021 v200, OpenStreetMap y el sistema de información geográfica.",
+  "leer": [
+   "Examine las variaciones de relieve y vegetación en los cortes transversales de cada escenario.",
+   "Recuerde que el análisis microterritorial integra encuestas y entrevistas del capítulo 3.",
+   "Interprete las secciones como representaciones tipo adaptadas de Bernal Granados (2015) y Lassen (2026)."
+  ],
+  "relacion": []
+ },
+ "atlas-3-21": {
+  "muestra": "Organiza en una tabla debilidades, oportunidades, fortalezas y amenazas (matriz DOFA) cruzadas en tres niveles territoriales de detalle: macro, meso y micro (lectura multiescalar).",
+  "porque": "En el apartado 3.6 resume el diagnóstico territorial diferenciando atributos físicos fijos (relaciones estáticas), flujos de funcionamiento (relaciones dinámicas), problemas y potencialidades.",
+  "como": "Se elaboró a partir de las láminas previas, coberturas de WorldCover 2021, modelo digital de elevaciones Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica.",
+  "leer": [
+   "Examine primero la escala meso, situada donde ocurre la mayor diversidad de situaciones de borde en menor recorrido.",
+   "Compare las debilidades y fortalezas identificadas según el nivel territorial macro, meso o micro.",
+   "Tenga en cuenta que la escala micro se apoya en foto aérea (ortofoto) y trabajo de campo propio de la tesis."
+  ],
+  "relacion": []
+ },
+ "atlas-3-22": {
+  "muestra": "Presenta el trazado cartográfico del límite exterior de la franja y los tres componentes que explican el origen de su contorno.",
+  "porque": "En el apartado 3.7.1 fundamenta cómo se definió el perímetro de la franja de interfaz urbano-rural a partir de límites administrativos, geográficos y ajustes propios.",
+  "como": "Se construyó cruzando el límite del Área Metropolitana con la cuenca hidrográfica de Mallorquín (área donde drenan las aguas hacia la ciénaga), recortes interiores, el sistema de información geográfica y el plan de manejo ambiental POMCA.",
+  "leer": [
+   "Distinga en el perímetro de 80,6 km: 25,7 km del límite metropolitano, 21,3 km de la divisoria de aguas de la cuenca y 33,6 km de recortes interiores.",
+   "Advierta que el puerto queda deliberadamente fuera del límite porque la propuesta normativa no se dirige a él, sino al territorio sobre el que actúa."
+  ],
+  "relacion": []
+ },
+ "atlas-3-23": {
+  "muestra": "Superpone los cauces de agua identificados en azul, las vías y caminos con acceso directo al suelo en rojo y la Circunvalar en línea punteada.",
+  "porque": "En el apartado 3.7.2 muestra la red fina de ramificaciones que irrigan el territorio (capilaridad) mediante el cruce entre el agua y los caminos.",
+  "como": "Se elaboró con el sistema de información geográfica y datos de longitud de vías de la Agencia Nacional de Infraestructura.",
+  "leer": [
+   "Identifique primero los cauces de agua en azul y contrástelos con los caminos de acceso directo al suelo en rojo.",
+   "Ubique el trazado punteado que corresponde específicamente a la vía Circunvalar.",
+   "Advierta que la base cartográfica OpenStreetMap no distingue cuáles caminos son históricos."
+  ],
+  "relacion": []
+ },
+ "atlas-3-24": {
+  "muestra": "Representa los tipos de vegetación y suelo situados alrededor de los arroyos mediante datos obtenidos por satélite.",
+  "porque": "En el apartado 3.7.2 examina el papel del agua como eje vertebrador del territorio y compara las áreas verdes junto a los arroyos con las del resto de la franja.",
+  "como": "Se elaboró a partir de las coberturas satelitales globales de ESA WorldCover 2021 v200.",
+  "leer": [
+   "Compare la proporción de suelo verde inmediato a los arroyos con respecto a la cobertura vegetal general de la franja.",
+   "Considere que se trata de una lectura puramente satelital sin verificación botánica de especies.",
+   "Tenga presente la advertencia de la investigación: no se comprobó en campo el estado ecológico de la vegetación."
+  ],
+  "relacion": []
+ },
+ "atlas-3-25": {
+  "muestra": "Muestra los planes parciales ordenados por densidad de población (baja, media y alta) y los asentamientos de origen informal, en conjunto y por unidad de paisaje.",
+  "porque": "En el apartado 3.7.3 analiza la relación entre la expansión urbana formal e informal e identifica en qué zonas de drenaje hídrico (subcuencas) se concentra cada una.",
+  "como": "Se elaboró a partir del sistema de información geográfica de la investigación.",
+  "leer": [
+   "Examine en qué unidad de paisaje y en qué subcuenca se concentra la ocupación informal frente a la formal.",
+   "Compare la distribución de los planes parciales clasificados por densidad con la ubicación de los asentamientos informales."
+  ],
+  "relacion": []
+ },
+ "atlas-3-25b": {
+  "muestra": "Muestra asentamientos de origen informal clasificados por rangos de densidad neta (baja, media y alta) y según su situación.",
+  "porque": "En el apartado 3.7.3 Cómo entra la ciudad, atiende el pedido de la tutoría para caracterizar las formas de ocupación informal según su densidad y condición de regularización.",
+  "como": "Calculada con manzanas censales del DANE (censo 2018) prorrateadas por área; la situación se dedujo de la descripción textual de cada polígono.",
+  "leer": [
+   "De 1.143 ha informales, 1.112 ha son de densidad baja, ninguna es alta y solo 238 ha están legalizadas o regularizadas.",
+   "Tenga en cuenta que ninguna capa cartográfica de entrada incluía estatus jurídico explícito."
+  ],
+  "relacion": []
+ },
+ "atlas-3-26": {
+  "muestra": "Presenta el crecimiento urbano por décadas mediante un gradiente visual o transición progresiva que avanza del centro hacia el borde.",
+  "porque": "En el apartado 3.7.3 Cómo entra la ciudad, aborda cómo avanzó la ocupación sobre el territorio y permite ordenar la urbanización de la franja a partir del río.",
+  "como": "Se elaboró con base en el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Mire primero la transición progresiva de color que avanza desde el río hacia los bordes exteriores.",
+   "Distinga la secuencia de urbanización histórica por décadas frente a las áreas de ocupación actual."
+  ],
+  "relacion": []
+ },
+ "atlas-3-27": {
+  "muestra": "Muestra la densidad de población sobre la franja mediante un gradiente único o escala continua de color.",
+  "porque": "En el apartado 3.7.3 Cómo entra la ciudad, aborda la ocupación demográfica para situar dónde vive más gente frente al crecimiento histórico.",
+  "como": "Se elaboró con base en el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Mire primero los tonos más intensos de la escala continua de color para ubicar las concentraciones de población.",
+   "Contraste los lugares habitados con los límites de las unidades de paisaje y de los planes parciales.",
+   "Trate la densidad demográfica como una lectura territorial independiente de las décadas de expansión urbana."
+  ],
+  "relacion": []
+ },
+ "atlas-3-28": {
+  "muestra": "Delimita las unidades de paisaje según la subcuenca o territorio que drena a cada arroyo según el relieve, junto con una tabla de atributos.",
+  "porque": "En el apartado 3.7.4 Unidades de paisaje y fragmentos, responde a la petición de la tutoría de organizar la lectura del territorio con el agua.",
+  "como": "Cada celda de la franja se asignó al arroyo donde drena según el relieve (Copernicus GLO-30, flujo D8 con cauces marcados del AMB, entidad territorial metropolitana).",
+  "leer": [
+   "Mire primero en la tabla resumen los cruces viales de la Circunvalar con los cauces de los arroyos.",
+   "Advierta que las cuatro subcuencas suman 18.556 ha (21 ha menos que la franja) por el tamaño de celda de 20 m del ráster.",
+   "Tenga en cuenta que la delimitación a escala intermedia es una propuesta sujeta a validación en campo."
+  ],
+  "relacion": []
+ },
+ "atlas-3-29": {
+  "muestra": "Acerca la mirada a un fragmento de Galapa con ortofoto o foto aérea corregida, parcelación, curvas de nivel cada 10 m y red de drenajes naturales.",
+  "porque": "En el apartado 3.7.4 Unidades de paisaje y fragmentos, aporta la escala del predio para ver cómo se divide el suelo ante el relieve y el drenaje.",
+  "como": "Se construyó sobre Esri World Imagery y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Mire primero cómo se alinean los linderos de las parcelas frente a las líneas de pendiente o curvas de nivel de 10 m.",
+   "Compare el dibujo de los lotes sobre la foto aérea corregida con los trazos de los cauces de drenaje."
+  ],
+  "relacion": []
+ },
+ "atlas-3-30": {
+  "muestra": "Detalla un fragmento del borde norte con ortofoto o foto aérea corregida, parcelación, curvas de nivel cada 10 m y cruces de la Circunvalar con arroyos.",
+  "porque": "En el apartado 3.7.4 Unidades de paisaje y fragmentos, funciona como segunda ventana a escala de predio para contrastar su estructura con Galapa.",
+  "como": "Se elaboró sobre Esri World Imagery y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Mire primero los puntos de cruce entre la vía Circunvalar y las líneas de los arroyos sobre el parcelario.",
+   "Compare la forma y tamaño de los lotes de este borde norte con los del fragmento de Galapa.",
+   "Observe cómo asciende el relieve mediante la separación de las curvas de nivel trazadas cada 10 m."
+  ],
+  "relacion": []
+ },
+ "atlas-3-31": {
+  "muestra": "Reúne tres escalas de la interfaz: macro, cuatro unidades meso y una ventana micro de 1,8 km de ancho por unidad de paisaje sobre un arroyo.",
+  "porque": "En el apartado 3.7.4 Unidades de paisaje y fragmentos, responde al encadenamiento continuo pedido por la tutoría desde la cuenca hasta el predio.",
+  "como": "Se elaboró con base en el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Mire primero cada ventana de 1,8 km situada sobre un arroyo donde existe plan parcial o asentamiento de origen informal.",
+   "No confunda estas ventanas micro de 1,8 km de ancho con el área de intervención de 1,2 × 0,8 km del capítulo 4.",
+   "Compare en orden descendente la visión general de la cuenca, las cuatro unidades intermedias y el detalle del predio."
+  ],
+  "relacion": []
+ },
+ "atlas-3-32": {
+  "muestra": "Localiza los elementos turísticos del territorio, diferenciando los 47 situados en la franja de interfaz urbano-rural respecto a los 309 registrados.",
+  "porque": "En el apartado 3.7.5, demuestra que el turismo casi no toca la franja y se concentra en el río y la costa.",
+  "como": "Elaboración propia con base en OpenStreetMap contributors (2026).",
+  "leer": [
+   "Observe primero la alta aglomeración de puntos turísticos junto a la línea del río y la costa.",
+   "Compare ese agrupamiento frente a la franja de interfaz urbano-rural, donde solo aparecen 47 de los 309 elementos.",
+   "Considere esta distribución como una tendencia general que debe contrastarse con registros institucionales."
+  ],
+  "relacion": []
+ },
+ "fig-41": {
+  "muestra": "Reúne ortofotos de Barranquilla, Veracruz, Santos y Valparaíso a escala 1:200.000, con el perímetro de la franja de interfaz de cada caso marcado en línea discontinua roja.",
+  "porque": "En el apartado 4.3, permite comparar la forma del borde en los cuatro casos a escala territorial y con el mismo símbolo.",
+  "como": "Elaboración propia con base en Esri World Imagery, cartografía del sistema de información geográfica (SIG) de la investigación y la franja de la Lámina Atlas 4.28.",
+  "leer": [
+   "Compare la silueta y extensión de las cuatro ciudades bajo una ventana común de terreno de 40 × 28 km orientada al norte.",
+   "Siga la línea discontinua roja para identificar el perímetro de la franja de interfaz delimitada por cuenca —área de drenaje de aguas hacia un cauce común— en cada caso.",
+   "Advierta cómo el mismo símbolo gráfico permite contrastar de forma directa la continuidad del borde entre los cuatro territorios."
+  ],
+  "relacion": [
+   "atlas-4-28"
+  ]
+ },
+ "fig-42": {
+  "muestra": "Presenta ortofotos del contacto entre puerto, ciudad y paisaje a escala 1:50.000 en cuatro sectores: Ciénaga de Mallorquín y Las Flores, bahía norte y Nuevo Puerto, estuario y puerto, y plan y cerros.",
+  "porque": "En el apartado 4.3, permite comparar cómo se resuelve el contacto entre las instalaciones del puerto y la franja de interfaz urbano-rural en cada caso.",
+  "como": "Elaboración propia con base en Esri World Imagery, la franja de interfaz por cuenca y cartografía del sistema de información geográfica (SIG) de la investigación.",
+  "leer": [
+   "Examine cada caso dentro de una ventana de terreno uniforme de 10 × 7 km orientada con el norte arriba.",
+   "Compare la relación espacial directa entre muelles portuarios y elementos del paisaje: humedal en Mallorquín, bahía abierta en Veracruz, canal estuarino en Santos y ladera de cerros en Valparaíso.",
+   "Observe el punto de roce donde las zonas portuarias tocan el borde de la franja delimitada por cuenca o área de drenaje hídrico."
+  ],
+  "relacion": []
+ },
+ "fig-43": {
+  "muestra": "Exhibe bloques en relieve del contacto entre la mancha edificada de la ciudad y la franja de interfaz urbano-rural, orientados al norte con elevación de 56° y exageración vertical ×3.",
+  "porque": "En el apartado 4.3, sirve para comparar cómo el relieve o forma del suelo condiciona el borde en llanura plana, estuario y anfiteatro de cerros.",
+  "como": "Elaboración propia con base en Copernicus DEM GLO-30, ESA WorldCover 2021 y el sistema de información geográfica (SIG) de la investigación.",
+  "leer": [
+   "Mire la inclinación visual a 56° y el realce vertical triplicado (×3), diseñado para hacer visibles los desniveles del terreno.",
+   "Compare cómo la superficie plana de la llanura y el estuario facilita bordes continuos, frente al confinamiento que genera el anfiteatro de cerros o ladera curva.",
+   "Advierta el contraste entre las zonas construidas de la ciudad y el suelo natural dentro de cada recorte idéntico de 10 × 7 km."
+  ],
+  "relacion": []
+ },
+ "fig-44": {
+  "muestra": "Muestra el área metropolitana de Veracruz, sus límites municipales, el Parque Nacional Arrecifal Veracruzano, corredores logísticos y la franja de interfaz urbano-rural.",
+  "porque": "En el apartado 4.4.1.1, ubica el caso mexicano en su llanura costera para leer su trama hídrica y la posición del puerto.",
+  "como": "Elaboración propia con base en cartografía del INEGI (2021), datos de la Zona Metropolitana de Veracruz y análisis territorial de ASIPONA Veracruz.",
+  "leer": [
+   "Sitúa la posición del puerto dentro de la llanura costera y su sistema de lagunas y humedales.",
+   "Identifica la franja de interfaz urbano-rural delimitada por cuenca frente a los límites municipales del INEGI."
+  ],
+  "relacion": []
+ },
+ "fig-45": {
+  "muestra": "Ilustra la expansión del Nuevo Puerto de Veracruz hacia Bahía Norte, detallando la franja portuaria con dársena de maniobra, rompeolas poniente y oriente, terminales y la zona de actividades logísticas (ZAL).",
+  "porque": "En el apartado 4.4.1.2, expone cómo la ampliación portuaria transforma las funciones y usos del borde norte metropolitano.",
+  "como": "Elaboración y adaptación académica con base en información de la Administración del Sistema Portuario Nacional Veracruz (ASIPONA Veracruz) sobre el Proyecto de Ampliación del Puerto de Veracruz – Bahía Norte (2025).",
+  "leer": [
+   "Identifique primero las obras marinas de defensa: los rompeolas poniente y oriente que encierran el agua de la dársena para el atraque de barcos.",
+   "Observe en tierra firme la zona de actividades logísticas (ZAL, área de almacenamiento y transporte de carga) contigua a las nuevas terminales.",
+   "Advierta cómo estas infraestructuras portuarias reemplazan el borde costero previo mediante suelo exclusivamente industrial y de transporte."
+  ],
+  "relacion": []
+ },
+ "fig-46": {
+  "muestra": "Presenta la franja norte de Veracruz mediante dos paneles: el A con datos medidos de 2021 y el B con un esquema interpretativo y sin escala elaborado por la autora.",
+  "porque": "En el apartado 4.4.1.4, sustenta el análisis de la transformación de la franja y la pérdida de servicios ecosistémicos vinculada a la expansión del puerto.",
+  "como": "Elaboración propia con base en ESA WorldCover 2021, ASIPONA Veracruz y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Compara el Panel A (medición empírica de 2021) con el Panel B (esquema interpretativo y sin escala de la autora).",
+   "Ten en cuenta que la pérdida de humedales no se cuantifica numéricamente por no existir cobertura satelital de 1990.",
+   "Observa la localización de la Zona de Actividades Logísticas (ZAL, área de transporte y almacenamiento de carga) frente a los humedales conservados y rellenados."
+  ],
+  "relacion": []
+ },
+ "atlas-4-1": {
+  "muestra": "Presenta el contexto nacional y regional de Veracruz, su red vial y ferroviaria troncal, ciudades, coberturas y la franja de interfaz urbano-rural.",
+  "porque": "En el apartado 4.4.1.5, aporta la lectura a escala Macro (visión general o territorial amplia, nivel 1) para evaluar problemas y potencialidades del entorno.",
+  "como": "Elaboración propia con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap, el SIG de la investigación y lectura multiescalar (a distintas escalas territoriales) adaptada de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Observa primero la red vial principal (Fed. 140/180) y el Libramiento Santa Fe para identificar cómo articulan el flujo regional con la zona urbana.",
+   "Compara la delimitación de la franja de interfaz urbano-rural obtenida por cuenca (área geográfica donde drenan las aguas hacia un mismo cauce) con la Lámina Atlas 4.28.",
+   "Verifica la localización costera y marina del Parque Nacional Arrecifal Veracruzano (PNSAV, reserva marina protegida de arrecifes) respecto al área urbana."
+  ],
+  "relacion": []
+ },
+ "atlas-4-2": {
+  "muestra": "Presenta capas temáticas sobre el territorio de borde: coberturas arbórea y húmeda, uso agrícola, agua, área construida, red vial, ferrocarril y relieve.",
+  "porque": "En el apartado 4.4.1.5, desglosa los componentes biofísicos y construidos a escala Macro (visión territorial amplia) para analizar el territorio de borde.",
+  "como": "Elaboración propia con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap, el SIG de la investigación y lectura multiescalar (a distintas escalas territoriales) adaptada de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Contrasta la distribución del área construida y las infraestructuras de transporte frente a las manchas de cobertura arbórea, agrícola y de agua.",
+   "Observa la coincidencia espacial de los humedales y áreas inundables con las zonas de menor pendiente del relieve.",
+   "Identifica la continuidad o fragmentación que provocan las vías principales y el ferrocarril sobre la cobertura vegetal."
+  ],
+  "relacion": []
+ },
+ "atlas-4-3": {
+  "muestra": "Presenta la clasificación del borde urbano según cobertura en 300 m exteriores, fricción vial sobre parches naturales, zonas bajas (< 5 m) y continuidad natural.",
+  "porque": "En el apartado 4.4.1.5, sustenta el diagnóstico de riesgos, fracturas territoriales y gradientes de continuidad (variación progresiva sin cortes bruscos) ecológica a escala Macro (visión territorial amplia).",
+  "como": "Elaboración propia con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap, el SIG de la investigación y lectura multiescalar adaptada de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Advertencia de la tesis: las cotas inferiores a 5 m se obtuvieron del modelo digital de elevación y no constituyen una zonificación de amenaza adoptada por la autoridad competente.",
+   "Observa dónde la red vial corta o ejerce fricción directa sobre los parches de vegetación natural.",
+   "Examina el gradiente de continuidad (paso gradual entre coberturas) en el borde clasificado según los 300 m exteriores."
+  ],
+  "relacion": []
+ },
+ "atlas-4-4": {
+  "muestra": "Muestra la delimitación de la franja de interfaz portuario-costera, los rompeolas poniente y oriente de Bahía Norte, las terminales ASIPONA, la Zona de Actividades Logísticas (ZAL) y la red vial del corredor logístico 140/180.",
+  "porque": "Sirve para caracterizar territorialmente el caso de Veracruz en el apartado 4.4.1.5, apoyando la lectura multiescalar en las escalas Meso (niveles 2 y 3) sobre el área de estudio y su área de influencia.",
+  "como": "Elaborado con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap, el sistema de información geográfica de la investigación y lectura multiescalar adaptada de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "El conteo de equipamientos de salud y educación tomado de OpenStreetMap es de carácter indicativo.",
+   "Identifica la franja de interfaz portuario-costera y su articulación con el corredor vial logístico Fed. 140/180."
+  ],
+  "relacion": []
+ },
+ "atlas-4-5": {
+  "muestra": "Muestra un ámbito de 3 × 2 km con la delimitación de la franja de interfaz portuario-costera, obras portuarias de Bahía Norte, la Zona de Actividades Logísticas y la red vial logística.",
+  "porque": "Apoya el análisis de la escala Meso en el apartado 4.4.1.5, delimitando el ámbito donde concurre la mayor diversidad de situaciones de borde y sus escenarios identificados.",
+  "como": "Elaborado con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap, el sistema de información geográfica de la investigación y lectura multiescalar adaptada de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "El recorte territorial de 3 × 2 km concentra la mayor diversidad de situaciones de borde analizadas.",
+   "Las situaciones y escenarios de borde cuentan con justificación numérica dentro del manuscrito."
+  ],
+  "relacion": []
+ },
+ "atlas-4-6": {
+  "muestra": "Muestra un área de intervención de 1,2 × 0,8 km con la franja de interfaz ecológica —zona de transición entre lo urbano y lo rural—, humedales rellenados, suelo transformado, humedales y dunas costeras conservados y la Zona de Actividades Logísticas (área de carga y transporte).",
+  "porque": "Se ubica en el apartado 4.4.1.5 para el análisis detallado a escala Micro (nivel 4 de detalle local), localizando puntos de observación, problemas y potencialidades.",
+  "como": "Elaborado sobre ortofoto de Esri (2026), mapa de coberturas ESA WorldCover 2021 v200, modelo digital de elevación Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Compara la extensión de humedales rellenados frente a los humedales y dunas conservados para dimensionar la pérdida ecológica.",
+   "Ubica la Zona de Actividades Logísticas (ZAL) en relación directa con los sectores de suelo transformado.",
+   "Atiende a la advertencia metodológica: es una lectura remota sobre ortofoto satelital y no reemplaza el trabajo de campo presencial."
+  ],
+  "relacion": []
+ },
+ "atlas-4-7": {
+  "muestra": "Presenta perfiles transversales —cortes verticales del terreno— en el borde del área de intervención, con la delimitación de la franja de interfaz ecológica, humedales rellenados, suelo transformado, humedales y dunas conservados y la Zona de Actividades Logísticas.",
+  "porque": "Aporta en el apartado 4.4.1.5 secciones transversales a escala Micro (nivel de detalle local) para examinar el relieve y las coberturas en cada escenario de borde.",
+  "como": "Elaborado a partir de relieve del modelo digital Copernicus DEM GLO-30, coberturas ESA WorldCover 2021 v200, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Observa la variación de altura del relieve topográfico en cada corte transversal respecto a las zonas de humedal y duna.",
+   "Contrasta la posición altimétrica de la Zona de Actividades Logísticas frente a las áreas de suelo transformado.",
+   "Ten en cuenta que estos perfiles se elaboraron mediante lectura remota con datos satelitales, sin mediciones directas en campo."
+  ],
+  "relacion": []
+ },
+ "atlas-4-8": {
+  "muestra": "Presenta una matriz DOFA —tabla de debilidades, oportunidades, fortalezas y amenazas— cruzadas por escalas, acompañada por capas de franja de interfaz ecológica, humedales rellenados, suelo transformado, humedales y dunas conservados y la Zona de Actividades Logísticas.",
+  "porque": "Se ubica en el apartado 4.4.1.5 para la lectura a escalas múltiples —macro o regional, meso o intermedia y micro o local— siguiendo el paso 4 del método de Bernal Granados (2015).",
+  "como": "Elaboración propia a partir del cruce de láminas previas con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Compara las debilidades y fortalezas internas frente a las amenazas y oportunidades externas identificadas en cada nivel territorial.",
+   "Cruza los factores identificados en la escala micro con las zonas críticas de humedales rellenados y la Zona de Actividades Logísticas.",
+   "Verifica la correspondencia entre los diagnósticos tabulados y las coberturas territoriales provenientes de las láminas antecedentes."
+  ],
+  "relacion": []
+ },
+ "fig-47": {
+  "muestra": "Muestra el perímetro de la franja de interfaz urbano-rural de Valparaíso por cuencas, los límites comunales, la red de quebradas críticas y la red vial estructurante.",
+  "porque": "Sitúa el contexto territorial del caso Valparaíso en el apartado 4.4.2.1, evidenciando cómo el plan costero, el anfiteatro de cerros y sus quebradas ordenan la expansión metropolitana.",
+  "como": "Elaboración propia con base en cartografía IDE Chile (2024), datos del Censo 2022 del INE Chile, límites comunales BCN, red MOP, red DGA y ESA WorldCover 2021.",
+  "leer": [
+   "Observa cómo la topografía de cerros y quebradas condiciona el crecimiento urbano hacia el interior.",
+   "El perímetro delimita la franja de interfaz urbano-rural articulada por cuencas hidrográficas."
+  ],
+  "relacion": []
+ },
+ "atlas-4-13": {
+  "muestra": "Muestra un ámbito de 3 × 2 km con la mayor diversidad de situaciones de borde, la franja de interfaz localizada sombreada, la red vial estructurante, quebradas críticas y áreas del megaincendio 2024.",
+  "porque": "Apoya la caracterización multiescalar en el apartado 4.4.2.5 del Capítulo IV, identificando numéricamente los escenarios de borde más representativos.",
+  "como": "Elaboración propia con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "El recuadro delimita un sector específico de 3 × 2 km con alta diversidad de bordes.",
+   "Identifica áreas afectadas por el megaincendio de 2024 junto a la red vial y quebradas."
+  ],
+  "relacion": []
+ },
+ "atlas-4-14": {
+  "muestra": "Presenta un área de intervención de 1,2 × 0,8 km sobre ortofoto con puntos de observación, problemas y potencialidades territoriales.",
+  "porque": "Permite examinar la escala Micro en el apartado 4.4.2.5 del Capítulo IV para identificar dinámicas puntuales en el territorio.",
+  "como": "Elaboración propia sobre ortofoto de Esri (2026), ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y SIG de la investigación.",
+  "leer": [
+   "Es una lectura remota sobre ortofoto y no constituye trabajo de campo.",
+   "El análisis se restringe a un área de 1,2 × 0,8 km."
+  ],
+  "relacion": []
+ },
+ "atlas-4-15": {
+  "muestra": "Muestra perfiles transversales al borde con el relieve y las coberturas de suelo para cada escenario del área de intervención.",
+  "porque": "Sustenta el apartado 4.4.2.5 del Capítulo IV en su nivel micro o de máximo detalle local mediante cortes verticales del terreno.",
+  "como": "Elaboración propia con datos de elevación Copernicus GLO-30, coberturas ESA WorldCover 2021 v200, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Tener en cuenta que los perfiles son una lectura remota sobre ortofoto y no corresponden a trabajo de campo.",
+   "Comparar las variaciones de pendiente del relieve frente a la distribución de las coberturas de suelo en cada corte."
+  ],
+  "relacion": []
+ },
+ "atlas-4-16": {
+  "muestra": "Presenta una matriz que cruza debilidades, oportunidades, fortalezas y amenazas (DOFA, análisis de factores internos y del entorno) por escalas territoriales.",
+  "porque": "Aporta la síntesis analítica del apartado 4.4.2.5 en el Capítulo IV cruzando distintos niveles territoriales (multiescalar) a partir de las láminas previas.",
+  "como": "Elaboración propia con base en las láminas anteriores, ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, según el paso 4 de Bernal Granados (2015).",
+  "leer": [
+   "Examinar las filas y columnas para identificar qué debilidades y amenazas se intensifican al pasar de la escala general a la local.",
+   "Contrastar las oportunidades y fortalezas identificadas frente a las capas de dinámica y presión territorial de Valparaíso."
+  ],
+  "relacion": []
+ },
+ "fig-50": {
+  "muestra": "Delimita el área metropolitana de Santos mostrando límites municipales, manchas urbanas, el Parque Estadual da Serra do Mar, el complejo portuario y la franja de interfaz.",
+  "porque": "Sirve de base territorial en el apartado 4.4.3.1 del Capítulo IV para contextualizar el estuario, puerto e industria entre sierra y mar.",
+  "como": "Elaboración propia con base en Google Earth Pro (2024), IBGE (Censo 2022), cartografía de la Baixada Santista y CODESP.",
+  "leer": [
+   "Aporta la base geográfica general para analizar conflictos portuarios posteriores.",
+   "Sitúa el polo de Cubatão y el puerto en su relieve estuarino."
+  ],
+  "relacion": []
+ },
+ "fig-51": {
+  "muestra": "Superpone coberturas de manglar y humedal a la poligonal del puerto organizado de Santos, terminales portuarios y la expansión retroportuaria Santos 2030.",
+  "porque": "Evidencia en el apartado 4.4.3.2 del Capítulo IV la presión espacial de la infraestructura portuaria sobre los manglares sujeta a regulación ambiental.",
+  "como": "Elaboración propia con base en ESA WorldCover 2021, poligonales del Ministerio de Infraestructura de Brasil (2022), terminales de OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Advertencia de la tesis: el polígono del proyecto de expansión retroportuaria Santos 2030 es una delimitación esquemática de la autora y no representa una medición cuantitativa.",
+   "Examinar los sectores donde la poligonal portuaria se sobrepone directamente con manglares conservados y degradados en el canal de navegación."
+  ],
+  "relacion": []
+ },
+ "fig-52": {
+  "muestra": "Presenta favelas y comunidades urbanas sobre planicie inundable con cota menor a 5 m y susceptibilidad a deslizamiento R4, junto al polo industrial y el Parque Estadual da Serra do Mar.",
+  "porque": "En el apartado 4.4.3.3, evidencia la doble exposición de Cubatão a inundaciones y laderas para explicar la concentración de informalidad en el borde continental.",
+  "como": "Elaboración propia con base en IBGE (2022), Copernicus DEM GLO-30, ESA WorldCover 2021, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "La susceptibilidad R4 indica la delimitación de la autora para riesgo de ladera.",
+   "Las cotas bajas bajo 5 m señalan áreas expuestas a inundación fluviomarina.",
+   "El polo petroquímico contextualiza las zonas de amortiguamiento e impacto industrial."
+  ],
+  "relacion": []
+ },
+ "atlas-4-17": {
+  "muestra": "Muestra la localización en el contexto nacional y regional, la red troncal o vías principales, ciudades, coberturas del suelo, manchas urbanas y la franja de interfaz urbano-rural por cuenca de la Lámina Atlas 4.28.",
+  "porque": "Introduce en el apartado 4.4.3.5 del Capítulo IV el nivel 1 de la escala macro o regional para analizar problemas y potencialidades del entorno territorial amplio de Santos.",
+  "como": "Elaboración propia con base en coberturas ESA WorldCover 2021 v200, elevación Copernicus DEM GLO-30, OpenStreetMap (2026) y el sistema de información geográfica de la investigación, adaptando la lectura de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Mirar primero el trazado de la red troncal para entender cómo se conecta el complejo portuario de Santos con el sistema regional y nacional.",
+   "Comparar los límites de la franja sombreada de la interfaz urbano-rural con las manchas urbanas consolidadas y las cuencas del área metropolitana."
+  ],
+  "relacion": []
+ },
+ "atlas-4-18": {
+  "muestra": "Despliega capas temáticas de coberturas arbórea y húmeda, uso agrícola, agua, área construida, red vial, red ferroviaria y relieve sobre el área de estudio.",
+  "porque": "En el apartado 4.4.3.5, aporta la descomposición analítica por capas para caracterizar la estructura física y biofísica del territorio de borde.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el SIG propio, adaptando lecturas de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Compare cada capa temática para observar la superposición entre infraestructura y coberturas.",
+   "Distingue áreas construidas frente a elementos naturales como agua y bosque.",
+   "El relieve y la red de transporte evidencian condicionantes del territorio."
+  ],
+  "relacion": []
+ },
+ "atlas-4-19": {
+  "muestra": "Exhibe el borde urbano clasificado según cobertura exterior en 300 m, fricción o interferencia vial sobre parches naturales, pendientes, cotas menores a 5 m y gradiente o variación continua de coberturas naturales.",
+  "porque": "En el apartado 4.4.3.5, identifica riesgos físicos, fracturas por infraestructura y niveles de continuidad ecológica en la escala macro o regional.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el SIG —sistema de información geográfica— propio, adaptando lecturas a distintas escalas territoriales de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Examine el borde exterior de 300 m para identificar si la transición dominante colinda con coberturas naturales o áreas transformadas.",
+   "Verifique las cotas bajas menores a 5 m derivadas del modelo de elevación, advirtiendo que no corresponden a la zonificación de amenaza adoptada por la autoridad competente.",
+   "Observe dónde las vías cruzan parches de vegetación para reconocer los puntos de mayor fragmentación física."
+  ],
+  "relacion": []
+ },
+ "atlas-4-20": {
+  "muestra": "Presenta la red de ciudades y municipios, usos, coberturas, relaciones de accesibilidad y equipamientos de salud y educación.",
+  "porque": "En el apartado 4.4.3.5, desarrolla los niveles 2 y 3 de la escala meso o intermedia para evaluar relaciones funcionales y dotación comunitaria entre el área de estudio y su área de influencia.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el SIG —sistema de información geográfica— de la investigación, adaptando lecturas a distintas escalas territoriales de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Advierta que la distribución de equipamientos de salud y educación de OpenStreetMap es solo un conteo indicativo y no un inventario exhaustivo.",
+   "Identifique la franja de interfaz portuario-estuarina y su vinculación vial con los municipios conectados.",
+   "Compare las áreas de manglares conservados frente a los manglares degradados y rellenos históricos en torno al canal de navegación."
+  ],
+  "relacion": []
+ },
+ "atlas-4-21": {
+  "muestra": "Enfoca un ámbito de 3 × 2 km donde concurre la mayor diversidad de situaciones de borde dentro de la zona de estudio, con su justificación numérica y los escenarios de borde identificados.",
+  "porque": "En el apartado 4.4.3.5, profundiza en la escala meso o intermedia para examinar patrones territoriales donde coinciden múltiples condiciones de contacto entre la ciudad y el medio natural o portuario.",
+  "como": "Elaborado con ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el SIG —sistema de información geográfica— propio, adaptando lecturas a distintas escalas territoriales de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Ubique el recuadro de 3 × 2 km seleccionado por concentrar matemáticamente la mayor heterogeneidad de bordes del sector.",
+   "Contraste los polígonos del proyecto de expansión retroportuaria y terminales reorganizados frente a los sectores de compensación ecológica de la autoridad ambiental.",
+   "Observe la proximidad inmediata entre las áreas de manglar conservado y el canal de navegación del estuario."
+  ],
+  "relacion": []
+ },
+ "atlas-4-22": {
+  "muestra": "Muestra un área de intervención de 1,2 × 0,8 km con puntos de observación, problemas y potencialidades sobre ortofotografía aérea corregida geométricamente.",
+  "porque": "En el apartado 4.4.3.5, caracteriza el nivel 4 de la escala micro o local en Santos para identificar situaciones territoriales críticas.",
+  "como": "Elaboración propia sobre ortofotografía aérea (Esri, 2026), ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el SIG —sistema de información geográfica— de la investigación.",
+  "leer": [
+   "Tenga en cuenta que el análisis corresponde a una lectura remota sobre ortofotografía y no sustituye ni constituye trabajo de campo presencial.",
+   "Identifique la localización de asentamientos en riesgo crítico sobre palafitas en Vila Esperança junto a planicies fluviomarinas e inundables.",
+   "Examine la franja de amortiguamiento frente al polo industrial y petroquímico y las áreas de alta susceptibilidad a deslizamientos en la Serra do Mar."
+  ],
+  "relacion": []
+ },
+ "atlas-4-23": {
+  "muestra": "Presenta perfiles transversales o cortes verticales del terreno con relieve y coberturas para cada escenario de borde del área de intervención.",
+  "porque": "En el apartado 4.4.3.5, aporta secciones tipo en la escala micro o de detalle local para analizar la topografía y el soporte natural.",
+  "como": "Elaboración propia con relieve Copernicus DEM GLO-30, coberturas WorldCover 2021 v200, OpenStreetMap (2026) y el SIG —sistema de información geográfica— de la investigación, adaptando la lectura de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Advierta que los perfiles provienen de una lectura remota de elevación y coberturas, sin constituir verificación ni trabajo de campo directo.",
+   "Mire en cada corte el desnivel vertical que conecta las planicies fluviomarinas inundables con las laderas empinadas de la Serra do Mar.",
+   "Observe la transición espacial entre el polo industrial, las franjas de amortiguamiento y los sectores de riesgo por deslizamiento o asentamientos vulnerables."
+  ],
+  "relacion": []
+ },
+ "atlas-4-24": {
+  "muestra": "Muestra una matriz de debilidades, oportunidades, fortalezas y amenazas (DOFA) para el caso de Santos, organizada según diferentes niveles territoriales o escalas.",
+  "porque": "Permite organizar y evaluar factores positivos y negativos a distintas distancias en el apartado 4.4.3.5 a partir de las láminas previas del caso.",
+  "como": "Elaboración propia adaptando el paso 4 de Bernal Granados (2015) y Lassen (2026), a partir de WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Compruebe cómo se cruzan las amenazas y debilidades frente a las oportunidades y fortalezas en cada nivel de análisis (macro, meso y micro).",
+   "Identifique las capas de riesgo crítico en favelas y palafitas, el polo petroquímico y las áreas inundables en relación con los límites municipales de la región metropolitana."
+  ],
+  "relacion": []
+ },
+ "atlas-4-25": {
+  "muestra": "Muestra la comparación de Barranquilla, Veracruz, Santos y Valparaíso a escala macro (nivel regional amplio), detallando la composición del borde en porcentaje de kilómetros.",
+  "porque": "Permite contrastar las franjas de interfaz urbano-rural de los cuatro casos en el apartado 4.4.4 mediante una síntesis comparada.",
+  "como": "Elaboración propia aplicando el mismo procedimiento y leyenda sobre WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Examine primero la distribución en porcentaje de kilómetros de cada tipo de borde para contrastar el comportamiento de las cuatro ciudades puerto de Latinoamérica.",
+   "Observe que la leyenda y las categorías de borde se mantienen exactamente iguales entre casos para asegurar una comparación equitativa."
+  ],
+  "relacion": []
+ },
+ "atlas-4-26": {
+  "muestra": "Muestra la comparación de Barranquilla, Veracruz, Santos y Valparaíso a escala meso (nivel intermedio de la franja), evaluando la composición del borde en porcentaje de kilómetros.",
+  "porque": "Permite contrastar las franjas de interfaz urbano-rural de los cuatro casos en el apartado 4.4.4 en un nivel territorial intermedio.",
+  "como": "Elaboración propia con el mismo procedimiento y leyenda a partir de WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Compare las diferencias en la longitud porcentual de los bordes entre las cuatro ciudades en esta escala intermedia.",
+   "Advierta que las categorías de análisis no cambian respecto a las otras escalas para facilitar la comparación directa."
+  ],
+  "relacion": []
+ },
+ "atlas-4-27": {
+  "muestra": "Muestra la comparación de Barranquilla, Veracruz, Santos y Valparaíso a escala micro (nivel de detalle local), registrando la composición del borde en porcentaje de kilómetros.",
+  "porque": "Permite completar la comparación de las franjas de interfaz urbano-rural en el apartado 4.4.4 en el nivel de mayor acercamiento.",
+  "como": "Elaboración propia con el mismo procedimiento y leyenda con base en WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap (2026) y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Examine las proporciones relativas en kilómetros de borde a nivel local en las cuatro ciudades puerto analizadas.",
+   "Recuerde que los cuatro casos comparten idénticas categorías en la leyenda para mantener la coherencia metodológica."
+  ],
+  "relacion": []
+ },
+ "atlas-4-28": {
+  "muestra": "Muestra la franja de interfaz urbano-rural de Barranquilla, Veracruz, Valparaíso y Santos en una misma ventana gráfica y con idéntica representación visual.",
+  "porque": "Permite comparar los cuatro casos en el apartado 4.6.6 mediante indicadores relativos para que las variaciones respondan al territorio y no a la forma de dibujarlo.",
+  "como": "Elaboración propia con base en el sistema de información geográfica de la investigación y datos de relieve de Copernicus GLO-30.",
+  "leer": [
+   "No compare el total de hectáreas entre ciudades; utilice los indicadores relativos de composición del borde y fragmentación.",
+   "Advierta que la franja no marca una cota de inundación ni el drenaje de calles y colectores, pues el relieve de 30 m delimita divisorias de aguas a escala metropolitana.",
+   "Tenga en cuenta que se excluyeron los ríos con cuencas de más de 500 km², las zonas de agua permanente y la huella urbana construida."
+  ],
+  "relacion": [
+   "fig-41"
+  ]
+ },
+ "atlas-4-30": {
+  "muestra": "Presenta el análisis a tres escalas o niveles territoriales encadenados (macro, meso y micro) y el detalle de ramificación en el borde (capilaridad) en Barranquilla y Veracruz, junto con el despiece de siete capas: relieve, agua, vegetación, vías, construido, norma y franja.",
+  "porque": "Responde al requerimiento metodológico de examinar la penetración fina del borde y la fragmentación del suelo natural según la distancia a la ciudad en el apartado 4.6.6.",
+  "como": "Elaboración propia a partir de ESA WorldCover 2021, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Observe que la escala micro utiliza una ventana de 1,6 km en el borde interior, elegida para mostrar la transición completa y algo mayor al área de intervención de 1,2 × 0,8 km.",
+   "Examine la tabla de fragmentación para comprobar cómo varía el suelo natural a medida que se aleja o acerca a la ciudad.",
+   "Revise el despiece capa por capa para identificar cómo interactúan el relieve, las vías, el agua y la vegetación antes del resultado final."
+  ],
+  "relacion": []
+ },
+ "atlas-4-31": {
+  "muestra": "Presenta tres escalas encadenadas —macro o región, meso o franja, y micro o ventana de 1,6 km en el borde interior— de Valparaíso y Santos, con el despiece de capas de relieve, agua, vegetación, vías, construido, norma y franja.",
+  "porque": "Completa el análisis comparativo con idéntico método en el Capítulo IV (apartado 4.6.6), midiendo cómo se fragmenta o divide el suelo natural al acercarse a la ciudad.",
+  "como": "Elaborada con base en ESA WorldCover 2021, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación.",
+  "leer": [
+   "Observe la ventana micro de 1,6 km en el borde interior, algo mayor que el área de intervención (1,2 × 0,8 km) para apreciar la transición completa.",
+   "Revise en el despiece cómo se superponen las capas base (relieve, agua, vegetación, vías, construido y norma) debajo de la franja.",
+   "Examine en la tabla la pérdida y división progresiva del suelo natural según la distancia a la ciudad."
+  ],
+  "relacion": []
+ },
+ "fig-53": {
+  "muestra": "Esquematiza en tres columnas la transición desde los instrumentos tradicionales (izquierda) y la complejidad de la franja de interfaz urbano-rural en ciudades portuarias (centro) hasta la propuesta metodológica IOTF-IUR —instrumento de ordenamiento territorial para la franja— (derecha).",
+  "porque": "Sustenta en el Capítulo V (apartado 5.1.1.3) el paso de una planificación por límites político-administrativos hacia una basada en unidades funcionales o áreas definidas por su rol en el territorio.",
+  "como": "Elaborado a partir del análisis empírico y de las insuficiencias instrumentales identificadas en los casos de estudio.",
+  "leer": [
+   "Mire en la columna izquierda cómo el enfoque tradicional aborda la franja de forma reactiva, rígida o fragmentada.",
+   "Compare la columna central con la derecha para ver cómo la complejidad de la franja portuaria se traduce en unidades funcionales.",
+   "Tenga en cuenta que el esquema plantea superar la división binaria del suelo reemplazándola por criterios de función territorial."
+  ],
+  "relacion": []
+ },
+ "fig-54": {
+  "muestra": "Diagrama de trazabilidad metodológica —seguimiento del origen de los datos— con flechas de conectividad que enlazan problemáticas diagnósticas, condiciones comunes comparadas y módulos del modelo IOTF-IUR (instrumento de ordenamiento territorial para la franja).",
+  "porque": "Demuestra en el Capítulo V (apartado 5.1.2) que el modelo instrumental emerge directamente de la realidad empírica y no de una imposición teórica abstracta.",
+  "como": "Elaborado mediante la triangulación entre los problemas de la franja suroccidental de Barranquilla y las cinco condiciones comunes analizadas en el Capítulo 4.",
+  "leer": [
+   "Siga las flechas de conectividad desde las problemáticas de Barranquilla y las condiciones comunes hacia cada módulo del IOTF-IUR.",
+   "Verifique cómo cada componente operativo del modelo encuentra justificación directa en el diagnóstico y la comparación previa.",
+   "Advierta que el esquema funciona como prueba de que la propuesta metodológica surge del territorio y no de supuestos abstractos."
+  ],
+  "relacion": []
+ },
+ "fig-55": {
+  "muestra": "Muestra los cinco principios rectores del modelo IOTF-IUR (instrumento de ordenamiento territorial para la franja) como una red sistémica con un anillo perimetral y vectores o líneas de fuerza que convergen hacia un núcleo central.",
+  "porque": "En el apartado 5.2.5 fundamenta que los principios funcionan como un engranaje interdependiente, justificando que el instrumento sea una lectura territorial y no una norma cerrada.",
+  "como": "Elaborado como estructura de red sistémica y descentralizada a partir de los principios rectores del instrumento de planificación propuesto.",
+  "leer": [
+   "Examine el anillo exterior de relaciones bidireccionales que conecta la adaptabilidad operativa con el equilibrio socioambiental.",
+   "Observe cómo los vectores convergen en el centro para dar soporte estructural a la arquitectura del instrumento.",
+   "Tenga presente que los cinco principios no actúan de manera aislada ni secuencial, sino coordinados simultáneamente."
+  ],
+  "relacion": []
+ },
+ "fig-56": {
+  "muestra": "Presenta el lineamiento cartográfico de las unidades logístico-portuarias sobre la Zona Franca, los corredores viales y sus lugares de articulación cercanos.",
+  "porque": "En el apartado 5.3.2.1 orienta la compatibilidad de estas actividades con los entornos residenciales y ecológicos vecinos.",
+  "como": "Elaborado con base en el Área Metropolitana de Barranquilla (AMB), CRA y POTs municipales, bajo el sistema MAGNA-SIRGAS 2018 Origen Nacional.",
+  "leer": [
+   "Considere que este trazado es un lineamiento orientador y no una zonificación estricta.",
+   "Identifique su proximidad respecto a las áreas residenciales y los corredores ecológicos."
+  ],
+  "relacion": []
+ },
+ "fig-57": {
+  "muestra": "Muestra el lineamiento cartográfico de las unidades residenciales en expansión, señalando las zonas de crecimiento habitacional, especialmente en el borde suroccidental.",
+  "porque": "En el apartado 5.3.2.2 sirve para orientar el avance de la vivienda hacia los suelos con mayor aptitud.",
+  "como": "Elaborado con base en el Área Metropolitana de Barranquilla (AMB), CRA y POTs municipales, bajo el sistema MAGNA-SIRGAS 2018 Origen Nacional.",
+  "leer": [
+   "Léase como un lineamiento de orientación y no como una restricción normativa cerrada.",
+   "Observe la concentración del crecimiento residencial en el sector suroccidental."
+  ],
+  "relacion": []
+ },
+ "fig-58": {
+  "muestra": "Muestra el lineamiento cartográfico de las unidades de transición urbano-rural (UFP 3) del modelo IOTF-IUR.",
+  "porque": "En el apartado 5.3.2.3 justifica que en estas áreas la evaluación multicriterio de la Fase 3 preceda a cualquier cambio de uso del suelo.",
+  "como": "Elaboración propia sobre cartografía base de OpenStreetMap (2026).",
+  "leer": [
+   "Identifique las zonas donde conviven usos rurales residuales con actividades urbanas emergentes.",
+   "Observe que delimita sectores donde el proceso de cambio territorial sigue abierto y los conflictos de uso son más intensos."
+  ],
+  "relacion": []
+ },
+ "fig-59": {
+  "muestra": "Muestra las unidades de protección ambiental (UFP 4) como lineamiento cartográfico del modelo IOTF-IUR en ciénagas, arroyos y humedales del borde.",
+  "porque": "En el apartado 5.3.2.4 sirve para plantear una protección que incluya gestión activa y compensación territorial, tomando como referencia el caso de Santos.",
+  "como": "Elaboración propia con base en el Área Metropolitana de Barranquilla (AMB), C.R.A. y POT municipales, bajo el sistema de coordenadas MAGNA-SIRGAS 2018 Origen Nacional.",
+  "leer": [
+   "Tenga presente la advertencia de la tesis: el polígono trazado es una guía orientadora y no una delimitación normativa de zonificación.",
+   "Examine la ubicación de los cuerpos de agua (ciénagas, arroyos y humedales) sobre los que se proyecta la gestión activa y la compensación."
+  ],
+  "relacion": []
+ },
+ "fig-60": {
+  "muestra": "Reúne las cuatro Unidades Funcionales de Planificación (UFP) como lineamiento territorial conjunto sobre la franja de interfaz y su entorno funcional (32.639 ha).",
+  "porque": "En el apartado 5.3.2.4 permite leer el territorio de forma orientativa y comparar el peso relativo de cada vocación de uso.",
+  "como": "Elaboración propia con base en el Área Metropolitana de Barranquilla (AMB), CRA y POTs municipales, bajo el sistema de coordenadas MAGNA-SIRGAS 2018 Origen Nacional.",
+  "leer": [
+   "Compare la extensión: la suma de las cuatro unidades (32.639 ha) supera las 18.577 ha de la franja porque incluye suelo metropolitano exterior.",
+   "Atienda la advertencia central: interprete la figura como una orientación del conjunto territorial y no como una zonificación de carácter vinculante."
+  ],
+  "relacion": []
+ },
+ "fig-68": {
+  "muestra": "Diagrama de flujo con las seis fases secuenciales de aplicación del Instrumento de Ordenamiento Territorial para la Franja de Interfaz (IOTF-IUR).",
+  "porque": "En el apartado 5.4 sirve de guía previa para ordenar el recorrido de lectura y situar cada figura metodológica posterior dentro del procedimiento.",
+  "como": "Estructura procedimental y fases secuenciales del modelo IOTF-IUR descritas en el capítulo.",
+  "leer": [
+   "Mire primero la secuencia temporal completa: parte en la fase inicial de delimitación y culmina en la etapa final de monitoreo.",
+   "Utilice el esquema como guía de navegación para localizar en qué etapa metodológica se apoya cada figura siguiente."
+  ],
+  "relacion": []
+ },
+ "fig-69": {
+  "muestra": "Esquema del procedimiento metodológico de la Fase 1 para la delimitación funcional de la interfaz urbano-rural.",
+  "porque": "En el apartado 5.4.1 muestra cómo se obtiene el mapa base de la franja territorial sobre el que se apoyan luego los lineamientos de las UFP.",
+  "como": "Esquema metodológico basado en el uso de indicadores indirectos (cobertura vegetal por teledetección o análisis satelital, mapas de calor de servicios y trazas GPS).",
+  "leer": [
+   "Tenga en cuenta la advertencia metodológica: este diagrama esquematiza los pasos técnicos seguidos, no es la cartografía resultante de la franja.",
+   "Observe la función del flujo: ilustra cómo los indicadores indirectos suplen la desactualización de los registros catastrales."
+  ],
+  "relacion": []
+ },
+ "fig-70": {
+  "muestra": "Cartografía de la franja de interfaz delimitada funcionalmente (18.577 ha), con nodos, ejes estructurantes, municipios, vías y la Circunvalar de la Prosperidad.",
+  "porque": "En el apartado 5.4.1 presenta el resultado cartográfico de la Fase 1, coherente con la Figura 3, que sirve de referencia espacial a las UFP.",
+  "como": "Elaboración propia sobre base cartográfica IGAC y datos de movilidad del Área Metropolitana de Barranquilla (AMB), cruzando el área metropolitana con la cuenca (zona de drenaje natural de aguas) de Mallorquín.",
+  "leer": [
+   "Mire primero el cálculo de superficie: las 18.577 ha resultan de descontar 2.515 ha de recortes interiores y excluir el mar.",
+   "Tenga en cuenta la advertencia de la lámina: las curvas de tiempo de viaje (isócronas), los corredores de carga y la gradación de usos no se dibujan aquí.",
+   "Observe las Unidades Funcionales de Planificación (UFP) que la tesis plantea como lineamientos."
+  ],
+  "relacion": [
+   "fig-3"
+  ]
+ },
+ "fig-71": {
+  "muestra": "Ruta metodológica de diagnóstico integrado y construcción de escenarios prospectivos, incluido el de interfaz sostenible con gobernanza multinivel (acuerdos coordinados entre diferentes escalas de gobierno).",
+  "porque": "En el apartado 5.4.2, aporta una base de evidencia para que la posterior evaluación multicriterio sea una decisión informada sobre el futuro deseado.",
+  "como": "",
+  "leer": [
+   "Mire primero la articulación entre el diagnóstico y los escenarios: la tesis advierte que no pronostican, sino que aportan evidencia previa.",
+   "Examine el escenario de interfaz sostenible para identificar cómo se proyecta la gobernanza multinivel.",
+   "Compruebe cómo los resultados de esta fase alimentan la toma de decisiones informada en la fase siguiente."
+  ],
+  "relacion": []
+ },
+ "fig-72": {
+  "muestra": "Matriz y árbol jerárquico de evaluación multicriterio territorial que organiza las variables de análisis.",
+  "porque": "En el apartado 5.4.3, muestra la organización de variables y aclara que su ponderación (asignación de importancia o peso) responde a una decisión de política territorial y no a un cálculo técnico unilateral.",
+  "como": "",
+  "leer": [
+   "Mire primero la estructura del árbol jerárquico para entender la organización de las variables.",
+   "Observe qué variables requieren validación de pesos, umbrales y distancias de amortiguamiento mediante consulta Delphi y taller con actores.",
+   "Tenga presente la advertencia central: la asignación de pesos a las variables es una decisión de política territorial, no un simple cálculo unilateral."
+  ],
+  "relacion": []
+ },
+ "fig-73": {
+  "muestra": "Esquema del modelo de asignación y clasificación del suelo según su aptitud y su vocación de interfaz.",
+  "porque": "En el apartado 5.4.4, permite reconocer áreas en disputa y articula la lectura del suelo con los planes superiores y los instrumentos de gestión.",
+  "como": "",
+  "leer": [
+   "Identifique en el esquema las áreas en disputa espacial, en particular los terrenos del borde suroccidental de Barranquilla.",
+   "Compare la superposición entre el suelo apto para actividad retroportuaria (servicios logísticos de apoyo al puerto) y las zonas alcanzadas por vivienda de interés social.",
+   "Verifique cómo las categorías de vocación conectan con los instrumentos de gestión y los planes superiores."
+  ],
+  "relacion": []
+ },
+ "fig-74": {
+  "muestra": "Articulación de instrumentos de gestión con lineamientos normativos de ordenamiento, detallando criterios de uso del suelo y zonas de amortiguamiento con tratamientos paisajísticos, barreras acústicas y monitoreo entre la actividad logístico-portuaria y los sectores residenciales.",
+  "porque": "En el apartado 5.4.5, cubre una omisión de los planes vigentes al aportar una orientación y no una norma cerrada.",
+  "como": "",
+  "leer": [
+   "Mire primero la franja de separación entre la actividad logístico-portuaria y los sectores residenciales.",
+   "Observe las medidas de mitigación previstas en las zonas de amortiguamiento: tratamientos paisajísticos, pantallas acústicas contra el ruido y monitoreo.",
+   "Tenga en cuenta la advertencia metodológica: la propuesta actúa como una orientación de ordenamiento y no como una norma cerrada."
+  ],
+  "relacion": []
+ },
+ "fig-75": {
+  "muestra": "Sistema de indicadores y ciclo de gobernanza adaptativa territorial estructurado en tres momentos de evaluación temporal.",
+  "porque": "En el apartado 5.4.6, responde a cómo el instrumento se ajusta a lo largo del tiempo a los cambios del territorio.",
+  "como": "",
+  "leer": [
+   "Mire primero el flujo continuo de seguimiento basado en la medición regular de los nueve índices.",
+   "Compare los dos hitos de revisión temporal: la evaluación de medio término (a los cuatro o cinco años) frente a la revisión estructural (a los ocho o diez años).",
+   "Siga la secuencia del ciclo para verificar cómo cada retroalimentación reajusta el instrumento ante los cambios del territorio."
+  ],
+  "relacion": []
+ },
+ "fig-76": {
+  "muestra": "Salida cartográfica del modelo IOTF-IUR que agrupa 3208 manzanas catastrales y 16 751 predios rurales en 367 macromanzanas de al menos 25 ha según su vocación, manteniendo en gris el suelo de las Unidades Funcionales de Planificación (UFP) sin unidad catastral.",
+  "porque": "En el apartado 5.5.3, comprueba que el modelo puede aplicarse con la información disponible en las 32 639 ha de las cuatro UFP (que abarcan 18 577 ha de interfaz y 18 537 ha en macromanzanas).",
+  "como": "Elaboración propia a partir del catastro predial del Área Metropolitana de Barranquilla (AMB), las UFP de la investigación, vías de OpenStreetMap, coberturas ESA WorldCover 2021, elevaciones Copernicus DEM y zonificación del POMCA (plan de ordenación ambiental) de la ciénaga de Mallorquín.",
+  "leer": [
+   "Mire el color gris para ubicar las 14 102 ha que no se dividen: corresponden a la UFP de protección ambiental, cuerpos de agua como Mallorquín o áreas sin capa predial.",
+   "Compare el reparto de las 367 macromanzanas entre sus vocaciones: 30 logístico-portuarias, 155 residenciales en expansión y 182 de transición urbano-rural.",
+   "Verifique la red de la Circunvalar de la Prosperidad y vías principales, pues actúan como límites que definieron las celdas de agrupación sin fragmentar predios."
+  ],
+  "relacion": []
+ },
+ "fig-77": {
+  "muestra": "Presenta 88 macromanzanas a menos de 1,5 km del tramo suroccidental de la Circunvalar de la Prosperidad, detallando su vocación, mezcla de usos (IMUS), porcentaje de superficie construida e impermeable, y porcentaje de cobertura natural.",
+  "porque": "En el apartado 5.5.3 del Capítulo V, sustenta el análisis empírico del conflicto territorial entre proyectos de vivienda de interés social y suelo con vocación logística.",
+  "como": "Elaborado con base en el catastro predial del AMB, coberturas de ESA WorldCover 2021, la red vial de OpenStreetMap y las UFP.",
+  "leer": [
+   "Las 45 macromanzanas de reserva logística suman 2269 ha con 93,9 % de cobertura natural susceptible de ocupación.",
+   "Las macromanzanas residenciales consolidadas registran 66,5 % de área construida y un índice de mezcla de usos de 0,90.",
+   "El análisis se restringe estrictamente a la franja situada a menos de 1,5 km del eje vial."
+  ],
+  "relacion": []
+ },
+ "fig-78": {
+  "muestra": "Compara la distribución espacial de una demanda urbana de 570 ha a 2035: el escenario tendencial (a) y el escenario con aplicación del IOTF-IUR (b), indicando la superficie ocupada por uso.",
+  "porque": "En el apartado 5.5.3 del Capítulo V, demuestra que aplicar el modelo evita invadir suelos logísticos, áreas de conservación y zonas inundables bajo la cota de 5 m.",
+  "como": "Elaborado mediante proyección de demanda sobre la capa de crecimiento urbano del AMB, ESA WorldCover 2021, Copernicus DEM y macromanzanas de la Figura 76.",
+  "leer": [
+   "El escenario 2035 es hipotético e ilustrativo; sirve para comparar alternativas y no para predecir el futuro.",
+   "El modelo decide dónde orientar el crecimiento urbano pero no reduce la pérdida global de cobertura natural.",
+   "Requiere validación institucional y comunitaria previa antes de ser utilizado en instrumentos de planeamiento."
+  ],
+  "relacion": []
+ },
+ "esq-6-1": {
+  "muestra": "Estructura los enfoques teóricos, las metodologías operativas y las líneas de acción del Instrumento de Ordenamiento Territorial Funcional de Interfaz Urbano-Rural (IOTF-IUR).",
+  "porque": "En el Capítulo VI, aporta el balance final de la investigación integrando en un único marco los componentes teóricos, metodológicos y operativos desarrollados.",
+  "como": "Elaboración propia basada en la articulación de los marcos conceptuales y metodológicos de la investigación.",
+  "leer": [
+   "Observe la correspondencia vertical entre los fundamentos teóricos iniciales y las líneas de acción propuestas.",
+   "Revise cómo los módulos metodológicos intermedios traducen los conceptos abstractos en pasos operativos.",
+   "Considérelo como el esquema conceptual que articula las conclusiones generales de la tesis."
+  ],
+  "relacion": []
+ },
+ "esq-5": {
+  "muestra": "Detalla la correspondencia entre las dimensiones teóricas, la operacionalización analítica o traducción de conceptos a variables y los lineamientos derivados del análisis en la franja de interfaz urbano-rural.",
+  "porque": "En el apartado 2.5.3 del Capítulo II, expone la cadena lógica de la investigación demostrando cómo cada capítulo responde y da continuidad al anterior.",
+  "como": "Elaboración propia que esquematiza la secuencia metodológica y la fundamentación epistemológica o del conocimiento de la tesis.",
+  "leer": [
+   "Siga la secuencia de izquierda a derecha para comprobar cómo cada capítulo del documento responde directamente al precedente.",
+   "Examine el paso intermedio para entender cómo los conceptos teóricos se traducen en criterios de medición territorial.",
+   "Valore el esquema como la guía de coherencia metodológica de toda la investigación."
+  ],
+  "relacion": []
+ },
+ "atlas-3-7": {
+  "muestra": "Mapa que ubica corredores económicos, desarrollos inmobiliarios, límites municipales, vías y el sistema hídrico de ríos, ciénaga y drenajes sencillos.",
+  "porque": "En el Capítulo III (apartado 3.4.2.1), responde a la pregunta por la base económica que estructura la franja de interfaz urbano-rural.",
+  "como": "Elaboración propia con base en cartografía del Área Metropolitana de Barranquilla (AMB) y los POT municipales (MAGNA-SIRGAS 2018, EPSG:9377).",
+  "leer": [
+   "Vincule las actividades productivas con los ejes viales y el sistema hídrico.",
+   "Identifique cómo los corredores y desarrollos inmobiliarios estructuran el borde metropolitano."
+  ],
+  "relacion": []
+ },
+ "fig-48": {
+  "muestra": "Corte transversal de 7 km desde la bahía al plan y cerros, con relieve vertical exagerado ×6,8 y cobertura del suelo inferior.",
+  "porque": "En el Capítulo IV (apartado 4.4.2.2), ilustra el riesgo de los barrios y su localización física frente a quebradas críticas.",
+  "como": "Elaboración propia con base en Copernicus DEM GLO-30, ESA WorldCover 2021 y la red de quebradas críticas de la DGA.",
+  "leer": [
+   "Tenga en cuenta la exageración vertical de ×6,8 al interpretar las pendientes.",
+   "Observe la franja inferior para identificar la cobertura del suelo bajo el relieve.",
+   "Localice los asentamientos en relación con el cruce de las dos quebradas críticas."
+  ],
+  "relacion": []
+ },
+ "fig-49": {
+  "muestra": "Localiza la subdivisión de predios en suelo agrícola, tramas de riego, manchas urbanas consolidadas, canales y redes vial y ferroviaria en el valle del Aconcagua.",
+  "porque": "En el Capítulo IV (apartado 4.4.2.3), permite comparar el borde agrícola de Valparaíso con la cuenca alta de la franja de Barranquilla.",
+  "como": "Elaboración propia con Google Earth Pro (2024), IDE Valparaíso, ODEPA (2025), INE y SIEDU del MINVU (2023).",
+  "leer": [
+   "Observe primero los vectores de presión territorial que inciden sobre el suelo agrícola y los canales de riego.",
+   "Compare la extensión de las áreas protegidas La Campana con la proximidad de las manchas urbanas consolidadas y las vías."
+  ],
+  "relacion": []
+ },
+ "atlas-4-9": {
+  "muestra": "Mapa de contexto regional que sitúa la franja de interfaz urbano-rural por cuenca, ciudades, coberturas, red vial estructurante, quebradas críticas y límites comunales del GAMV.",
+  "porque": "En el Capítulo IV (apartado 4.4.2.5), sitúa el caso de Valparaíso en el nivel de contexto para identificar problemas y potencialidades.",
+  "como": "Elaboración propia con ESA WorldCover (2021 v200), Copernicus DEM GLO-30 (2021), OpenStreetMap (2026) y SIG de la investigación, adaptando a Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Mire primero el trazado de la red vial estructurante y su conexión directa con las ciudades del área metropolitana.",
+   "Examine el perímetro de la franja de interfaz delimitado en relación con la red de quebradas críticas de la cuenca."
+  ],
+  "relacion": []
+ },
+ "atlas-4-10": {
+  "muestra": "Desglose por capas del territorio de borde: coberturas arbórea y húmeda, uso agrícola, agua, área construida, relieve, red vial estructurante, quebradas críticas y límites del GAMV.",
+  "porque": "En el Capítulo IV (apartado 4.4.2.5), descompone analíticamente las capas del territorio de borde en el caso de Valparaíso.",
+  "como": "Elaboración propia con ESA WorldCover (2021 v200), Copernicus DEM GLO-30 (2021), OpenStreetMap (2026) y SIG de la investigación, según Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Observe de forma individual la capa de agua y zonas arbóreas antes de superponer el área construida.",
+   "Compare la posición de las quebradas críticas frente a los límites comunales y la red vial estructurante."
+  ],
+  "relacion": []
+ },
+ "atlas-4-11": {
+  "muestra": "Borde urbano clasificado según la cobertura dominante en los 300 m exteriores, fricción vial sobre parches naturales, pendientes, cotas bajas menores a 5 m y continuidad de coberturas.",
+  "porque": "En el Capítulo IV (apartado 4.4.2.5), analiza riesgos, fracturas, categorización de bordes y continuidades en el caso de Valparaíso.",
+  "como": "Elaboración propia con ESA WorldCover (2021 v200), Copernicus DEM GLO-30 (2021), OpenStreetMap (2026) y SIG de la investigación, según Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "Atención: las cotas menores a 5 m provienen del modelo de elevación del terreno y no corresponden a la zonificación formal de amenaza.",
+   "Verifique la cobertura vegetal o construida predominante en la franja exterior de 300 m para identificar el tipo de borde.",
+   "Identifique los puntos donde las vías principales cortan o generan fricción sobre los parches naturales continuos."
+  ],
+  "relacion": []
+ },
+ "atlas-4-12": {
+  "muestra": "Presenta la franja de interfaz urbano-rural sombreada, la red de ciudades, usos y coberturas, equipamientos de salud y educación, accesibilidad, quebradas críticas, áreas del megaincendio 2024 y un corte transversal.",
+  "porque": "Aporta a la lectura multiescalar del apartado 4.4.2.5 para caracterizar el área de estudio y su área de influencia en Valparaíso.",
+  "como": "Elaboración propia con base en ESA WorldCover 2021 v200, Copernicus DEM GLO-30, OpenStreetMap y el sistema de información geográfica de la investigación, adaptando la metodología de Bernal Granados (2015) y Lassen (2026).",
+  "leer": [
+   "El registro de equipamientos de salud y educación corresponde a un conteo indicativo tomado de OpenStreetMap.",
+   "Incluye la delimitación de las áreas afectadas por el megaincendio de 2024 en la interfaz."
+  ],
+  "relacion": []
+ },
+ "atlas-4-29": {
+  "muestra": "Esquema conceptual sin escala que relaciona cuatro componentes: puerto, ciudad, borde de expansión urbana y franja de interfaz, abarcando las ciudades puerto analizadas.",
+  "porque": "En el Capítulo IV (apartado 4.6.6), establece un marco de lectura gráfica unitario para comparar los casos y dar paso a las láminas siguientes.",
+  "como": "Elaboración propia a partir de los casos del capítulo, respondiendo al criterio de comparación gráfica unificada.",
+  "leer": [
+   "Tenga en cuenta que se trata de un esquema conceptual sin escala métrica ni proporciones geográficas reales.",
+   "Observe la secuencia espacial entre los cuatro componentes: el puerto, la ciudad, el borde de expansión urbana y la franja exterior.",
+   "Compare la disposición general de este esquema base antes de revisar las representaciones detalladas de cada caso de estudio."
+  ],
+  "relacion": []
+ }
+}

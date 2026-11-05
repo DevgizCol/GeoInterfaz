@@ -49,12 +49,10 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="logo_aida.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="logo_aida.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<link rel="stylesheet" href="css/estilo.css?v=3">
-<link rel="stylesheet" href="css/refinado.css?v=9">
+<link rel="stylesheet" href="vendor/fuentes.css">
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<link rel="stylesheet" href="css/estilo.css?v=5">
+<link rel="stylesheet" href="css/refinado.css?v=15">
 <script>try{var t=localStorage.getItem("gi-tema");if(t)document.documentElement.setAttribute("data-tema",t);}catch(e){}</script>
 </head>
 <body>
@@ -134,6 +132,9 @@
 
           <!-- Herramientas del mapa -->
           <div class="herr" id="mapToolbar" role="toolbar" aria-label="Herramientas del mapa">
+            <button class="h-btn herr-toggle" id="btnHerr" aria-expanded="false" aria-controls="mapToolbar" aria-label="Mostrar herramientas del mapa" data-tip="Herramientas">
+              <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>
+            </button>
             <button class="h-btn" id="btnEncuadre" data-tip="Volver al encuadre de la tesis">
               <svg viewBox="0 0 24 24"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/><circle cx="12" cy="12" r="2.5"/></svg>
             </button>
@@ -194,7 +195,7 @@
           </button>
           <aside class="panel" id="panel" aria-label="Leyenda y capas">
             <div class="panel-cab">
-              <div class="pest-mini" role="tablist">
+              <div class="pest-mini" role="group" aria-label="Contenido del panel">
                 <button class="on" data-pt="leyenda">Leyenda</button>
                 <button data-pt="capas">Capas <span id="nCapasPanel"></span></button>
                 <button data-pt="fondo">Fondo</button>
@@ -299,10 +300,10 @@
 <dialog id="dlg" class="dlg"><div id="dlgCuerpo"></div></dialog>
 <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="js/app.js?v=14"></script>
+<script src="vendor/maplibre-gl.js"></script>
+<script src="vendor/turf.min.js"></script>
+<script src="vendor/proj4.js"></script>
+<script src="vendor/qrcode.min.js"></script>
+<script src="js/app.js?v=17"></script>
 </body>
 </html>

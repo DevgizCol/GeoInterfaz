@@ -22,6 +22,7 @@
   const GEOJSON_CACHE = new Map();
   let ORDEN = [];
   let INST = [];
+  let FICHAS = {};  // «Cómo leer»: resúmenes del texto de la tesis (construir/15_fichas.py)
 
   let map = null;
   let mapReady = false;
@@ -84,6 +85,8 @@
 
   // ------------------------------------------------------------ utilidades
   const $ = (id) => document.getElementById(id);
+  // cifras en formato español: 19,94 km · 4.077,97 ha
+  const num = (x, d = 0) => Number(x).toLocaleString('es-CO', { minimumFractionDigits: d, maximumFractionDigits: d });
   const esc = (s) =>
     String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -102,6 +105,7 @@
     flecha: '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
   };
 
+  ICO.imprimir = '<svg viewBox="0 0 24 24"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v6H7z"/></svg>';
   ICO.dual = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg>';
   ICO.cortina = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-dasharray="2 2"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></svg>';
   ICO.pres = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"/></svg>';
@@ -1288,6 +1292,47 @@
   }
 
   // ------------------------------------------------------ ficha del elemento
+  function queEs(item) {
+    return item.tipo === 'mapa' ? 'este mapa' : item.clase === 'lamina' ? 'esta lámina' : item.clase === 'esquema' ? 'este esquema' : 'esta figura';
+  }
+  // Siglas de las fichas: las de la tesis con su desarrollo literal; el resto, de uso general.
+  const GLOSARIO = {
+    AMB: 'Área Metropolitana de Barranquilla', UFP: 'Unidades Funcionales de Planificación (lineamientos de la tesis)', UFPs: 'Unidades Funcionales de Planificación (lineamientos de la tesis)',
+    'IOTF-IUR': 'Instrumento de Ordenamiento Territorial Funcional de Interfaz Urbano-Rural, la propuesta de la tesis',
+    POT: 'Plan de Ordenamiento Territorial', POTs: 'Planes de Ordenamiento Territorial', POMCA: 'Plan de Ordenación y Manejo de la Cuenca Hidrográfica',
+    IGAC: 'Instituto Geográfico Agustín Codazzi', DANE: 'Departamento Administrativo Nacional de Estadística', 'C.R.A.': 'Corporación Autónoma Regional del Atlántico', CRA: 'Corporación Autónoma Regional del Atlántico',
+    INEGI: 'Instituto Nacional de Estadística y Geografía (México)', IBGE: 'Instituto Brasileño de Geografía y Estadística', GAMV: 'Gran Área Metropolitana de Valparaíso',
+    INE: 'Instituto Nacional de Estadísticas (Chile)', DGA: 'Dirección General de Aguas (Chile)', ASIPONA: 'Administración del Sistema Portuario Nacional (México)',
+    ESA: 'Agencia Espacial Europea', DEM: 'modelo digital de elevación: el relieve del terreno en una cuadrícula', 'GLO-30': 'modelo de relieve mundial de Copernicus con celdas de 30 m',
+    SIG: 'sistema de información geográfica', IDE: 'infraestructura de datos espaciales', ZAL: 'Zona de Actividades Logísticas',
+    DOFA: 'Debilidades, Oportunidades, Fortalezas y Amenazas', D8: 'método que envía el agua de cada celda del relieve hacia la más baja de sus 8 vecinas',
+    EPSG: 'código internacional de un sistema de coordenadas', 'MAGNA-SIRGAS': 'sistema de coordenadas de referencia de Colombia'
+  };
+  const RE_SIGLA = new RegExp('(^|[^\\w.-])(' + Object.keys(GLOSARIO).sort((x, y) => y.length - x.length).map((k) => k.replace(/[.-]/g, '\\$&')).join('|') + ')(?![\\w-])', 'g');
+  function glosar(txt, vistas) {
+    return esc(txt).replace(RE_SIGLA, (m, pre, sig) => {
+      if (vistas.has(sig)) return m;  // solo la primera vez en cada ficha
+      vistas.add(sig);
+      return `${pre}<abbr tabindex="0" data-def="${esc(GLOSARIO[sig])}" title="${esc(GLOSARIO[sig])}">${sig}</abbr>`;
+    });
+  }
+  function fichaLeer(item) {
+    const f = FICHAS[item.id];
+    if (!f) return '';
+    const vistas = new Set();
+    const g = (t) => glosar(t, vistas);
+    const rel = (f.relacion || []).map((id) => ITEMS_MAP.get(id)).filter(Boolean)
+      .map((o) => `<a class="rel" href="#/${o.id}"><i class="pt t-${o.tipo}"></i><b>${esc(etiquetaCorta(o))}</b><span>${esc(o.titulo)}</span></a>`).join('');
+    return `<section class="ficha-lee" aria-label="Cómo leer ${esc(queEs(item))}">
+          <h4>Qué muestra</h4><p>${g(f.muestra)}</p>
+          <h4>Por qué está en la tesis</h4><p>${g(f.porque)}</p>
+          ${f.como ? `<h4>Cómo se hizo</h4><p>${g(f.como)}</p>` : ''}
+          <h4>Claves de lectura</h4><ul>${(f.leer || []).map((x) => `<li>${g(x)}</li>`).join('')}</ul>
+          ${rel ? `<h4>Se relaciona con</h4><div class="rels">${rel}</div>` : ''}
+          <p class="ficha-ia">Resumen redactado con ayuda de IA a partir del texto de la tesis (V13). La nota original del manuscrito está debajo.</p>
+        </section>`;
+  }
+
   function renderFicha(item) {
     const f = $('ficha');
     if (!f) return;
@@ -1331,6 +1376,7 @@
       <div class="ficha-cuerpo">
         <div class="ficha-eti"><i class="pt t-${item.tipo}"></i>${esc(item.etiqueta)}</div>
         <h3>${esc(item.titulo)}</h3>
+        ${fichaLeer(item)}
         ${item.nota ? `<h4>Nota y fuente</h4><p class="ficha-nota">${esc(item.nota)}</p>` : '<p class="ayuda">Este elemento no tiene nota en el manuscrito.</p>'}
         <h4>Ubicación en la tesis</h4>
         <ol class="ficha-ruta">${ruta}</ol>
@@ -1413,14 +1459,15 @@
         </div>
       </div>
       <h1><span class="eti t-${item.tipo}">${esc(item.etiqueta)}</span>${esc(item.titulo)}</h1>
-      ${item.nota ? `<p class="nota-linea" id="notaLinea" title="Ver la nota completa">${esc(item.nota)}</p>` : ''}
+      ${FICHAS[item.id] ? `<p class="nota-linea lee" id="notaLinea"><span>${esc(FICHAS[item.id].muestra)}</span> <button class="lee-btn" type="button">Cómo leer ${esc(queEs(item))} →</button></p>`
+        : item.nota ? `<p class="nota-linea" id="notaLinea" title="Ver la nota completa">${esc(item.nota)}</p>` : ''}
       <div class="cab-inf">
         ${segHtml}
         <div class="acciones">
           ${relItem ? `<a class="btn" href="#/${relItem.id}" title="${esc(relItem.titulo)}"><i class="pt t-${relItem.tipo}"></i>${esc(relItem.etiqueta)}</a>` : ''}
           <button class="btn" id="btnPresentar" title="Modo presentación (P)">${ICO.pres}<span>Presentar</span></button>
-          ${item.vista ? `<a class="btn" href="?lamina=${esc(item.id)}" target="_blank" rel="noopener" title="Abrir como lámina de página para imprimir o guardar en PDF">${ICO.info}<span>Lámina</span></a>` : ''}
-          <button class="btn" id="btnFicha">${ICO.info}<span>Ficha</span></button>
+          ${item.vista ? `<a class="btn" href="?lamina=${esc(item.id)}" target="_blank" rel="noopener" title="Abrir como página para imprimir o guardar en PDF" aria-label="Imprimir o guardar en PDF">${ICO.imprimir}<span>Imprimir</span></a>` : ''}
+          <button class="btn" id="btnFicha" aria-label="Ficha: cómo leer este elemento">${ICO.info}<span>Ficha</span></button>
           <button class="btn pri" id="btnCompartir">${ICO.compartir}<span>Citar</span></button>
         </div>
       </div>
@@ -1584,10 +1631,10 @@
     if (!pg || pg.children.length > 0) return;
 
     const meta = CATALOGO.meta || {};
-    const items = CATALOGO.items || [];
+    const items = (CATALOGO.items || []).filter((i) => !i.complementaria);  // las cifras cuentan solo lo que está en la tesis
     const n = (f) => items.filter(f).length;
     const nMapas = n((i) => i.vista && VISTAS[i.vista]);
-    const nLaminas = n((i) => i.lamina);
+    const nLaminas = n((i) => i.clase === 'lamina');
     const nFig = n((i) => i.tipo === 'grafico' || i.tipo === 'esquema');
     const nTablas = n((i) => i.clase === 'tabla');
     const nCapas = Object.keys(CAPAS || {}).length;
@@ -1610,7 +1657,7 @@
           <div class="hero-acc">
             ${primero ? `<a class="btn pri grande" href="#/${primero.id}">Explorar el área de estudio ${ICO.flecha}</a>` : ''}
             <button class="btn grande claro" id="btnHeroBuscar">Buscar en la tesis</button>
-            <a class="btn grande claro" href="descargas/Atlas_cartografico_GeoInterfaz.docx" download title="Atlas con todos los mapas, por capítulo, tema y subtema (Word)">Descargar el atlas (Word)</a>
+            <a class="enlace-hero" href="descargas/Atlas_cartografico_GeoInterfaz.docx" download title="Atlas con todos los mapas, por capítulo, tema y subtema (Word)">Descargar el atlas (Word)</a>
           </div>
         </div>
         <div class="cifras">
@@ -1727,7 +1774,7 @@
             <td><span class="tag">${c.geom}</span></td>
             <td class="num">${c.n ? c.n.toLocaleString('es-CO') : '—'}</td>
             <td>${c.crs || '—'}</td>
-            <td><small>${c.fuente || 'SIG Tesis'}</small></td>
+            <td class="origen" title="${esc(c.fuente || 'SIG Tesis')}"><small>${esc(c.fuente || 'SIG Tesis')}</small></td>
           </tr>
           <tr class="det" id="det_${c.id}" hidden>
             <td colspan="5">
@@ -1769,7 +1816,7 @@
           Las ${nCapas} capas geográficas que alimentan los mapas, tal como están en los proyectos QGIS de la tesis. Haga clic en una capa para ver sus campos y en qué figuras se usa. Para publicarlas en la web se convirtieron a WGS 84 (EPSG:4326); el sistema de referencia de origen se indica en cada fila.
         </p>
 
-        <div class="pest" role="tablist">
+        <div class="pest" role="group" aria-label="Contenido">
           <button class="on" data-tab="tabCapas">Capas vectoriales (${nCapas})</button>
           <button data-tab="tabRep">Estructura de carpetas de la investigación</button>
         </div>
@@ -1844,7 +1891,7 @@
 
   function relItem(id) {
     const it = ITEMS_MAP.get(id);
-    return it ? `<a class="rel" href="#/${esc(id)}"><b>${esc(etiquetaCorta(it))}</b><span>${esc(it.titulo)}</span></a>` : '';
+    return it ? `<a class="rel" href="#/${esc(id)}"><i class="pt t-${it.tipo}"></i><b>${esc(etiquetaCorta(it))}</b><span>${esc(it.titulo)}</span></a>` : '';
   }
 
   // zoom con el que el ancho del recuadro equivale a los mismos kilómetros en cualquier latitud
@@ -2029,7 +2076,7 @@
           <h3>${h.tit}</h3>
           <p class="paso-desc">${h.desc}</p>
           <div class="rels">
-            ${h.enlaces.map((id) => id === 'comparativa' ? '<a class="rel" href="#/comparativa"><b>Comparador</b><span>Los cuatro casos a la misma escala</span></a>' : relItem(id)).join('')}
+            ${h.enlaces.map((id) => id === 'comparativa' ? '<a class="rel" href="#/comparativa"><i class="pt t-mapa"></i><b>Comparador</b><span>Los cuatro casos a la misma escala</span></a>' : relItem(id)).join('')}
           </div>
         </div>
       </div>
@@ -2086,7 +2133,7 @@
 
         <h2>Qué contiene</h2>
         <p>Los ${nItems} elementos numerados del manuscrito (figuras, tablas, esquemas y láminas del atlas) conservan aquí su número, su título y su nota. Los mapas se reconstruyen a partir de los proyectos QGIS de la investigación, con la misma simbología y el mismo encuadre de la lámina impresa, y pueden compararse con ella en la pestaña «Lámina».</p>
-        <p>El geovisor no añade interpretaciones ni datos ajenos a la investigación: todo lo que muestra procede del manuscrito y de las capas del sistema de información geográfico. Los elementos rotulados «Mapa complementario» o «Lámina complementaria» no están en el manuscrito; se elaboraron con esas mismas capas y su nota explica cómo.</p>
+        <p>El geovisor no añade datos ajenos a la investigación: todo lo que muestra procede del manuscrito y de las capas del sistema de información geográfico. Las fichas «Cómo leer» resumen en lenguaje sencillo lo que la tesis dice de cada figura; se redactaron con ayuda de IA a partir del texto de la V13 y no sustituyen a la nota original, que se muestra junto a ellas. Los elementos rotulados «Mapa complementario» o «Lámina complementaria» no están en el manuscrito; se elaboraron con esas mismas capas y su nota explica cómo.</p>
 
         <h2 id="descargas">Atlas cartográfico para descargar</h2>
         <p>Un solo documento con todos los mapas de la tesis, ordenados por capítulo, tema y subtema, cada uno con su imagen, su nota, su origen en QGIS y el enlace a su versión interactiva.</p>
@@ -2578,14 +2625,14 @@
           if (puntosMedicion.length >= 3) {
             const poly = turf.polygon([[...puntosMedicion, puntosMedicion[0]]]);
             const m2 = turf.area(poly);
-            const ha = (m2 / 10000).toFixed(2);
-            const km2 = (m2 / 1000000).toFixed(3);
+            const ha = num(m2 / 10000, 2);
+            const km2 = num(m2 / 1000000, 3);
             areaTxt = ` | Área: ${ha} ha (${km2} km²)`;
           }
         } catch (_) {}
       }
 
-      const distTxt = distKm < 1 ? `${Math.round(distKm * 1000)} m` : `${distKm.toFixed(2)} km`;
+      const distTxt = distKm < 1 ? `${Math.round(distKm * 1000)} m` : `${num(distKm, 2)} km`;
       txt.textContent = `Longitud: ${distTxt}${areaTxt} · (${puntosMedicion.length} vértices)`;
     }
   }
@@ -3036,7 +3083,7 @@
       if (tip) {
         tip.hidden = false;
         tip.style.left = `${Math.max(40, Math.min(rect.width - 50, xRel))}px`;
-        tip.textContent = `${pt.alt.toFixed(1)} m s.n.m. (${pt.distKm.toFixed(2)} km)`;
+        tip.textContent = `${num(pt.alt, 1)} m s.n.m. (${num(pt.distKm, 2)} km)`;
       }
 
       // Actualizar marcador flotante en el mapa
@@ -3249,10 +3296,10 @@
     const alts = datos.map((d) => d.alt);
     const minAlt = Math.max(0, Math.floor(Math.min(...alts)));
     const maxAlt = Math.max(minAlt + 15, Math.ceil(Math.max(...alts)));
-    const desnivel = (maxAlt - minAlt).toFixed(1);
+    const desnivel = num(maxAlt - minAlt);
 
     if (resumen) {
-      const distTxt = distTotalKm < 1 ? `${Math.round(distTotalKm * 1000)} m` : `${distTotalKm.toFixed(2)} km`;
+      const distTxt = distTotalKm < 1 ? `${Math.round(distTotalKm * 1000)} m` : `${num(distTotalKm, 2)} km`;
       resumen.textContent = `Longitud: ${distTxt} · Altitud mín: ${minAlt} m · máx: ${maxAlt} m · Desnivel: ${desnivel} m`;
     }
 
@@ -3438,6 +3485,7 @@
       CAPAS = await resCap.json();
       (CATALOGO.items || []).forEach((it) => ITEMS_MAP.set(it.id, it));
       try { INST = await (await fetch('data/instituciones.json', FRESCO)).json(); } catch (_) { INST = []; }
+      try { FICHAS = await (await fetch('data/fichas.json', FRESCO)).json(); } catch (_) { FICHAS = {}; }
       prepararInst();
 
       renderArbol();
@@ -3459,6 +3507,10 @@
         if (currentVista) ajustarEncuadreVista(currentVista);
       });
       $('btnRotulos').addEventListener('click', () => setRotulos(!rotulosVisibles));
+      $('btnHerr').addEventListener('click', () => {
+        const abierta = $('mapToolbar').classList.toggle('abierta');
+        $('btnHerr').setAttribute('aria-expanded', String(abierta));
+      });
       $('cajonCerrar').addEventListener('click', () => { $('cajon').hidden = true; });
       $('dlg').addEventListener('click', (e) => { if (e.target === $('dlg')) $('dlg').close(); });
 

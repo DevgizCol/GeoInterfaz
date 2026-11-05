@@ -5,8 +5,8 @@
 :root {
   --tinta: #17212e;
   --tinta2: #3a4656;
-  --gris: #66727f;
-  --gris2: #97a2ae;
+  --gris: #56616d;   /* AA: 5,1:1 sobre los fondos grises */
+  --gris2: #6a7581;  /* AA: 4,7:1 sobre blanco */
   --linea: #e3e7ec;
   --linea2: #eef1f4;
   --fondo: #f5f6f8;
@@ -230,6 +230,12 @@ details.cap[open] .rom { background: var(--marca); color: #fff; }
   border: 0; border-radius: 8px; background: transparent; color: var(--tinta2);
 }
 .h-btn:hover { background: var(--linea2); color: var(--tinta); }
+.herr-toggle { display: none; }
+@media (max-width: 640px) {
+  .herr-toggle { display: grid; }
+  .herr:not(.abierta) > :not(.herr-toggle) { display: none; }  /* en móvil las herramientas se despliegan a demanda */
+  .herr.abierta .herr-toggle { background: var(--linea2); }
+}
 .h-btn.on { background: var(--marca); color: #fff; }
 .h-btn.off { color: var(--gris2); }
 .h-btn.off::before { content: ''; position: absolute; width: 22px; height: 1.7px; background: currentColor; transform: rotate(-45deg); border-radius: 2px; }
@@ -554,6 +560,9 @@ dialog::backdrop { background: rgba(15, 28, 42, .42); backdrop-filter: blur(2px)
 }
 @media (max-width: 640px) {
   .top { gap: 6px; padding: 0 8px 0 4px; }
+  .marca, .marca img, .buscar-global, .top .ico-btn { flex: none; }  /* el logo no se encoge bajo la lupa */
+  .nav { flex: 1; min-width: 0; }
+  #btnLaser { display: none; }  /* herramienta de sustentación: solo en pantalla grande */
   .marca-txt { display: none; }
   .nav a { padding: 7px 7px; }
   .hero { padding: 28px 20px; }

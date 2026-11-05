@@ -46,7 +46,7 @@
         ]
       }
     ],
-    "kb": 8,
+    "kb": 7,
     "vistas": [
       "amb__ufps"
     ],
@@ -300,7 +300,7 @@
         ]
       }
     ],
-    "kb": 32,
+    "kb": 28,
     "vistas": [
       "amb__ufps",
       "amb__area_de_estudio_franja_interface",
@@ -492,7 +492,7 @@
         "max": 36602.6880594
       }
     ],
-    "kb": 4324,
+    "kb": 3825,
     "vistas": [
       "amb__ufps",
       "amb__area_de_estudio_franja_interface",
@@ -690,7 +690,7 @@
         ]
       }
     ],
-    "kb": 181,
+    "kb": 159,
     "vistas": [
       "amb__ufps",
       "amb__area_de_estudio_franja_interface",
@@ -771,7 +771,7 @@
         ]
       }
     ],
-    "kb": 68,
+    "kb": 59,
     "vistas": [
       "amb__ufps",
       "amb__area_de_estudio_franja_interface",
@@ -1140,7 +1140,7 @@
         "max": 153791294.80463493
       }
     ],
-    "kb": 98,
+    "kb": 83,
     "vistas": [
       "amb__ufps",
       "amb__area_de_estudio_franja_interface",
@@ -1318,7 +1318,7 @@
         ]
       }
     ],
-    "kb": 208,
+    "kb": 178,
     "vistas": [
       "amb__area_de_estudio_franja_interface",
       "amb__franja_interface_area_metropolitana_de_barranquilla",
@@ -1485,7 +1485,7 @@
         "max": 395578941.1187289
       }
     ],
-    "kb": 337,
+    "kb": 287,
     "vistas": [
       "amb__franja_interface_area_metropolitana_de_barranquilla",
       "amb__departamental",
@@ -1684,7 +1684,7 @@
         ]
       }
     ],
-    "kb": 80,
+    "kb": 68,
     "vistas": [
       "amb__franja_interface_area_metropolitana_de_barranquilla",
       "amb__delimitacion_teritorial_de_la_franja_de_interface_urbano_rural_del_are",
@@ -1804,7 +1804,7 @@
         "max": 3313384461.4584985
       }
     ],
-    "kb": 44,
+    "kb": 38,
     "vistas": [
       "amb__nacional"
     ],
@@ -1928,7 +1928,7 @@
         "max": 107988402186.35059
       }
     ],
-    "kb": 1105,
+    "kb": 904,
     "vistas": [
       "amb__nacional",
       "amb__departamental"
@@ -2001,7 +2001,7 @@
         "max": 5283.1
       }
     ],
-    "kb": 58,
+    "kb": 50,
     "vistas": [
       "amb__delimitacion_teritorial_de_la_franja_de_interface_urbano_rural_del_are"
     ],
@@ -2455,7 +2455,7 @@
         ]
       }
     ],
-    "kb": 208,
+    "kb": 178,
     "vistas": [
       "amb__delimitacion_teritorial_de_la_franja_de_interface_urbano_rural_del_are",
       "amb__estructura_ecosistemica_y_morfologica_del_borde_urbano",
@@ -2619,7 +2619,7 @@
         ]
       }
     ],
-    "kb": 1200,
+    "kb": 1027,
     "vistas": [
       "amb__delimitacion_teritorial_de_la_franja_de_interface_urbano_rural_del_are",
       "amb__estructura_ecosistemica_y_morfologica_del_borde_urbano",
@@ -2697,7 +2697,7 @@
     "nombre": "INUNDACION",
     "archivo": "capas/inundacion.geojson",
     "geom": "Line",
-    "n": 2286,
+    "n": 2264,
     "bbox": [
       -74.98433,
       10.81186,
@@ -2733,7 +2733,7 @@
         "max": 2.0
       }
     ],
-    "kb": 1182,
+    "kb": 1003,
     "vistas": [
       "amb__estructura_ecosistemica_y_morfologica_del_borde_urbano"
     ],
@@ -3069,7 +3069,7 @@
         ]
       }
     ],
-    "kb": 351,
+    "kb": 298,
     "vistas": [
       "amb__estructura_ecosistemica_y_morfologica_del_borde_urbano",
       "amb__densidad_e_intensidad_de_ocupacion_del_suelo",
@@ -3160,7 +3160,7 @@
         "max": 179.7
       }
     ],
-    "kb": 11,
+    "kb": 9,
     "vistas": [
       "amb__estructura_ecosistemica_y_morfologica_del_borde_urbano"
     ],
@@ -3256,7 +3256,7 @@
         ]
       }
     ],
-    "kb": 21,
+    "kb": 18,
     "vistas": [
       "amb__estructura_ecosistemica_y_morfologica_del_borde_urbano",
       "amb__usos_del_suelo_compilacion_amb"
@@ -3575,7 +3575,7 @@
         "max": 3432905.121
       }
     ],
-    "kb": 339,
+    "kb": 292,
     "vistas": [
       "amb__dinamica_de_crecimiento"
     ],
@@ -4086,7 +4086,7 @@
         "max": 179.7
       }
     ],
-    "kb": 145,
+    "kb": 123,
     "vistas": [
       "amb__densidad_e_intensidad_de_ocupacion_del_suelo",
       "amb__normativo_ufps_aptitud_suelo_igac",
@@ -4956,7 +4956,7 @@
         "max": 4152.97014786249
       }
     ],
-    "kb": 335,
+    "kb": 288,
     "vistas": [
       "amb__aptitud_del_suelo_rural_igac",
       "amb__infraestructura_como_obstaculo_y_division_social"
@@ -5794,7 +5794,7 @@
         ]
       }
     ],
-    "kb": 36,
+    "kb": 31,
     "vistas": [
       "amb__infraestructura_como_obstaculo_y_division_social"
     ],
@@ -5889,7 +5889,7 @@
         "max": 18587.50754312125
       }
     ],
-    "kb": 20,
+    "kb": 17,
     "vistas": [
       "amb__conflictos_uso_del_suelo_rural_cra",
       "amb__ufp_01_usos_amb",
@@ -6019,7 +6019,7 @@
         "max": 45645059.6763
       }
     ],
-    "kb": 2048,
+    "kb": 1735,
     "vistas": [
       "amb__conflictos_uso_del_suelo_rural_cra"
     ],
@@ -6659,7 +6659,7 @@
         ]
       }
     ],
-    "kb": 20,
+    "kb": 17,
     "vistas": [
       "amb__ufp_01_usos_amb",
       "amb__ufp_02_usos_amb",
@@ -6934,7 +6934,7 @@
         "max": 1048.2008662691
       }
     ],
-    "kb": 487,
+    "kb": 413,
     "vistas": [
       "amb__ufp_01_usos_amb"
     ],
@@ -7631,7 +7631,7 @@
         "max": 1517.12001994247
       }
     ],
-    "kb": 877,
+    "kb": 745,
     "vistas": [
       "amb__ufp_02_usos_amb"
     ],
@@ -8327,7 +8327,7 @@
         "max": 4563.57103365857
       }
     ],
-    "kb": 123,
+    "kb": 105,
     "vistas": [
       "amb__ufp_03_usos_amb"
     ],
@@ -9022,7 +9022,7 @@
         "max": 676.75257631642
       }
     ],
-    "kb": 598,
+    "kb": 508,
     "vistas": [
       "amb__ufp_04_usos_amb"
     ],
@@ -9725,7 +9725,7 @@
         "max": 4563.57103365857
       }
     ],
-    "kb": 1804,
+    "kb": 1533,
     "vistas": [
       "amb__ufp_estructura_propuesta"
     ],
@@ -10490,7 +10490,7 @@
         "max": 261997850.628
       }
     ],
-    "kb": 542,
+    "kb": 468,
     "vistas": [
       "amb__normativo_ufps_aptitud_suelo_igac"
     ],
@@ -11437,7 +11437,7 @@
         "max": 18587.50754312125
       }
     ],
-    "kb": 269,
+    "kb": 229,
     "vistas": [
       "amb__atlas_3_9_conflictos_de_uso"
     ],
@@ -11706,7 +11706,7 @@
         "max": 106540192.52900001
       }
     ],
-    "kb": 447,
+    "kb": 380,
     "vistas": [
       "amb__atlas_3_9_conflictos_de_uso",
       "amb__atlas_3_8_usos_del_suelo"
@@ -12230,7 +12230,7 @@
         ]
       }
     ],
-    "kb": 59,
+    "kb": 51,
     "vistas": [
       "amb__atlas_3_13_sintesis_franja"
     ],
@@ -12369,7 +12369,7 @@
         "max": 45645059.6763
       }
     ],
-    "kb": 962,
+    "kb": 816,
     "vistas": [
       "amb__atlas_3_8_usos_del_suelo"
     ],
@@ -13139,7 +13139,7 @@
         ]
       }
     ],
-    "kb": 4662,
+    "kb": 3904,
     "vistas": [
       "latam__ciudades_puerto_latinoamerica",
       "cap4__fig_39_veracruz_area_metropolitana"
@@ -13265,7 +13265,7 @@
         ]
       }
     ],
-    "kb": 3946,
+    "kb": 3239,
     "vistas": [
       "latam__ciudades_puerto_latinoamerica",
       "cap4__fig_39_veracruz_area_metropolitana"
@@ -13883,7 +13883,7 @@
         ]
       }
     ],
-    "kb": 38,
+    "kb": 31,
     "vistas": [
       "latam__ciudades_puerto_latinoamerica",
       "cap4__fig_39_veracruz_area_metropolitana"
@@ -14157,7 +14157,7 @@
         ]
       }
     ],
-    "kb": 272,
+    "kb": 232,
     "vistas": [
       "cap4__ciudades_puerto_latinoamerica",
       "cap4__fig_40_veracruz_nuevo_puerto_bahia_norte",
@@ -14283,7 +14283,7 @@
         "max": 5.0
       }
     ],
-    "kb": 4092,
+    "kb": 3548,
     "vistas": [
       "cap4__ciudades_puerto_latinoamerica",
       "cap4__fig_40_veracruz_nuevo_puerto_bahia_norte",
@@ -14421,7 +14421,7 @@
         ]
       }
     ],
-    "kb": 98,
+    "kb": 84,
     "vistas": [
       "cap4__ciudades_puerto_latinoamerica",
       "cap4__fig_40_veracruz_nuevo_puerto_bahia_norte",
@@ -14757,7 +14757,7 @@
         ]
       }
     ],
-    "kb": 154,
+    "kb": 131,
     "vistas": [
       "cap4__fig_39_veracruz_area_metropolitana",
       "cap4__fig_39_veracruz_area_metropolitana__2"
@@ -14966,7 +14966,7 @@
         ]
       }
     ],
-    "kb": 177,
+    "kb": 153,
     "vistas": [
       "cap4__fig_39_veracruz_area_metropolitana__2",
       "cap4__fig_40_veracruz_nuevo_puerto_bahia_norte__2"
@@ -15051,7 +15051,7 @@
         ]
       }
     ],
-    "kb": 115,
+    "kb": 99,
     "vistas": [
       "cap4__fig_39_veracruz_area_metropolitana__2"
     ],
@@ -15468,7 +15468,7 @@
         ]
       }
     ],
-    "kb": 70,
+    "kb": 58,
     "vistas": [
       "cap4__fig_45_santos_baixada_santista",
       "cap4__fig_47_santos_cubatao_vulnerabilidad"
@@ -16527,7 +16527,7 @@
         "max": 720.0
       }
     ],
-    "kb": 2,
+    "kb": 1,
     "vistas": [
       "cap4__fig_47_santos_cubatao_vulnerabilidad"
     ],
@@ -17114,7 +17114,7 @@
         ]
       }
     ],
-    "kb": 17,
+    "kb": 15,
     "vistas": [
       "cap4__fig_40_veracruz_nuevo_puerto_bahia_norte__2"
     ],
@@ -17796,7 +17796,7 @@
         "u": 0
       }
     ],
-    "kb": 18,
+    "kb": 15,
     "vistas": [
       "cap4__fig_40_veracruz_nuevo_puerto_bahia_norte__2",
       "cap4__fig_41_veracruz_transformacion_franja_norte"
@@ -17974,7 +17974,7 @@
         ]
       }
     ],
-    "kb": 11,
+    "kb": 9,
     "vistas": [
       "cap4__fig_41_veracruz_transformacion_franja_norte"
     ],
@@ -18068,7 +18068,7 @@
         ]
       }
     ],
-    "kb": 37,
+    "kb": 32,
     "vistas": [
       "cap4__fig_41_veracruz_transformacion_franja_norte"
     ],
@@ -18536,7 +18536,7 @@
         "max": 58042.2082853
       }
     ],
-    "kb": 30,
+    "kb": 25,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -18575,7 +18575,7 @@
     "nombre": "Red Vial y Corredores de Interfaz (MOP)",
     "archivo": "capas/red_vial_y_corredores_de_interfaz_mop.geojson",
     "geom": "Line",
-    "n": 18014,
+    "n": 18013,
     "bbox": [
       -71.70141,
       -33.47511,
@@ -18659,7 +18659,7 @@
         "max": 13.0
       }
     ],
-    "kb": 6214,
+    "kb": 5390,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -18698,7 +18698,7 @@
     "nombre": "Red Hidrográfica y Canales (DGA)",
     "archivo": "capas/red_hidrografica_y_canales_dga.geojson",
     "geom": "Line",
-    "n": 1388,
+    "n": 1360,
     "bbox": [
       -71.69905,
       -33.48929,
@@ -18801,7 +18801,7 @@
         ]
       }
     ],
-    "kb": 1151,
+    "kb": 990,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -18908,7 +18908,7 @@
         ]
       }
     ],
-    "kb": 84,
+    "kb": 72,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -19018,7 +19018,7 @@
         ]
       }
     ],
-    "kb": 83,
+    "kb": 71,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -19135,7 +19135,7 @@
         "max": 5.0
       }
     ],
-    "kb": 24,
+    "kb": 21,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -19284,7 +19284,7 @@
         ]
       }
     ],
-    "kb": 298,
+    "kb": 255,
     "vistas": [
       "cap4__fig_44_valparaiso_valle_aconcagua"
     ],
@@ -19376,7 +19376,7 @@
         "max": 89809.82360970392
       }
     ],
-    "kb": 1043,
+    "kb": 888,
     "vistas": [
       "pmot__rutas_de_transporte"
     ],
@@ -19494,7 +19494,7 @@
         "max": 1060.2759036229459
       }
     ],
-    "kb": 7720,
+    "kb": 6754,
     "vistas": [
       "pmot__dinamica_demografica_e_intensidad_de_ocupacion"
     ],
@@ -20154,7 +20154,7 @@
         ]
       }
     ],
-    "kb": 13,
+    "kb": 11,
     "vistas": [
       "cap2__esq_cap2_modelo_conceptual_interfaz"
     ],
@@ -20235,7 +20235,8 @@
     "vistas": [
       "deriv__accesibilidad_puerto"
     ],
-    "derivada": true
+    "derivada": true,
+    "kb": 17
   },
   "puerto_origen_isocronas": {
     "id": "puerto_origen_isocronas",
@@ -20265,7 +20266,8 @@
     "vistas": [
       "deriv__accesibilidad_puerto"
     ],
-    "derivada": true
+    "derivada": true,
+    "kb": 0
   },
   "circunvalar_prosperidad": {
     "id": "circunvalar_prosperidad",
@@ -20295,7 +20297,8 @@
     "vistas": [
       "deriv__fig66_delimitacion_funcional"
     ],
-    "derivada": true
+    "derivada": true,
+    "kb": 20
   },
   "curvas_nivel_amb": {
     "id": "curvas_nivel_amb",
@@ -20324,19 +20327,20 @@
           100
         ]
       }
-    ]
+    ],
+    "kb": 304
   },
   "casos_comparados_franjas_latam": {
     "id": "casos_comparados_franjas_latam",
-    "nombre": "Franjas de Interfaz Casos Comparados (Barranquilla, Veracruz, Santos, Valparaíso)",
+    "nombre": "Franja de interfaz urbano-rural por cuenca · cuatro casos (Lámina 4.28)",
     "archivo": "capas/casos_comparados_franjas_latam.geojson",
     "geom": "MultiPolygon",
     "n": 4,
     "bbox": [
-      -96.25,
-      -33.15,
-      -46.2,
-      19.3
+      -96.369,
+      -33.2171,
+      -46.0867,
+      19.369
     ],
     "crs": "EPSG:4326",
     "crs_nombre": "WGS 84",
@@ -20369,13 +20373,14 @@
         "tipo": "Real",
         "n_unicos": 4,
         "ejemplos": [
-          18572.7,
-          31600.0,
-          35500.0,
-          47950.0
+          18577,
+          37758,
+          43558,
+          79784
         ]
       }
-    ]
+    ],
+    "kb": 242
   },
   "densidad_poblacion_manzana_interfaz": {
     "nombre": "DENSIDAD_POBLACION_MANZANA_INTERFAZ",
@@ -20484,7 +20489,9 @@
           "0800110000000001010405"
         ]
       }
-    ]
+    ],
+    "n": 2536,
+    "kb": 1408
   },
   "equipamientos_y_construcciones_interfaz": {
     "id": "equipamientos_y_construcciones_interfaz",
@@ -20568,7 +20575,7 @@
         ]
       }
     ],
-    "kb": 42,
+    "kb": 51,
     "vistas": [
       "amb__densidad_e_intensidad_de_ocupacion_del_suelo",
       "deriv__densidad_poblacional"
@@ -20854,7 +20861,7 @@
       "deriv__macromanzanas_2035"
     ],
     "derivada": true,
-    "kb": 2046
+    "kb": 1591
   },
   "macromanzanas_ambito_piloto": {
     "id": "macromanzanas_ambito_piloto",
@@ -20896,6 +20903,240 @@
       "deriv__macromanzanas_piloto"
     ],
     "derivada": true,
-    "kb": 94
+    "kb": 79
+  },
+  "franja_interfaz_veracruz_cuenca": {
+    "id": "franja_interfaz_veracruz_cuenca",
+    "nombre": "Franja de interfaz urbano-rural por cuenca · Veracruz",
+    "archivo": "capas/franja_interfaz_veracruz_cuenca.geojson",
+    "geom": "MultiPolygon",
+    "n": 1,
+    "bbox": [
+      -96.36896,
+      18.88836,
+      -95.96732,
+      19.36903
+    ],
+    "crs": "EPSG:32614",
+    "crs_nombre": "WGS 84 / UTM zone 14N",
+    "fuente": "02_SISTEMA_INFORMACION_GEOGRAFICA_SIG/12_Analisis_Multiescalar_Bordes/franjas_regla_comun.gpkg",
+    "subcapa": "veracruz",
+    "filtro": null,
+    "recorte": null,
+    "campos": [
+      {
+        "n": "caso",
+        "t": "texto",
+        "u": 1,
+        "ej": [
+          "veracruz"
+        ]
+      },
+      {
+        "n": "ancho_m",
+        "t": "decimal",
+        "u": 1
+      },
+      {
+        "n": "area_ha",
+        "t": "decimal",
+        "u": 1
+      }
+    ],
+    "kb": 67,
+    "vistas": [],
+    "estilo": {
+      "tipo": "unico",
+      "campo": null,
+      "ml": [
+        {
+          "type": "fill",
+          "paint": {
+            "fill-color": "#f59f00",
+            "fill-opacity": 0.3
+          }
+        },
+        {
+          "type": "line",
+          "layout": {
+            "line-join": "round"
+          },
+          "paint": {
+            "line-color": "#d9381e",
+            "line-opacity": 0.9,
+            "line-width": 1.5
+          }
+        }
+      ],
+      "leyenda": [
+        {
+          "etq": "Franja de interfaz urbano-rural por cuenca",
+          "m": {
+            "g": "Polygon",
+            "fill": "#f59f00",
+            "fop": 0.3,
+            "linea": "#d9381e",
+            "lw": 1.5
+          }
+        }
+      ],
+      "origen": "regla_comun"
+    }
+  },
+  "franja_interfaz_valparaiso_cuenca": {
+    "id": "franja_interfaz_valparaiso_cuenca",
+    "nombre": "Franja de interfaz urbano-rural por cuenca · Valparaiso",
+    "archivo": "capas/franja_interfaz_valparaiso_cuenca.geojson",
+    "geom": "MultiPolygon",
+    "n": 1,
+    "bbox": [
+      -71.70787,
+      -33.21713,
+      -71.14371,
+      -32.83009
+    ],
+    "crs": "EPSG:32719",
+    "crs_nombre": "WGS 84 / UTM zone 19S",
+    "fuente": "02_SISTEMA_INFORMACION_GEOGRAFICA_SIG/12_Analisis_Multiescalar_Bordes/franjas_regla_comun.gpkg",
+    "subcapa": "valparaiso",
+    "filtro": null,
+    "recorte": null,
+    "campos": [
+      {
+        "n": "caso",
+        "t": "texto",
+        "u": 1,
+        "ej": [
+          "valparaiso"
+        ]
+      },
+      {
+        "n": "ancho_m",
+        "t": "decimal",
+        "u": 1
+      },
+      {
+        "n": "area_ha",
+        "t": "decimal",
+        "u": 1
+      }
+    ],
+    "kb": 69,
+    "vistas": [],
+    "estilo": {
+      "tipo": "unico",
+      "campo": null,
+      "ml": [
+        {
+          "type": "fill",
+          "paint": {
+            "fill-color": "#f59f00",
+            "fill-opacity": 0.3
+          }
+        },
+        {
+          "type": "line",
+          "layout": {
+            "line-join": "round"
+          },
+          "paint": {
+            "line-color": "#d9381e",
+            "line-opacity": 0.9,
+            "line-width": 1.5
+          }
+        }
+      ],
+      "leyenda": [
+        {
+          "etq": "Franja de interfaz urbano-rural por cuenca",
+          "m": {
+            "g": "Polygon",
+            "fill": "#f59f00",
+            "fop": 0.3,
+            "linea": "#d9381e",
+            "lw": 1.5
+          }
+        }
+      ],
+      "origen": "regla_comun"
+    }
+  },
+  "franja_interfaz_santos_cuenca": {
+    "id": "franja_interfaz_santos_cuenca",
+    "nombre": "Franja de interfaz urbano-rural por cuenca · Santos",
+    "archivo": "capas/franja_interfaz_santos_cuenca.geojson",
+    "geom": "MultiPolygon",
+    "n": 1,
+    "bbox": [
+      -46.59721,
+      -24.07113,
+      -46.08672,
+      -23.76015
+    ],
+    "crs": "EPSG:31983",
+    "crs_nombre": "SIRGAS 2000 / UTM zone 23S",
+    "fuente": "02_SISTEMA_INFORMACION_GEOGRAFICA_SIG/12_Analisis_Multiescalar_Bordes/franjas_regla_comun.gpkg",
+    "subcapa": "santos",
+    "filtro": null,
+    "recorte": null,
+    "campos": [
+      {
+        "n": "caso",
+        "t": "texto",
+        "u": 1,
+        "ej": [
+          "santos"
+        ]
+      },
+      {
+        "n": "ancho_m",
+        "t": "decimal",
+        "u": 1
+      },
+      {
+        "n": "area_ha",
+        "t": "decimal",
+        "u": 1
+      }
+    ],
+    "kb": 89,
+    "vistas": [],
+    "estilo": {
+      "tipo": "unico",
+      "campo": null,
+      "ml": [
+        {
+          "type": "fill",
+          "paint": {
+            "fill-color": "#f59f00",
+            "fill-opacity": 0.3
+          }
+        },
+        {
+          "type": "line",
+          "layout": {
+            "line-join": "round"
+          },
+          "paint": {
+            "line-color": "#d9381e",
+            "line-opacity": 0.9,
+            "line-width": 1.5
+          }
+        }
+      ],
+      "leyenda": [
+        {
+          "etq": "Franja de interfaz urbano-rural por cuenca",
+          "m": {
+            "g": "Polygon",
+            "fill": "#f59f00",
+            "fop": 0.3,
+            "linea": "#d9381e",
+            "lw": 1.5
+          }
+        }
+      ],
+      "origen": "regla_comun"
+    }
   }
 }
