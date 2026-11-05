@@ -113,9 +113,29 @@
     document.querySelectorAll('.mu-capas input').forEach((i) => { i.checked = lista.includes(i.dataset.k); if (i.checked || hechos.has(i.dataset.k)) capa(i.dataset.k, i.checked); });
   }
 
+  // Ortoimagen IGAC 2026 del Atlántico (3 m), servida por WMS con CORS abierto; se pinta sobre el terreno real
+  let orto = null;
+  function capaOrto() {
+    if (orto) return orto;
+    orto = viewer.imageryLayers.addImageryProvider(new Cs.WebMapServiceImageryProvider({
+      url: 'https://mapas2.igac.gov.co/image2/services/orto/orto08atlantico8b2026/ImageServer/WMSServer',
+      layers: 'orto08atlantico8b2026:Truecolor', parameters: { format: 'image/png', transparent: true, version: '1.1.1' },
+      rectangle: Cs.Rectangle.fromDegrees(-75.32, 10.25, -74.70, 11.12),  // extensión del mosaico del Atlántico
+      tileWidth: 512, tileHeight: 512, minimumLevel: 0, maximumLevel: 18,
+      credit: 'Ortoimagen: IGAC, Atlántico 2026' }));
+    orto.contrast = 1.18; orto.saturation = 1.12; orto.brightness = .97; orto.gamma = 1.05;  // el mosaico original sale apagado
+    return orto;
+  }
   async function ponerCiudad(tipo) {
     if (ciudad) { viewer.scene.primitives.remove(ciudad); ciudad = null; }
     viewer.scene.globe.show = true;
+    capaOrto().show = tipo !== 'google';  // con Google 3D, su propia malla fotorrealista sustituye a la ortoimagen
+    if (tipo === 'igac') {
+      aviso('Ortofoto IGAC 2026 (3 m) sobre el relieve real. Acérquese para ver el detalle de predios, vías y cauces.');
+      document.querySelectorAll('#muCiudad button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.c === tipo)));
+      viewer.scene.requestRender();
+      return;
+    }
     try {
       ciudad = tipo === 'google' ? await Cs.createGooglePhotorealistic3DTileset({ onlyUsingWithGoogleGeocoder: true, maximumScreenSpaceError: 24 }) : await Cs.createOsmBuildingsAsync();
       viewer.scene.primitives.add(ciudad);
@@ -221,7 +241,7 @@
         </div>
         <details class="mu-libre"><summary>Explorar libremente</summary>
           <div class="mu-grupo"><span>Recorrer</span><div id="muModo" class="mq-modos"><button data-m="volar" aria-pressed="true">Volar</button><button data-m="dron">Dron</button><button data-m="caminar">Caminar</button></div></div>
-          <div class="mu-grupo"><span>Ciudad</span><div id="muCiudad" class="mq-modos"><button data-c="google">Google 3D</button><button data-c="osm">Edificios OSM</button></div><p id="muCiudadEstado" class="mq-nota" role="status"></p></div>
+          <div class="mu-grupo"><span>Ciudad</span><div id="muCiudad" class="mq-modos"><button data-c="igac">Ortofoto IGAC 2026</button><button data-c="google">Google 3D</button><button data-c="osm">Edificios OSM</button></div><p id="muCiudadEstado" class="mq-nota" role="status"></p></div>
           <div class="mu-grupo"><span>Capas</span><div class="mu-capas">
             <label><input type="checkbox" data-k="franja"> Franja de interfaz (18.577 ha)</label>
             <label><input type="checkbox" data-k="unidades"> Unidades de paisaje y cauces</label>
@@ -229,7 +249,7 @@
             <label><input type="checkbox" data-k="macro"> Macromanzanas (propuesta)</label></div></div>
           <p id="muAyuda" class="mq-nota"></p>
         </details>
-        <p class="mq-nota mu-pie-nota"><a href="#/maqueta">Versión ligera</a> · Terreno: Cesium World Terrain. Ciudad: Google / OpenStreetMap (acérquese para ver los edificios). UFP y nodos: lineamientos; macromanzanas: propuesta; 2035: escenarios hipotéticos.</p>
+        <p class="mq-nota mu-pie-nota"><a href="#/maqueta">Versión ligera</a> · Terreno: Cesium World Terrain. Imagen: ortofoto IGAC 2026 (o Google 3D / OpenStreetMap). UFP y nodos: lineamientos; macromanzanas: propuesta; 2035: escenarios hipotéticos.</p>
       </aside>`;
     try { Cs = await cargar(); } catch (e) { $('muTit').textContent = 'El mundo 3D no pudo cargarse'; $('muTxt').innerHTML = e.message + '. <a href="#/maqueta">Abrir la versión ligera</a>.'; return; }
     Cs.Ion.defaultAccessToken = window.GI_CESIUM_TOKEN;
@@ -252,7 +272,7 @@
         orientation: { heading: cam.heading, pitch: Math.min(cam.pitch, Cs.Math.toRadians(-10)), roll: 0 } });
     });
     window.__mundo = viewer;  // para pruebas automáticas
-    await ponerCiudad('google');
+    await ponerCiudad('igac');  // por defecto la ortoimagen procesada de la tesis
     capas();
     ponerModo('volar', true);
     irPaso(0);
