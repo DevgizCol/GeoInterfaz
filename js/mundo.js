@@ -29,6 +29,16 @@
   const cargar = () => new Promise((ok, ko) => {
     if (window.Cesium) return ok(window.Cesium);
     window.CESIUM_BASE_URL = CDN;
+    // shortcut: Cesium 1.147 pide imageOrientation 'none', que Chrome renombró a 'from-image' (mismo efecto); quitar cuando Cesium lo actualice
+    const cib = window.createImageBitmap;
+    if (cib && !cib.__gi) {
+      window.createImageBitmap = function (img, ...r) {
+        const o = r[r.length - 1];
+        if (o && typeof o === 'object' && o.imageOrientation === 'none') r[r.length - 1] = { ...o, imageOrientation: 'from-image' };
+        return cib.call(this, img, ...r);
+      };
+      window.createImageBitmap.__gi = true;
+    }
     const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = CDN + 'Widgets/widgets.css'; document.head.appendChild(css);
     const s = document.createElement('script'); s.src = CDN + 'Cesium.js'; s.onload = () => ok(window.Cesium); s.onerror = () => ko(new Error('No se pudo cargar CesiumJS'));
     document.head.appendChild(s);
