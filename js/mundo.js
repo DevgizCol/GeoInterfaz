@@ -135,6 +135,7 @@
   function franjaDatos() { for (let i = 0; i < viewer.dataSources.length; i++) { const d = viewer.dataSources.get(i); if (d.name === 'franja') return d; } return null; }
   function irPaso(n) {
     paso = Math.max(0, Math.min(PASOS.length - 1, n));
+    if (viewer) viewer.selectedEntity = undefined;  // cierra la ficha abierta
     const P = PASOS[paso];
     if (modo !== 'volar') ponerModo('volar', true);
     marcarCapas(P.capas);
@@ -184,6 +185,7 @@
   }
   function ponerModo(m, silencio) {
     modo = m;
+    if (viewer) viewer.selectedEntity = undefined;  // cierra la ficha abierta
     const ctl = viewer.scene.screenSpaceCameraController, libre = m === 'volar';
     ctl.enableTranslate = ctl.enableZoom = ctl.enableTilt = ctl.enableRotate = libre;
     ctl.enableLook = true;

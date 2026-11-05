@@ -1065,3 +1065,14 @@ details.cap[open] .rom { color: var(--acento); }
 .modo-3d .modo-badge { margin-top: 20px; }
 .modo-3d .modo-cta { margin-bottom: 22px; }
 @media (prefers-reduced-motion: reduce) { .modo-3d img { transition: none; } }
+
+/* galería de renders 3D bajo la tarjeta */
+.galeria-3d { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: -6px; }
+.galeria-3d a { display: block; text-decoration: none; color: var(--tinta2); font-size: 12.5px; font-weight: 600; }
+.galeria-3d img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; border: 1px solid var(--linea); transition: transform .2s ease, box-shadow .2s ease; }
+.galeria-3d a:hover img { transform: translateY(-2px); box-shadow: var(--sombra); }
+.galeria-3d span { display: block; margin-top: 6px; }
+@media (max-width: 640px) { .galeria-3d { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* ficha de Cesium con el estilo del sitio */
+#pgMundo .cesium-infoBox { background: var(--papel); color: var(--tinta); border: 1px solid var(--linea); border-radius: 12px; box-shadow: var(--sombra-lg); }
+#pgMundo .cesium-infoBox-title { background: var(--marca); color: #fff; font-weight: 700; }

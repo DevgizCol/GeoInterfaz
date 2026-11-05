@@ -1658,6 +1658,7 @@
           <p class="quien"><strong>${esc(meta.autora || '')}</strong><span>Dirección: ${esc(meta.directores || '')}</span><span class="credito-devgiz">· Desarrollado por <a href="https://devgiz.vercel.app/" target="_blank" rel="noopener noreferrer"><strong>DevGiz</strong></a></span></p>
           <div class="hero-acc">
             ${primero ? `<a class="btn pri grande" href="#/${primero.id}">Explorar el área de estudio ${ICO.flecha}</a>` : ''}
+            <a class="btn grande claro" href="#/mundo">Recorrer en 3D ${ICO.flecha}</a>
             <button class="btn grande claro" id="btnHeroBuscar">Buscar en la tesis</button>
             <a class="enlace-hero" href="descargas/Atlas_cartografico_GeoInterfaz.docx" download title="Atlas con todos los mapas, por capítulo, tema y subtema (Word)">Descargar el atlas (Word)</a>
           </div>
@@ -1690,6 +1691,10 @@
             <p>Vuele sobre el relieve real y la ortoimagen de 2026, recorra la franja en dron o a pie, y vea en cinco pasos las unidades de paisaje, los lineamientos y las macromanzanas.</p>
             <span class="modo-cta">Entrar al mundo 3D →</span>
           </a>
+          <div class="galeria-3d" aria-label="Renders 3D de la franja">
+            ${[['render_franja_01', 'Desde el mar'], ['render_franja_02_sur', 'Desde el sur'], ['render_unidades_galapa', 'Unidades de paisaje'], ['render_macromanzanas', 'Macromanzanas'], ['LAM_RENDER_3D_FRANJA', 'Lámina completa']]
+              .map(([n, t]) => `<a href="img/renders/${n}.webp" target="_blank" rel="noopener"><img src="img/renders/${n}_mini.webp" alt="Render 3D: ${t}" loading="lazy"><span>${t}</span></a>`).join('')}
+          </div>
           <a href="#/recorrido" class="modo-tarjeta">
             <span class="modo-badge">Hitos 01 - 06</span>
             <h3>Recorrido Guiado por la Tesis</h3>
